@@ -3,44 +3,76 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-const LoadingScreen = () => (
-  <div style={{
-    height: '100vh',
-    width: '100vw',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
-    color: 'white',
-    fontFamily: 'Arial, sans-serif'
-  }}>
-    <div style={{ textAlign: 'center' }}>
-      <img 
-        src="/assets/icons/logoWhite.svg" 
-        alt="Logo" 
-        style={{
-          width: '150px',
-          marginBottom: '20px',
-          animation: 'growLogo 2s ease-in-out forwards'
-        }}
-      />
-      <style>
-        {`
-          @keyframes growLogo {
-            from {
-              width: 150px;
-              height: auto;
+const LoadingScreen = ({ onHeroPreload }) => {
+  // Preload the hero image during loading screen
+  React.useEffect(() => {
+    const img = new Image();
+    img.src = '/assets/images/Hero.webp';
+    img.fetchPriority = 'high';
+    img.decoding = 'sync';
+    
+    const preloadHero = async () => {
+      try {
+        if (img.decode) {
+          await img.decode();
+        }
+        onHeroPreload();
+      } catch (error) {
+        console.error('Error preloading hero:', error);
+        onHeroPreload(); // Continue anyway
+      }
+    };
+
+    if (img.complete) {
+      preloadHero();
+    } else {
+      img.onload = preloadHero;
+    }
+  }, [onHeroPreload]);
+
+  return (
+    <div style={{
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'black',
+      color: 'white',
+      fontFamily: 'Arial, sans-serif',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      zIndex: 9999
+    }}>
+      <div style={{ textAlign: 'center' }}>
+        <img 
+          src="/assets/icons/logoWhite.svg" 
+          alt="Logo" 
+          style={{
+            width: '150px',
+            marginBottom: '20px',
+            animation: 'growLogo 2s ease-in-out forwards'
+          }}
+        />
+        <style>
+          {`
+            @keyframes growLogo {
+              from {
+                width: 150px;
+                height: auto;
+              }
+              to {
+                width: 450px;
+                height: auto;
+              }
             }
-            to {
-              width: 450px;
-              height: auto;
-            }
-          }
-        `}
-      </style>
+          `}
+        </style>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const criticalAssets = [
   {
@@ -127,19 +159,31 @@ const loadImage = (asset) => {
 
 const preloadAssets = async () => {
   try {
-    // First, load highest priority assets
-    const highestPriorityAssets = criticalAssets.filter(asset => asset.priority === 'highest');
-    await Promise.all(highestPriorityAssets.map(loadImage));
+    // First, ensure Hero image is loaded
+    const heroImage = criticalAssets.find(asset => 
+      asset.src === '/assets/images/Hero.webp' && 
+      asset.priority === 'highest'
+    );
+    
+    if (heroImage) {
+      await loadImage(heroImage);
+    }
 
-    // Then load high priority assets
-    const highPriorityAssets = criticalAssets.filter(asset => asset.priority === 'high');
-    await Promise.all(highPriorityAssets.map(loadImage));
+    // Then load remaining high priority assets
+    const remainingHighPriority = criticalAssets.filter(asset => 
+      asset.src !== '/assets/images/Hero.webp' && 
+      asset.priority === 'high'
+    );
+    await Promise.all(remainingHighPriority.map(loadImage));
 
     // Load non-critical assets in parallel but don't wait for completion
     Promise.all([
       ...nonCriticalAssets.map(src => loadImage({ src, priority: 'low' })),
       ...iconAssets.map(src => loadImage({ src, priority: 'low' }))
     ]).catch(error => console.warn('Non-critical assets loading error:', error));
+    
+    // Add a small delay to ensure smooth transition
+    await new Promise(resolve => setTimeout(resolve, 100));
     
     return true;
   } catch (error) {
@@ -150,18 +194,40 @@ const preloadAssets = async () => {
 
 // Render loading screen first
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+let heroPreloaded = false;
+const handleHeroPreload = () => {
+  heroPreloaded = true;
+};
+
 root.render(
   <React.StrictMode>
-    <LoadingScreen />
+    <LoadingScreen onHeroPreload={handleHeroPreload} />
   </React.StrictMode>
 );
 
 // Then preload assets and switch to main app
 preloadAssets().then(() => {
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
+  // Only proceed if hero is preloaded
+  if (!heroPreloaded) {
+    const checkPreload = () => {
+      if (heroPreloaded) {
+        root.render(
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        );
+      } else {
+        setTimeout(checkPreload, 10);
+      }
+    };
+    checkPreload();
+  } else {
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  }
 });
 

@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from '../../styles/components/Hero.module.css';
 
 function Hero() {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const bannerRef = useRef(null);
   const logoRef = useRef(null);
 
@@ -11,9 +10,11 @@ function Hero() {
     img.src = '/assets/images/Hero.webp';
     
     if (img.complete) {
-      setImageLoaded(true);
+      // Image is already loaded
     } else {
-      img.onload = () => setImageLoaded(true);
+      img.onload = () => {
+        // Image is now loaded
+      };
     }
   }, []);
 
@@ -51,7 +52,7 @@ function Hero() {
   ];
 
   return (
-    <div className={`${styles.heroContainer} ${imageLoaded ? styles.loaded : ''}`}>
+    <div className={`${styles.heroContainer} ${styles.loaded}`}>
       <div className={styles.heroOverlay}>
         <div className={styles.logoContainer} ref={logoRef}>
           <img 
@@ -59,7 +60,7 @@ function Hero() {
             alt="Azulu Logo" 
             className={styles.logo}
             loading="eager"
-            priority="true"
+            fetchPriority="high"
             decoding="sync"
           />
         </div>
