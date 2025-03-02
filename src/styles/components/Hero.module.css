@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  background-image: url('../../../public/assets/images/Hero.jpg');
+  background-image: url('../../../public/assets/images/Hero.webp');
   background-size: cover;
   background-position: center;
   display: flex;

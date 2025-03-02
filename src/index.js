@@ -41,12 +41,17 @@ const LoadingScreen = () => (
 );
 
 const preloadAssets = async () => {
-  const imageAssets = [
-    '/assets/images/Benjaa.png',
-    '/assets/images/FataMorgana.png',
-    '/assets/images/Hero.jpg',
-    '/assets/images/Romy.png',
+  // Separate critical and non-critical assets
+  const criticalAssets = [
+    '/assets/icons/logoWhite.svg',
     '/assets/images/party-crowd.webp',
+    '/assets/images/FataMorgana.png',
+    '/assets/images/Hero.webp',
+    '/assets/images/Benjaa.png',
+    '/assets/images/Romy.png',
+  ];
+
+  const nonCriticalAssets = [
     '/assets/images/homepage grid/Azulu@W-hotel-001.webp',
     '/assets/images/homepage grid/Azulu@W-hotel-008.webp',
     '/assets/images/homepage grid/Azulu@W-hotel-047.webp',
@@ -60,7 +65,6 @@ const preloadAssets = async () => {
     '/assets/icons/Dot.svg',
     '/assets/icons/logoBlack.svg',
     '/assets/icons/logoWhite.png',
-    '/assets/icons/logoWhite.svg',
   ];
 
   const loadImage = (src) => {
@@ -68,18 +72,26 @@ const preloadAssets = async () => {
       const img = new Image();
       img.src = src;
       img.onload = () => resolve(src);
-      img.onerror = () => reject(`Failed to load image: ${src}`);
+      img.onerror = () => {
+        console.warn(`Failed to load image: ${src}`);
+        resolve(src); // Resolve anyway to prevent blocking
+      };
     });
   };
 
   try {
-    await Promise.all([
-      ...imageAssets.map(loadImage),
+    // Load critical assets first
+    await Promise.all(criticalAssets.map(loadImage));
+    
+    // Load non-critical assets in parallel but don't wait for completion
+    Promise.all([
+      ...nonCriticalAssets.map(loadImage),
       ...iconAssets.map(loadImage)
-    ]);
+    ]).catch(error => console.warn('Non-critical assets loading error:', error));
+    
     return true;
   } catch (error) {
-    console.error('Error preloading assets:', error);
+    console.error('Error preloading critical assets:', error);
     return false;
   }
 };
