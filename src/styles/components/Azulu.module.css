@@ -1,0 +1,92 @@
+.azuluContainer {
+  width: 100%;
+  background-color: #fff;
+  padding: 4rem 0;
+  color: #000;
+}
+
+.azuluContent {
+
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.logo {
+  width: 170px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.established {
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+.descriptionSection {
+  width: 100%;
+  margin-bottom: 2rem;
+  align-content: left;
+}
+
+.founderText {
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 0rem;
+  max-width: 1100px;
+}
+
+/* Completely revised brand name section */
+.brandNameSection {
+  width: 100vw;
+  position: relative;
+  margin-bottom: 3rem;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 60px,
+    #ddd 60px,
+    #ddd 61px
+  );
+  padding: 0.5rem 0rem;
+  overflow: hidden;
+}
+
+
+
+.missionSection {
+  width: 100%;
+  margin-bottom: 3rem;
+  align-content: right;
+}
+
+.missionText {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: right;
+  letter-spacing: 1px;
+  font-weight: 600;
+  max-width: 1100px;
+  align-content: right;
+  align-items: right;
+  margin-left: 300px;
+}
+
+@media (max-width: 768px) {
+  .founderText, .missionText {
+    font-size: 0.8rem;
+  }
+} 

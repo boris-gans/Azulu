@@ -1,0 +1,329 @@
+.partyContainer {
+  width: 100%;
+  padding: 4rem 0;
+  padding-bottom: 0rem;
+  background-color: #fff;
+  color: #000;
+  position: relative;
+  min-height: 70vh;
+  overflow: visible;
+  padding-top: 150px;
+}
+
+.partyContent {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+  overflow: visible;
+}
+
+.aboutSection {
+  width: 35%;
+  padding-right: 2rem;
+  text-align: left;
+  border-right: 1px solid #d9d9d9;
+}
+
+.aboutTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #ff0000;
+}
+
+.aboutSubtitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.aboutText {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  color: #333;
+
+}
+
+.partyImageWrapper {
+  position: relative;
+  width: 85%;
+  height: 500px;
+  overflow: visible;
+  margin-left: auto;
+}
+
+.partyImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  position: relative;
+  z-index: 1;
+}
+
+.partyOverlayCard {
+  position: absolute;
+  bottom: -50px;
+  left: -100px;
+  width: 450px;
+  background-color: #000;
+  color: #fff;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardContent {
+  flex: 1;
+  padding-left: 2rem;
+  padding-top: 1rem;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.partyTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  line-height: 1.2;
+  background-color: transparent;
+  display: block;
+  padding: 0;
+  width: 100%;
+}
+
+.partyDescription {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  max-width: 90%;;
+  color: rgba(255, 255, 255, 0.8);
+  background-color: transparent;
+  padding: 0;
+  display: block;
+  width: 100%;
+}
+
+.partyAction {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.partyLink {
+  display: inline-block;
+  color: #ff0000;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  background-color: transparent;
+  padding: 0;
+}
+
+.arrowContainer {
+  display: flex;
+  align-items: center;
+}
+
+.arrowIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff0000;
+  width: 60px;
+  height: 60px;
+}
+
+.arrowIcon svg {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+
+.redAccentBar {
+  position: absolute;
+  top: 56px;
+  bottom: 56px;
+  right: 85px;
+  width: 40px;
+  background-color: #ff0000;
+  z-index: 0;
+}
+
+.locationInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 6rem;
+  padding: 2rem 0;
+  color: #000;
+}
+
+.locationLogo {
+  width: 80px;
+  height: 80px;
+}
+
+.circleLogo {
+  width: 100%;
+  height: 100%;
+}
+
+.locationAddress {
+  text-align: center;
+}
+
+.locationAddress h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.locationAddress p {
+  font-size: 1rem;
+}
+
+.locationHighlight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  padding: 1rem;
+}
+
+.cityName {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #000;
+  line-height: 1;
+}
+
+.azuluBranding {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  overflow: visible;
+  width: 100%;
+}
+
+.azuluLogo {
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: #000;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.azuluRepeated {
+  position: absolute;
+  top: -70px;
+  left: 0;
+  font-size: 3.7rem;
+  font-weight: 900;
+  line-height: 1.1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  width: 100%;
+  overflow: visible;
+}
+
+.azuluRepeatedText {
+  display: block;
+  margin-bottom: 0.3rem;
+  transform-origin: left;
+  position: absolute;
+  left: -100px;
+  color: rgba(0, 0, 0, 0.15);
+}
+
+.azuluRepeatedText:nth-child(1) { top: 0; }
+.azuluRepeatedText:nth-child(2) { top: 3rem; }
+.azuluRepeatedText:nth-child(3) { top: 6rem; }
+.azuluRepeatedText:nth-child(4) { top: 9rem; }
+.azuluRepeatedText:nth-child(5) { top: 12rem; }
+
+.azuluRepeatedText:nth-child(3n) {
+  color: rgb(0, 0, 0);
+  transform: translateX(50px);
+}
+
+.azuluRepeatedText:nth-child(3n+1) {
+  color: rgba(0, 0, 0, 0.645);
+  transform: translateX(30px);
+}
+
+.azuluRepeatedText:nth-child(3n+2) {
+  color: rgba(0, 0, 0, 0.4);
+  transform: translateX(10px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .partyContent {
+    flex-direction: column;
+  }
+  
+  .aboutSection {
+    width: 100%;
+    padding-right: 0;
+    margin-bottom: 3rem;
+  }
+  
+  .partyImageWrapper {
+    width: 100%;
+  }
+  
+  .partyOverlayCard {
+    width: 60%;
+    max-width: none;
+  }
+  
+  .cityName {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .partyImageWrapper {
+    margin-left: 0;
+    height: auto;
+  }
+  
+  .partyOverlayCard {
+    width: 100%;
+    left: 0;
+    position: relative;
+    bottom: 0;
+    flex-direction: column;
+  }
+  
+  .arrowContainer {
+    align-items: flex-start;
+  }
+  
+  .cityName {
+    font-size: 2.5rem;
+  }
+  
+  .cityName::after {
+    width: 40px;
+    height: 4px;
+  }
+} 

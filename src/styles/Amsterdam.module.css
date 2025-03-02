@@ -1,0 +1,51 @@
+.amsterdamContainer {
+  padding: 1rem 5rem;
+  background-color: #fff;
+}
+
+.content {
+  max-width: 1400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoContainer {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+}
+
+.addressContainer {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.address {
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-align: right;
+  line-height: 1.8;
+  padding-bottom: 0px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .logoContainer, .addressContainer {
+    justify-content: center;
+  }
+  
+  .address {
+    text-align: center;
+  }
+} 

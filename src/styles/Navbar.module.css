@@ -1,0 +1,96 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 2rem;
+  background-color: rgb(0, 0, 0);
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  font-family: 'Sora', sans-serif;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  border-top: 1px solid #d9d9d95b;
+  border-bottom: 1px solid #d9d9d95b;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+}
+
+.navbarLogo {
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+.logo {
+  margin-top: 5px;
+  width: 50px;
+  height: 50px;
+}
+
+.leftNavLinks, .rightNavLinks {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.leftNavLinks li {
+  margin-right: 2rem;
+}
+
+.rightNavLinks li {
+  margin-left: 2rem;
+}
+
+.leftNavLinks a, .rightNavLinks a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  transition: opacity 0.3s ease;
+  font-family: 'Sora', sans-serif;
+}
+
+.leftNavLinks a:hover, .rightNavLinks a:hover {
+  opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+  
+  .navbarLogo {
+    margin-right: 1rem;
+  }
+  
+  .leftNavLinks li {
+    margin-right: 1rem;
+  }
+  
+  .rightNavLinks li {
+    margin-left: 1rem;
+  }
+  
+  .leftNavLinks a, .rightNavLinks a {
+    font-size: 0.8rem;
+  }
+  
+  .logo {
+    height: 32px;
+  }
+} 
