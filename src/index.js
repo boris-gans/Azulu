@@ -29,9 +29,11 @@ const LoadingScreen = () => (
           @keyframes growLogo {
             from {
               width: 150px;
+              height: auto;
             }
             to {
               width: 450px;
+              height: auto;
             }
           }
         `}
@@ -40,58 +42,108 @@ const LoadingScreen = () => (
   </div>
 );
 
-const preloadAssets = async () => {
-  // Separate critical and non-critical assets
-  const criticalAssets = [
-    '/assets/icons/logoWhite.svg',
-    '/assets/images/party-crowd.webp',
-    '/assets/images/FataMorgana.png',
-    '/assets/images/Hero.webp',
-    '/assets/images/Benjaa.png',
-    '/assets/images/Romy.png',
-  ];
+const criticalAssets = [
+  {
+    src: '/assets/images/Hero.webp',
+    priority: 'highest'  // Custom priority level
+  },
+  // Other assets moved to secondary priority
+  {
+    src: '/assets/icons/logoWhite.svg',
+    priority: 'high'
+  },
+  {
+    src: '/assets/images/party-crowd.webp',
+    priority: 'high'
+  },
+  {
+    src: '/assets/images/FataMorgana.png',
+    priority: 'high'
+  },
+  {
+    src: '/assets/images/Benjaa.png',
+    priority: 'high'
+  },
+  {
+    src: '/assets/images/Romy.png',
+    priority: 'high'
+  },
+];
 
-  const nonCriticalAssets = [
-    '/assets/images/homepage grid/Azulu@W-hotel-001.webp',
-    '/assets/images/homepage grid/Azulu@W-hotel-008.webp',
-    '/assets/images/homepage grid/Azulu@W-hotel-047.webp',
-    '/assets/images/homepage grid/DSCF9414.webp',
-    '/assets/images/homepage grid/DSCF9570.webp',
-    '/assets/images/homepage grid/DSCF9647.webp',
-  ];
+const nonCriticalAssets = [
+  '/assets/images/homepage grid/Azulu@W-hotel-001.webp',
+  '/assets/images/homepage grid/Azulu@W-hotel-008.webp',
+  '/assets/images/homepage grid/Azulu@W-hotel-047.webp',
+  '/assets/images/homepage grid/DSCF9414.webp',
+  '/assets/images/homepage grid/DSCF9570.webp',
+  '/assets/images/homepage grid/DSCF9647.webp',
+];
 
-  const iconAssets = [
-    '/assets/icons/Amsterdam.svg',
-    '/assets/icons/Dot.svg',
-    '/assets/icons/logoBlack.svg',
-    '/assets/icons/logoWhite.png',
-  ];
+const iconAssets = [
+  '/assets/icons/Amsterdam.svg',
+  '/assets/icons/Dot.svg',
+  '/assets/icons/logoBlack.svg',
+  '/assets/icons/logoWhite.png',
+];
 
-  const loadImage = (src) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => resolve(src);
-      img.onerror = () => {
-        console.warn(`Failed to load image: ${src}`);
-        resolve(src); // Resolve anyway to prevent blocking
-      };
-    });
-  };
-
-  try {
-    // Load critical assets first
-    await Promise.all(criticalAssets.map(loadImage));
+const loadImage = (asset) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
     
+    // Set loading attributes based on priority
+    if (asset.priority === 'highest') {
+      img.fetchPriority = 'high';
+      img.loading = 'eager';
+      img.decoding = 'sync';
+    }
+
+    img.onload = async () => {
+      if (asset.priority === 'highest' && img.decode) {
+        try {
+          await img.decode();
+        } catch {}
+      }
+      resolve(asset.src);
+    };
+
+    img.onerror = () => {
+      console.warn(`Failed to load image: ${asset.src}`);
+      resolve(asset.src); // Resolve anyway to prevent blocking
+    };
+
+    // Add preload link for highest priority image
+    if (asset.priority === 'highest') {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = asset.src;
+      link.type = 'image/webp';
+      document.head.appendChild(link);
+    }
+
+    img.src = asset.src;
+  });
+};
+
+const preloadAssets = async () => {
+  try {
+    // First, load highest priority assets
+    const highestPriorityAssets = criticalAssets.filter(asset => asset.priority === 'highest');
+    await Promise.all(highestPriorityAssets.map(loadImage));
+
+    // Then load high priority assets
+    const highPriorityAssets = criticalAssets.filter(asset => asset.priority === 'high');
+    await Promise.all(highPriorityAssets.map(loadImage));
+
     // Load non-critical assets in parallel but don't wait for completion
     Promise.all([
-      ...nonCriticalAssets.map(loadImage),
-      ...iconAssets.map(loadImage)
+      ...nonCriticalAssets.map(src => loadImage({ src, priority: 'low' })),
+      ...iconAssets.map(src => loadImage({ src, priority: 'low' }))
     ]).catch(error => console.warn('Non-critical assets loading error:', error));
     
     return true;
   } catch (error) {
-    console.error('Error preloading critical assets:', error);
+    console.error('Error preloading assets:', error);
     return false;
   }
 };
