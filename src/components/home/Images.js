@@ -45,6 +45,11 @@ function Images() {
       id: 6,
       src: "/assets/images/homepage grid/DSCF9647.webp",
       alt: "Azulu event"
+    },
+    {
+      id: 7,
+      src: "/assets/images/homepage grid/Azulu@W-hotel-022.webp",
+      alt: "Azulu event"
     }
   ]);
 
