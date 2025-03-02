@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import styles from '../styles/Contact.module.css';
 
 function Contact() {
@@ -17,11 +18,29 @@ function Contact() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setFormData({ firstName: '', lastName: '', email: '', message: '' });
-    alert('Message sent! We will get back to you soon.');
+    
+    try {
+      const templateParams = {
+        from_name: `${formData.firstName} ${formData.lastName}`,
+        from_email: formData.email,
+        message: formData.message,
+      };
+
+      await emailjs.send(
+        'service_kt00sqc',
+        'template_xg4fkt8',
+        templateParams,
+        'Mvl_1urAryn87Sfji'  // Updated with your public key
+      );
+
+      setFormData({ firstName: '', lastName: '', email: '', message: '' });
+      alert('Message sent! We will get back to you soon.');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again later.');
+    }
   };
 
   return (

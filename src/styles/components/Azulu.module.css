@@ -6,12 +6,13 @@
 }
 
 .azuluContent {
-
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 1300px;
 }
 
 .logoSection {
@@ -65,8 +66,6 @@
   overflow: hidden;
 }
 
-
-
 .missionSection {
   width: 100%;
   margin-bottom: 3rem;
@@ -82,11 +81,32 @@
   max-width: 1100px;
   align-content: right;
   align-items: right;
-  margin-left: 300px;
+  margin-left: auto;
+  margin-right: 0;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
+  .azuluContainer {
+    padding: 2rem 0;
+  }
+
   .founderText, .missionText {
     font-size: 0.8rem;
+    margin-left: 0;
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .established {
+    font-size: 0.8rem;
+  }
+
+  .brandNameSection {
+    margin-bottom: 2rem;
   }
 } 

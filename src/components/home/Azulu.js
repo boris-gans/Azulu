@@ -89,7 +89,7 @@ function Azulu() {
           <motion.p 
             className={styles.founderText}
           >
-CREATED BY BENJA, THE NEW PRODIGY IN AFRO/DEEP HOUSE MUSIC, AZULU BRINGS YOU INTO THE REVOLUTIONARY WORLD OF MUSIC. BENJA IS KNOWN FOR HIS NEW RECORD ‘YAMORE’ IN COLLABORATION WITH THE AFROHOUSE LEADING MOBLACKRECORDS.
+CREATED BY BENJA, THE NEW PRODIGY IN AFRO/DEEP HOUSE MUSIC, AZULU BRINGS YOU INTO THE REVOLUTIONARY WORLD OF MUSIC. BENJA IS KNOWN FOR HIS NEW RECORD 'YAMORE' IN COLLABORATION WITH THE AFROHOUSE LEADING MOBLACKRECORDS.
           </motion.p>
         </motion.div>
         
@@ -101,15 +101,14 @@ CREATED BY BENJA, THE NEW PRODIGY IN AFRO/DEEP HOUSE MUSIC, AZULU BRINGS YOU INT
           animate={brandInView ? "visible" : "hidden"}
         >
           <div className={styles.brandName} style={{ 
-            fontSize: '20rem', 
+            fontSize: 'clamp(6rem, 20vw, 25rem)',
             fontWeight: 'bold',
             display: 'flex',
-            width: '100vw',
+            width: '100%',
             position: 'relative',
-            left: '50%',
-            transform: 'translateX(-50%)',
             justifyContent: 'space-between',
-            overflow: 'hidden'
+            overflow: 'visible',
+
           }}>
             {brandLetters.map((letter, index) => (
               <motion.span
@@ -128,9 +127,10 @@ CREATED BY BENJA, THE NEW PRODIGY IN AFRO/DEEP HOUSE MUSIC, AZULU BRINGS YOU INT
                 onMouseLeave={() => setHoveredIndex(null)}
                 style={{ 
                   display: 'inline-block',
-                  margin: 0,
-                  ...(index === 0 ? { marginLeft: '-2rem' } : {}),
-                  ...(index === brandLetters.length - 1 ? { marginRight: '-2rem' } : {})
+                  margin: '0',
+                  position: 'relative',
+                  width: 'auto',
+                  marginLeft: index === brandLetters.length - 1 ? '-0.2em' : '0',
                 }}
               >
                 {letter}
