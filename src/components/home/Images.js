@@ -4,8 +4,18 @@ import styles from '../../styles/components/Images.module.css';
 function Images() {
   const scrollContainerRef = useRef(null);
   
+  // Shuffle function
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+  
   // Array of DJ/artist images from your homepage grid folder
-  const images = [
+  const images = shuffleArray([
     {
       id: 1,
       src: "/assets/images/homepage grid/Azulu@W-hotel-001.webp",
@@ -36,7 +46,7 @@ function Images() {
       src: "/assets/images/homepage grid/DSCF9647.webp",
       alt: "Azulu event"
     }
-  ];
+  ]);
 
   // Auto-scroll effect
   useEffect(() => {

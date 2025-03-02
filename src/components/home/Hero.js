@@ -33,9 +33,9 @@ function Hero() {
 
   // Create a single repeating content array
   const bannerItems = [
-    "MARCH 3 2025",
+    "MARCH 28 2025",
     "AZULU IS BACK",
-    "BROAD STREET"
+    "AMSTERDAM"
   ];
 
   return (

@@ -3,6 +3,43 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
+const LoadingScreen = () => (
+  <div style={{
+    height: '100vh',
+    width: '100vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    color: 'white',
+    fontFamily: 'Arial, sans-serif'
+  }}>
+    <div style={{ textAlign: 'center' }}>
+      <img 
+        src="/assets/icons/logoWhite.svg" 
+        alt="Logo" 
+        style={{
+          width: '150px',
+          marginBottom: '20px',
+          animation: 'growLogo 2s ease-in-out forwards'
+        }}
+      />
+      <style>
+        {`
+          @keyframes growLogo {
+            from {
+              width: 150px;
+            }
+            to {
+              width: 450px;
+            }
+          }
+        `}
+      </style>
+    </div>
+  </div>
+);
+
 const preloadAssets = async () => {
   const imageAssets = [
     '/assets/images/Benjaa.png',
@@ -47,9 +84,16 @@ const preloadAssets = async () => {
   }
 };
 
-// Preload assets before rendering the app
+// Render loading screen first
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <LoadingScreen />
+  </React.StrictMode>
+);
+
+// Then preload assets and switch to main app
 preloadAssets().then(() => {
-  const root = ReactDOM.createRoot(document.getElementById('root'));
   root.render(
     <React.StrictMode>
       <App />
