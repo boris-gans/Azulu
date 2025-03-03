@@ -1,118 +1,118 @@
-import React, { useEffect, useRef } from 'react';
-import styles from '../../styles/components/Hero.module.css';
+  import React, { useEffect, useRef } from 'react';
+  import styles from '../../styles/components/Hero.module.css';
 
-function Hero() {
-  const bannerRef = useRef(null);
-  const logoRef = useRef(null);
+  function Hero() {
+    const bannerRef = useRef(null);
+    const logoRef = useRef(null);
 
-  useEffect(() => {
-    // Create preload link
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'image';
-    preloadLink.href = '/assets/images/Hero.webp';
-    preloadLink.type = 'image/webp';
-    document.head.appendChild(preloadLink);
+    useEffect(() => {
+      // Create preload link
+      const preloadLink = document.createElement('link');
+      preloadLink.rel = 'preload';
+      preloadLink.as = 'image';
+      preloadLink.href = '/assets/images/Hero.avif';
+      preloadLink.type = 'image/webp';
+      document.head.appendChild(preloadLink);
 
-    // Create connection preload hint
-    const preconnectLink = document.createElement('link');
-    preconnectLink.rel = 'preconnect';
-    preconnectLink.href = window.location.origin;
-    document.head.appendChild(preconnectLink);
+      // Create connection preload hint
+      const preconnectLink = document.createElement('link');
+      preconnectLink.rel = 'preconnect';
+      preconnectLink.href = window.location.origin;
+      document.head.appendChild(preconnectLink);
 
-    // Preload image with high priority
-    const img = new Image();
-    img.src = '/assets/images/Hero.webp';
-    img.fetchPriority = 'high';
-    img.decoding = 'async';
-    
-    const loadImage = async () => {
-      try {
-        if (img.decode) {
-          await img.decode();
-          document.documentElement.style.setProperty('--hero-image', `url(${img.src})`);
+      // Preload image with high priority
+      const img = new Image();
+      img.src = '/assets/images/Hero.avif';
+      img.fetchPriority = 'high';
+      img.decoding = 'async';
+      
+      const loadImage = async () => {
+        try {
+          if (img.decode) {
+            await img.decode();
+            document.documentElement.style.setProperty('--hero-image', `url(${img.src})`);
+          }
+        } catch (error) {
+          console.error('Error decoding hero image:', error);
         }
-      } catch (error) {
-        console.error('Error decoding hero image:', error);
+      };
+
+      if (img.complete) {
+        loadImage();
+      } else {
+        img.onload = loadImage;
       }
-    };
 
-    if (img.complete) {
-      loadImage();
-    } else {
-      img.onload = loadImage;
-    }
+      // Cleanup
+      return () => {
+        document.head.removeChild(preloadLink);
+        document.head.removeChild(preconnectLink);
+      };
+    }, []);
 
-    // Cleanup
-    return () => {
-      document.head.removeChild(preloadLink);
-      document.head.removeChild(preconnectLink);
-    };
-  }, []);
+    // Banner animation
+    useEffect(() => {
+      const banner = bannerRef.current;
+      if (!banner) return;
 
-  // Banner animation
-  useEffect(() => {
-    const banner = bannerRef.current;
-    if (!banner) return;
+      let animationId;
+      let position = 0;
+      const speed = 0.5;
 
-    let animationId;
-    let position = 0;
-    const speed = 0.5;
+      const animate = () => {
+        position -= speed;
+        if (position <= -50) {
+          position = 0;
+        }
+        banner.style.transform = `translateX(${position}px)`;
+        animationId = requestAnimationFrame(animate);
+      };
 
-    const animate = () => {
-      position -= speed;
-      if (position <= -50) {
-        position = 0;
-      }
-      banner.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
-    };
+      animate();
 
-    animate();
+      return () => {
+        cancelAnimationFrame(animationId);
+      };
+    }, []);
 
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
-  }, []);
+    const bannerItems = [
+      "MARCH 28 2025",
+      "AZULU IS BACK",
+      "AMSTERDAM"
+    ];
 
-  const bannerItems = [
-    "MARCH 28 2025",
-    "AZULU IS BACK",
-    "AMSTERDAM"
-  ];
-
-  return (
-    <div className={`${styles.heroContainer} ${styles.loaded}`}>
-      <div className={styles.heroOverlay}>
-        <div className={styles.logoContainer} ref={logoRef}>
-          <img 
-            src="/assets/icons/logoWhite.svg" 
-            alt="Azulu Logo" 
-            className={styles.logo}
-            loading="eager"
-            fetchPriority="high"
-            decoding="sync"
-          />
+    return (
+      <div className={`${styles.heroContainer} ${styles.loaded}`}>
+        <div className={styles.heroOverlay}>
+          <div className={styles.logoContainer} ref={logoRef}>
+            <img 
+              src="/assets/icons/logoWhite.svg" 
+              alt="Azulu Logo" 
+              className={styles.logo}
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
+            />
+          </div>
         </div>
-      </div>
-      <div className={styles.eventBannerWrapper}>
-        <div className={styles.eventBanner} ref={bannerRef}>
-          <div className={styles.bannerContent}>
-            {Array(8).fill(0).map((_, index) => (
-              <React.Fragment key={index}>
-                {bannerItems.map((item, itemIndex) => (
-                  <React.Fragment key={`${index}-${itemIndex}`}>
-                    <div className={styles.bannerItem}>{item}</div>
-                    <img src="/assets/icons/Dot.svg" alt="•" className={styles.bannerDot} />
-                  </React.Fragment>
-                ))}
-              </React.Fragment>
-            ))}
+        <div className={styles.eventBannerWrapper}>
+          <div className={styles.eventBanner} ref={bannerRef}>
+            <div className={styles.bannerContent}>
+              {Array(8).fill(0).map((_, index) => (
+                <React.Fragment key={index}>
+                  {bannerItems.map((item, itemIndex) => (
+                    <React.Fragment key={`${index}-${itemIndex}`}>
+                      <div className={styles.bannerItem}>{item}</div>
+                      <img src="/assets/icons/Dot.svg" alt="•" className={styles.bannerDot} />
+                    </React.Fragment>
+                  ))}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-export default Hero; 
+  export default Hero; 

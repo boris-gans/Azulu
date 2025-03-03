@@ -20,15 +20,15 @@ const LoadingScreen = ({ onHeroPreload }) => {
 
     // Preload hero image
     const img = new Image();
-    img.src = '/assets/images/Hero.webp';
+    img.src = '/assets/images/Hero.avif';
     img.fetchPriority = 'high';
     img.decoding = 'async';
     
     const preloadLink = document.createElement('link');
     preloadLink.rel = 'preload';
-    preloadLink.href = '/assets/images/Hero.webp';
+    preloadLink.href = '/assets/images/Hero.avif';
     preloadLink.as = 'image';
-    preloadLink.type = 'image/webp';
+    preloadLink.type = 'image/avif';
     document.head.appendChild(preloadLink);
     
     const preloadHero = async () => {
@@ -54,11 +54,6 @@ const LoadingScreen = ({ onHeroPreload }) => {
       img.onload = preloadHero;
     }
 
-    // Preload party-crowd
-    const partyCrowdImg = new Image();
-    partyCrowdImg.src = '/assets/images/party-crowd.webp';
-    partyCrowdImg.loading = 'eager';
-    partyCrowdImg.decoding = 'async';
   }, [onHeroPreload, animationComplete]);
 
   // Watch for animation completion
