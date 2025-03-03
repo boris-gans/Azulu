@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 
 const LoadingScreen = ({ onHeroPreload }) => {
-
   // Preload the hero image during loading screen
   React.useEffect(() => {
     const img = new Image();
@@ -12,7 +11,6 @@ const LoadingScreen = ({ onHeroPreload }) => {
     img.fetchPriority = 'high';
     img.decoding = 'async';
     
-    // Create a proper preload link with correct attributes
     const preloadLink = document.createElement('link');
     preloadLink.rel = 'preload';
     preloadLink.href = '/assets/images/Hero.webp';
@@ -37,6 +35,12 @@ const LoadingScreen = ({ onHeroPreload }) => {
     } else {
       img.onload = preloadHero;
     }
+
+    // Preload party-crowd
+    const partyCrowdImg = new Image();
+    partyCrowdImg.src = '/assets/images/party-crowd.webp';
+    partyCrowdImg.loading = 'eager';
+    partyCrowdImg.decoding = 'async';
   }, [onHeroPreload]);
 
   return (
@@ -83,171 +87,6 @@ const LoadingScreen = ({ onHeroPreload }) => {
   );
 };
 
-const criticalAssets = [
-  {
-    src: '/assets/images/Hero.webp',
-    priority: 'highest'  // Custom priority level
-  },
-  // Other assets moved to secondary priority
-  {
-    src: '/assets/icons/logoWhite.svg',
-    priority: 'high'
-  },
-  {
-    src: '/assets/images/party-crowd.webp',
-    priority: 'high'
-  },
-  {
-    src: '/assets/images/FataMorgana.png',
-    priority: 'high'
-  },
-  {
-    src: '/assets/images/Benjaa.png',
-    priority: 'high'
-  },
-  {
-    src: '/assets/images/Romy.png',
-    priority: 'high'
-  },
-];
-
-const nonCriticalAssets = [
-  '/assets/images/homepage grid/Azulu@W-hotel-001.avif',
-  '/assets/images/homepage grid/Azulu@W-hotel-008.avif',
-  '/assets/images/homepage grid/Azulu@W-hotel-047.avif',
-  '/assets/images/homepage grid/Azulu@W-hotel-022.avif',
-  '/assets/images/homepage grid/DSCF9414.avif',
-  '/assets/images/homepage grid/DSCF9570.avif',
-  '/assets/images/homepage grid/DSCF9647.avif',
-];
-
-const iconAssets = [
-  '/assets/icons/Amsterdam.svg',
-  '/assets/icons/Dot.svg',
-  '/assets/icons/logoBlack.svg',
-  '/assets/icons/logoWhite.png',
-];
-
-const loadImage = (asset) => {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    
-    if (asset.priority === 'highest') {
-      img.fetchPriority = 'high';
-      img.loading = 'eager';
-      img.decoding = 'async';
-    } else {
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      // Use Intersection Observer for non-critical assets
-      if ('IntersectionObserver' in window && asset.priority === 'low') {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              img.src = asset.src;
-              observer.disconnect();
-            }
-          });
-        }, {
-          rootMargin: '50px 0px', // Start loading 50px before entering viewport
-          threshold: 0.01
-        });
-        observer.observe(img);
-      }
-    }
-
-    img.onload = async () => {
-      if (asset.priority === 'highest' && img.decode) {
-        try {
-          await img.decode();
-        } catch {}
-      }
-      resolve(asset.src);
-    };
-
-    img.onerror = () => {
-      console.warn(`Failed to load image: ${asset.src}`);
-      resolve(asset.src);
-    };
-
-    // Enhanced preload for highest priority images
-    if (asset.priority === 'highest') {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = asset.src;
-      link.type = 'image/webp';
-      document.head.appendChild(link);
-      
-      // Add connection preload hint
-      const preconnectLink = document.createElement('link');
-      preconnectLink.rel = 'preconnect';
-      preconnectLink.href = new URL(asset.src, window.location.origin).origin;
-      document.head.appendChild(preconnectLink);
-    }
-
-    if (!('IntersectionObserver' in window) || asset.priority !== 'low') {
-      img.src = asset.src;
-    }
-  });
-};
-
-const preloadAssets = async () => {
-  try {
-    // First, ensure Hero image is loaded
-    const heroImage = criticalAssets.find(asset => 
-      asset.src === '/assets/images/Hero.webp' && 
-      asset.priority === 'highest'
-    );
-    
-    if (heroImage) {
-      await loadImage(heroImage);
-    }
-    // Load remaining high priority assets in chunks
-    const remainingHighPriority = criticalAssets.filter(asset => 
-      asset.src !== '/assets/images/Hero.webp' && 
-      asset.priority === 'high'
-    );
-    
-    // Load in chunks of 3
-    const chunkSize = 3;
-    for (let i = 0; i < remainingHighPriority.length; i += chunkSize) {
-      const chunk = remainingHighPriority.slice(i, i + chunkSize);
-      await Promise.all(chunk.map(loadImage));
-      // Small delay between chunks
-      await new Promise(resolve => setTimeout(resolve, 50));
-    }
-
-    // Load non-critical assets with requestIdleCallback
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(() => {
-        const nonCriticalLoading = [...nonCriticalAssets, ...iconAssets].map(src => 
-          loadImage({ src, priority: 'low' })
-        );
-        Promise.all(nonCriticalLoading).catch(error => 
-          console.warn('Non-critical assets loading error:', error)
-        );
-      }, { timeout: 2000 });
-    } else {
-      // Fallback for browsers without requestIdleCallback
-      setTimeout(() => {
-        const nonCriticalLoading = [...nonCriticalAssets, ...iconAssets].map(src => 
-          loadImage({ src, priority: 'low' })
-        );
-        Promise.all(nonCriticalLoading).catch(error => 
-          console.warn('Non-critical assets loading error:', error)
-        );
-      }, 1000);
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return true;
-  } catch (error) {
-    console.error('Error preloading assets:', error);
-    return false;
-  }
-};
-
 // Render loading screen first
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -262,30 +101,19 @@ root.render(
   </React.StrictMode>
 );
 
-// Then preload assets and switch to main app
-preloadAssets().then(() => {
-  // Only proceed if hero is preloaded
-  if (!heroPreloaded) {
-    const checkPreload = () => {
-      if (heroPreloaded) {
-        root.render(
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
-        );
-      } else {
-        setTimeout(checkPreload, 10);
-      }
-    };
-    checkPreload();
-  } else {
+// Switch to main app after hero is preloaded
+const checkPreload = () => {
+  if (heroPreloaded) {
     root.render(
       <React.StrictMode>
         <App />
       </React.StrictMode>
     );
+  } else {
+    setTimeout(checkPreload, 10);
   }
-});
+};
+checkPreload();
 
 // Add this after the existing imports
 if ('chrome' in window) {
