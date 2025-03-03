@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from '../../styles/components/Party.module.css';
 import { motion, useAnimation, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -7,121 +7,93 @@ import { Link } from 'react-router-dom';
 function Party() {
   // State to track if image is preloaded
   const [imageLoaded, setImageLoaded] = useState(false);
+  const imageRef = useRef(null);
   
   // Create animation controls for different elements
   const imageControls = useAnimation();
   const cardControls = useAnimation();
   const brandingControls = useAnimation();
-  const locationControls = useAnimation();
   
-  // Set up intersection observers with lower thresholds for earlier triggering
-  const [imageRef, imageInView] = useInView({ 
-    threshold: 0.05,
+  // Set up intersection observers with higher thresholds for better performance
+  // Use refs instead of multiple observers for better performance
+  const [rootRef, inView] = useInView({ 
+    threshold: 0.1,
     triggerOnce: true,
-    rootMargin: "0px 0px -5% 0px"
-  });
-  const [cardRef, cardInView] = useInView({ 
-    threshold: 0.05, 
-    triggerOnce: true,
-    rootMargin: "0px 0px -5% 0px" 
-  });
-  const [brandingRef, brandingInView] = useInView({ 
-    threshold: 0.05, 
-    triggerOnce: true,
-    rootMargin: "0px 0px -5% 0px" 
-  });
-  // eslint-disable-next-line no-unused-vars
-  const [locationRef, locationInView] = useInView({ 
-    threshold: 0.05, 
-    triggerOnce: true,
-    rootMargin: "0px 0px -5% 0px" 
+    rootMargin: "0px 0px -10% 0px"
   });
   
   // Add reduced motion hook to respect user preferences
   const shouldReduceMotion = useReducedMotion();
   
-  // Add image preloading with useEffect
+  // Preload image with a more efficient approach
   useEffect(() => {
-    const preloadImages = () => {
-      // The confirmed public ID
-      const publicId = 'party-crowd_kgnwom';
-      
-      // Helper function to get optimized Cloudinary URL
-      const getOptimizedUrl = (publicId) => {
-          return `https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/${publicId}`;
-        };
-      
-      // Create Image object to preload
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = getOptimizedUrl(publicId);
-      });
-    };
-    
-    // Start preloading
-    preloadImages()
-      .then(() => console.log('Party crowd image preloaded successfully'))
-      .catch(err => console.warn('Error preloading party crowd image:', err));
-      
-  }, []); // Empty dependency array means this runs once on mount
-  
-  // Preload image as soon as component mounts
-  useEffect(() => {
-    // Preload the party crowd image with lower priority
-    const img = new Image();
-    img.src = `https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/party-crowd_kgnwom`;
-    
-    img.onload = () => {
-      setImageLoaded(true);
-      imageControls.start('visible');
-    };
-    
-    const fallbackTimer = setTimeout(() => {
-      if (!imageLoaded) {
+    // Single preloading strategy to avoid duplicate efforts
+    if (imageRef.current && !imageLoaded) {
+      // Use native loading attribute on the image element
+      imageRef.current.onload = () => {
         setImageLoaded(true);
-        imageControls.start('visible');
-      }
-    }, 500);
-    
-    return () => {
-      img.onload = null;
-      img.onerror = null;
-      clearTimeout(fallbackTimer);
-    };
-  }, [imageControls, imageLoaded]);
+        
+        // Start all animations at once for better performance
+        if (inView) {
+          imageControls.start('visible');
+          cardControls.start('visible');
+          brandingControls.start('visible');
+        }
+      };
+      
+      // Set a fallback timer in case image loading takes too long
+      const fallbackTimer = setTimeout(() => {
+        if (!imageLoaded) {
+          setImageLoaded(true);
+          
+          // Start animations if in view
+          if (inView) {
+            imageControls.start('visible');
+            cardControls.start('visible');
+            brandingControls.start('visible');
+          }
+        }
+      }, 800);
+      
+      return () => {
+        if (imageRef.current) {
+          imageRef.current.onload = null;
+        }
+        clearTimeout(fallbackTimer);
+      };
+    }
+  }, [imageControls, cardControls, brandingControls, imageLoaded, inView]);
   
-  // Trigger animations when elements come into view
+  // Trigger animations when elements come into view - simplified approach
   useEffect(() => {
-    if (imageInView) imageControls.start('visible');
-    if (cardInView) cardControls.start('visible');
-    if (brandingInView) brandingControls.start('visible');
-    if (locationInView) locationControls.start('visible');
-  }, [imageInView, cardInView, brandingInView, locationInView, 
-      imageControls, cardControls, brandingControls, locationControls]);
+    if (inView) {
+      imageControls.start('visible');
+      cardControls.start('visible');
+      brandingControls.start('visible');
+    }
+  }, [inView, imageControls, cardControls, brandingControls]);
 
-  // Optimized animation variants
+  // Optimized animation variants - simplified for better performance
   const containerVariants = {
-    initial: { opacity: 0 },
-    animate: { 
+    hidden: { opacity: 0 },
+    visible: { 
       opacity: 1,
       transition: { 
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1], // cubic-bezier for smoother motion
+        duration: 0.3, // Reduced from 0.4
+        ease: "easeOut", // Simplified easing
         when: "beforeChildren",
-        staggerChildren: 0.1
+        staggerChildren: 0.05 // Reduced from 0.1
       }
     }
   };
   
   const childVariants = {
-    initial: { opacity: 0, y: shouldReduceMotion ? 0 : 15 },
-    animate: { 
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 10 }, // Reduced y-offset
+    visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.3,
+        duration: 0.2, // Reduced from 0.3
         ease: "easeOut"
       }
     }
@@ -137,8 +109,8 @@ function Party() {
   };
 
   return (
-    <div className={styles.partyContainer}>
-      {/* Red accent bar positioned independently */}
+    <div className={styles.partyContainer} ref={rootRef}>
+      {/* Red accent bar positioned independently - simplified animation */}
       <motion.div 
         className={styles.redAccentBar}
         initial={{ height: 0 }}
@@ -147,19 +119,20 @@ function Party() {
           hidden: { height: 0 },
           visible: { 
             height: "100%",
-            transition: { duration: 0.35, ease: "easeOut", delay: 0.15 }
+            transition: { duration: 0.3, ease: "easeOut", delay: 0.1 } // Reduced delay and duration
           }
         }}
+        style={{ willChange: 'height' }} // Add will-change for GPU acceleration
       ></motion.div>
       
       <div className={styles.partyContent}>
-        {/* Azulu branding background */}
+        {/* Azulu branding background - simplified animation */}
         <motion.div 
-          ref={brandingRef}
           className={styles.azuluBranding}
           initial="hidden"
           animate={brandingControls}
           variants={containerVariants}
+          style={{ willChange: 'opacity' }} // Add will-change for GPU acceleration
         >
           <div className={styles.azuluRepeated}>
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
@@ -170,10 +143,10 @@ function Party() {
           </div>
         </motion.div>
         
-        
-        {/* Party image with overlay card */}
-        <div className={styles.partyImageWrapper} ref={imageRef}>
+        {/* Party image with overlay card - simplified animation */}
+        <div className={styles.partyImageWrapper}>
           <motion.img 
+            ref={imageRef}
             initial="hidden"
             animate={imageControls}
             variants={childVariants}
@@ -184,25 +157,17 @@ function Party() {
             fetchpriority="high"
             style={{ 
               opacity: imageLoaded ? 1 : 0,
-              willChange: 'opacity, transform'
+              willChange: 'opacity, transform' // Explicitly mark properties that will change
             }}
           />
           
-          <link 
-            rel="preload" 
-            href="/assets/images/party-crowd.webp" 
-            as="image" 
-            type="image/webp"
-            style={{ display: 'none' }}
-          />
-          
-          {/* Overlay card with animation */}
+          {/* Overlay card with animation - simplified */}
           <motion.div 
-            ref={cardRef}
             className={styles.partyOverlayCard}
             initial="hidden"
             animate={cardControls}
             variants={containerVariants}
+            style={{ willChange: 'opacity, transform' }} // Add will-change for GPU acceleration
           >
             <div className={styles.cardContent}>
               <h2 className={styles.partyTitle}>

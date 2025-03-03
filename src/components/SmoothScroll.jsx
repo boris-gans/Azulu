@@ -10,33 +10,39 @@ const SmoothScroll = ({ children }) => {
   const scrollRef = useRef(null);
   
   useEffect(() => {
-    // Initialize Lenis with balanced parameters for smoothness and control
+    // Initialize Lenis with optimized parameters for performance
     const lenis = new Lenis({
-      duration: 0.9,  // Balanced duration - not too quick, not too slow
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Effective exponential easing
+      duration: 0.7,  // Reduced from 0.9 for better performance
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.0, // Reduced for better control feeling
-      smoothTouch: true,   // Enable smooth touch with reasonable values
+      wheelMultiplier: 0.85, // Further reduced for better performance
+      smoothTouch: false,   // Disable smooth touch to improve performance on mobile
       touchMultiplier: 1.8,
       infinite: false,
     });
 
-    // Connect GSAP ScrollTrigger and Lenis
-    lenis.on('scroll', ScrollTrigger.update);
+    // Connect GSAP ScrollTrigger and Lenis with debounced updates
+    let scrollTriggerTimeout;
+    lenis.on('scroll', () => {
+      clearTimeout(scrollTriggerTimeout);
+      scrollTriggerTimeout = setTimeout(() => {
+        ScrollTrigger.update();
+      }, 16); // 60fps timing
+    });
 
-    // Update ScrollTrigger on Lenis scroll
+    // Update ScrollTrigger on Lenis scroll with optimized performance
     const scrollFn = (time) => {
       lenis.raf(time * 1000);
     };
     
     gsap.ticker.add(scrollFn);
 
-    // Set up automatic refresh of ScrollTrigger when window size changes
-    gsap.ticker.lagSmoothing(false);
+    // Use RAF instead of gsap ticker for smoother performance
+    gsap.ticker.lagSmoothing(0);
 
-    // Initialize ScrollTrigger
+    // Initialize ScrollTrigger with simpler refresh
     ScrollTrigger.refresh();
 
     // Add a way to detect if scrolling feels too constrained and adjust
@@ -49,9 +55,9 @@ const SmoothScroll = ({ children }) => {
       
       // If user is trying to scroll rapidly, temporarily increase responsiveness
       if (scrollDelta > 60) {
-        lenis.options.lerp = 0.05; // Faster response when user scrolls quickly
+        lenis.options.lerp = 0.03; // Faster response when user scrolls quickly (lower is faster)
       } else {
-        lenis.options.lerp = 0.1; // Normal smoothness otherwise
+        lenis.options.lerp = 0.07; // Slightly more responsive than before
       }
       
       lastScrollTop = scrollTop;
@@ -59,7 +65,7 @@ const SmoothScroll = ({ children }) => {
       // Reset lerp after scrolling stops
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
-        lenis.options.lerp = 0.1;
+        lenis.options.lerp = 0.07;
       }, 150);
     };
     
@@ -71,6 +77,7 @@ const SmoothScroll = ({ children }) => {
       gsap.ticker.remove(scrollFn);
       window.removeEventListener('scroll', scrollListener);
       clearTimeout(scrollTimeout);
+      clearTimeout(scrollTriggerTimeout);
     };
   }, []);
 
