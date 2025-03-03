@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo, useState } from 'react';
 import styles from '../../styles/components/LineUp.module.css';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 function LineUp() {
   const scrollContainerRef = useRef(null);
+  const [isScrollable, setIsScrollable] = useState(false);
   
   // Animation controls
   const headerControls = useAnimation();
@@ -179,10 +180,47 @@ function LineUp() {
     { artist: "FATA MORGANA" },
   ], []); // Empty dependency array since this data is static
 
+  // Check if content is scrollable
+  const checkScrollable = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const hasHorizontalScroll = container.scrollWidth > container.clientWidth + 5; // Add small buffer
+      console.log('Scroll check:', { 
+        scrollWidth: container.scrollWidth, 
+        clientWidth: container.clientWidth, 
+        hasHorizontalScroll 
+      });
+      setIsScrollable(hasHorizontalScroll);
+    }
+  };
+  
+  // Check scrollability on mount and window resize
+  useEffect(() => {
+    // Initial check needs a small delay to ensure accurate measurements
+    setTimeout(() => {
+      checkScrollable();
+    }, 500);
+    
+    const handleResize = () => {
+      checkScrollable();
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // Check scrollability whenever the content might change
+  useEffect(() => {
+    checkScrollable();
+  }, [events]);
+  
   // Handle scroll buttons
   const scrollRight = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+      const container = scrollContainerRef.current;
+      // Log current scroll position for debugging
+      console.log('Scrolling right from:', container.scrollLeft);
+      container.scrollBy({ left: 300, behavior: 'smooth' });
     }
   };
 
@@ -256,14 +294,13 @@ function LineUp() {
                   animate={cardsControls}
                   variants={staggerCards}
                   layout
+                  onLoad={checkScrollable} // Check scrollability after content loads
                 >
                   {events.map((event) => (
                     <motion.div 
                       key={event.id} 
                       className={styles.featuredEventCard}
                       variants={cardAnimation}
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       layout
                     >
                       <div className={styles.cardImageContainer}>
@@ -342,23 +379,45 @@ function LineUp() {
                     </motion.div>
                   ))}
                 </motion.div>
+                
+                {/* Scroll button positioned next to the cards */}
+                <AnimatePresence>
+                  {isScrollable && (
+                    <motion.button 
+                      className={styles.scrollButton} 
+                      onClick={scrollRight}
+                      variants={scrollButtonVariants}
+                      initial="hidden"
+                      animate="visible"
+                      whileHover="hover"
+                      whileTap="tap"
+                      exit={{ opacity: 0, x: 20 }}
+                      style={{
+                        position: 'absolute',
+                        right: '10px',
+                        top: '45%',
+                        transform: 'translateY(-50%)',
+                        zIndex: 10,
+                        background: 'rgba(0, 0, 0, 0.7)',
+                        borderRadius: '50%',
+                        width: '48px',
+                        height: '48px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        border: 'none',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+                      }}
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </motion.button>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
-            
-            {/* Scroll button with enhanced animation */}
-            <motion.button 
-              className={styles.scrollButton} 
-              onClick={scrollRight}
-              variants={scrollButtonVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover="hover"
-              whileTap="tap"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 18L15 12L9 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </motion.button>
           </motion.div>
         </div>
       </div>
