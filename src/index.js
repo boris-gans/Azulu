@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -9,7 +9,7 @@ import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 gsap.registerPlugin(MotionPathPlugin);
 
 const LoadingScreen = ({ onHeroPreload }) => {
-  const [animationComplete, setAnimationComplete] = useState(false);
+  const [animationComplete, setAnimationComplete] = React.useState(false);
 
   React.useEffect(() => {
     // Set up animation end detection
@@ -290,5 +290,8 @@ const preloadHero = async () => {
   
   // Rest of your existing code...
 };
+
+// Option B: Export it so it can be used elsewhere
+export { preloadHero };
 
 

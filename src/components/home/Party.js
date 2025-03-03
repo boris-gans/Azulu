@@ -30,6 +30,7 @@ function Party() {
     triggerOnce: true,
     rootMargin: "0px 0px -5% 0px" 
   });
+  // eslint-disable-next-line no-unused-vars
   const [locationRef, locationInView] = useInView({ 
     threshold: 0.05, 
     triggerOnce: true,
