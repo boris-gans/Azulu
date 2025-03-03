@@ -4,12 +4,18 @@ import './index.css';
 import App from './App';
 
 const LoadingScreen = ({ onHeroPreload }) => {
+
   // Preload the hero image during loading screen
   React.useEffect(() => {
     const img = new Image();
     img.src = '/assets/images/Hero.webp';
     img.fetchPriority = 'high';
     img.decoding = 'sync';
+    // Add connection preload hint
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preconnect';
+    preloadLink.href = new URL(img.src, window.location.origin).origin;
+    document.head.appendChild(preloadLink);
     
     const preloadHero = async () => {
       try {
@@ -122,11 +128,28 @@ const loadImage = (asset) => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     
-    // Set loading attributes based on priority
     if (asset.priority === 'highest') {
       img.fetchPriority = 'high';
       img.loading = 'eager';
       img.decoding = 'sync';
+    } else {
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      // Use Intersection Observer for non-critical assets
+      if ('IntersectionObserver' in window && asset.priority === 'low') {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              img.src = asset.src;
+              observer.disconnect();
+            }
+          });
+        }, {
+          rootMargin: '50px 0px', // Start loading 50px before entering viewport
+          threshold: 0.01
+        });
+        observer.observe(img);
+      }
     }
 
     img.onload = async () => {
@@ -140,20 +163,29 @@ const loadImage = (asset) => {
 
     img.onerror = () => {
       console.warn(`Failed to load image: ${asset.src}`);
-      resolve(asset.src); // Resolve anyway to prevent blocking
+      resolve(asset.src);
     };
 
-    // Add preload link for highest priority image
+    // Enhanced preload for highest priority images
     if (asset.priority === 'highest') {
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
       link.href = asset.src;
       link.type = 'image/webp';
+      link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
+      
+      // Add connection preload hint
+      const preconnectLink = document.createElement('link');
+      preconnectLink.rel = 'preconnect';
+      preconnectLink.href = new URL(asset.src, window.location.origin).origin;
+      document.head.appendChild(preconnectLink);
     }
 
-    img.src = asset.src;
+    if (!('IntersectionObserver' in window) || asset.priority !== 'low') {
+      img.src = asset.src;
+    }
   });
 };
 
@@ -168,23 +200,44 @@ const preloadAssets = async () => {
     if (heroImage) {
       await loadImage(heroImage);
     }
-
-    // Then load remaining high priority assets
+    // Load remaining high priority assets in chunks
     const remainingHighPriority = criticalAssets.filter(asset => 
       asset.src !== '/assets/images/Hero.webp' && 
       asset.priority === 'high'
     );
-    await Promise.all(remainingHighPriority.map(loadImage));
+    
+    // Load in chunks of 3
+    const chunkSize = 3;
+    for (let i = 0; i < remainingHighPriority.length; i += chunkSize) {
+      const chunk = remainingHighPriority.slice(i, i + chunkSize);
+      await Promise.all(chunk.map(loadImage));
+      // Small delay between chunks
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
 
-    // Load non-critical assets in parallel but don't wait for completion
-    Promise.all([
-      ...nonCriticalAssets.map(src => loadImage({ src, priority: 'low' })),
-      ...iconAssets.map(src => loadImage({ src, priority: 'low' }))
-    ]).catch(error => console.warn('Non-critical assets loading error:', error));
-    
-    // Add a small delay to ensure smooth transition
+    // Load non-critical assets with requestIdleCallback
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        const nonCriticalLoading = [...nonCriticalAssets, ...iconAssets].map(src => 
+          loadImage({ src, priority: 'low' })
+        );
+        Promise.all(nonCriticalLoading).catch(error => 
+          console.warn('Non-critical assets loading error:', error)
+        );
+      }, { timeout: 2000 });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(() => {
+        const nonCriticalLoading = [...nonCriticalAssets, ...iconAssets].map(src => 
+          loadImage({ src, priority: 'low' })
+        );
+        Promise.all(nonCriticalLoading).catch(error => 
+          console.warn('Non-critical assets loading error:', error)
+        );
+      }, 1000);
+    }
+
     await new Promise(resolve => setTimeout(resolve, 100));
-    
     return true;
   } catch (error) {
     console.error('Error preloading assets:', error);
@@ -230,4 +283,46 @@ preloadAssets().then(() => {
     );
   }
 });
+
+// Add this after the existing imports
+if ('chrome' in window) {
+  // Optimize Chrome's rendering pipeline
+  document.documentElement.classList.add('chrome');
+  
+  // Register performance observer
+  if ('PerformanceObserver' in window) {
+    const observer = new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (entry.largestContentfulPaint > 2500) {
+          // Optimize if LCP is too high
+          document.body.style.contain = 'paint';
+        }
+      }
+    });
+    observer.observe({ entryTypes: ['largest-contentful-paint'] });
+  }
+
+  // Optimize resource hints
+  const hints = [
+    { rel: 'preconnect', href: window.location.origin },
+    { rel: 'dns-prefetch', href: window.location.origin },
+  ];
+
+  hints.forEach(({ rel, href }) => {
+    const link = document.createElement('link');
+    link.rel = rel;
+    link.href = href;
+    document.head.appendChild(link);
+  });
+
+  // Optimize paint timing
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      document.body.style.willChange = 'contents';
+      requestAnimationFrame(() => {
+        document.body.style.willChange = 'auto';
+      });
+    });
+  }
+}
 
