@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import gsap from 'gsap';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
-import { getOptimizedUrl } from './components/home/Images';
 
 // Register the plugin
 gsap.registerPlugin(MotionPathPlugin);
@@ -243,19 +242,27 @@ const animateGrowLogo = () => {
   });
 };
 
-// Enhanced preload function after animateGrowLogo
+// Define getOptimizedUrl in index.js directly
+const getOptimizedUrl = (publicId) => {
+  const cloudName = 'dsjkhhpbl'; // Replace with your actual Cloudinary cloud name
+  return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto:good/${publicId}`;
+};
+
+// Define the preloadImage function
+const preloadImage = (src) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(src);
+    img.onerror = () => reject(`Failed to load image: ${src}`);
+    img.src = src;
+  });
+};
+
+// Define preloadAllImages function
 const preloadAllImages = async () => {
-  // Now getOptimizedUrl is defined and can be used
+  // Critical images that should load first
   const criticalImages = [
-    getOptimizedUrl('party-crowd_kgnwom')
-  ];
-  
-  // Get gallery images if available
-  const galleryImages = window.galleryImageIds || [];
-  
-  // Secondary images - include gallery images and other known images
-  const secondaryImages = [
-    ...galleryImages.map(id => getOptimizedUrl(id)),
+    getOptimizedUrl('party-crowd_kgnwom'),
     getOptimizedUrl('FataMorgana'),
     getOptimizedUrl('Benjaa'),
     getOptimizedUrl('Romy')
@@ -264,50 +271,24 @@ const preloadAllImages = async () => {
   console.log('Starting image preload...');
   
   try {
-    // Load critical images first
+    // Load critical images
     await Promise.all(criticalImages.map(src => preloadImage(src)));
     console.log('Critical images preloaded successfully');
-    
-    // Then load secondary images (non-blocking)
-    Promise.all(secondaryImages.map(src => preloadImage(src)))
-      .then(() => console.log('All secondary images preloaded successfully'))
-      .catch(err => console.warn('Some secondary images failed to preload:', err));
-      
     return true;
   } catch (err) {
     console.warn('Error preloading critical images:', err);
-    // Continue anyway even if some images fail
     return true;
   }
 };
 
-// Modify the existing preloadHero function to use our new comprehensive preloader
+// Modify your existing preloadHero function
 const preloadHero = async () => {
-  // ... existing code ...
+  // Your existing code...
   
-  // Add call to comprehensive preloader
+  // Call preloadAllImages
   await preloadAllImages();
   
-  // ... rest of your existing code ...
+  // Rest of your existing code...
 };
 
-// After animateGrowLogo function
-// You can also trigger secondary preloading after the initial load is complete
-const initializeSecondaryLoading = () => {
-  // Preload remaining non-critical images after the app is interactive
-  setTimeout(() => {
-    const nonCriticalImages = [
-      // Background images, decorative elements, etc.
-      getOptimizedUrl('background-1'),
-      getOptimizedUrl('decoration-1'),
-      // Add more as needed
-    ];
-    
-    // Preload in the background after app is interactive
-    nonCriticalImages.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, 3000); // Delay to ensure main app is running smoothly first
-};
 
