@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import gsap from 'gsap';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import { getOptimizedUrl } from './components/home/Images';
 
 // Register the plugin
 gsap.registerPlugin(MotionPathPlugin);
@@ -244,24 +245,7 @@ const animateGrowLogo = () => {
 
 // Enhanced preload function after animateGrowLogo
 const preloadAllImages = async () => {
-  const cloudName = 'dsjkhhpbl'; // Replace with your Cloudinary cloud name
-  
-  // Helper function to get optimized Cloudinary URL
-  const getOptimizedUrl = (publicId) => {
-    return `https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/${publicId}`;
-  };
-  
-  // Helper function to preload a single image
-  const preloadImage = (src) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve(src);
-      img.onerror = () => reject(`Failed to load image: ${src}`);
-      img.src = src;
-    });
-  };
-  
-  // Critical images
+  // Now getOptimizedUrl is defined and can be used
   const criticalImages = [
     getOptimizedUrl('party-crowd_kgnwom')
   ];
