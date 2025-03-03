@@ -1,5 +1,8 @@
 .footer {
+  box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: white;
   color: black;
   padding: 2rem 0;
@@ -11,11 +14,18 @@
 .callToAction {
   text-align: center;
   margin-bottom: 3rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .callToAction h2 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .ctaButton {
@@ -36,19 +46,29 @@
   display: flex;
   width: 100%;
   text-align: left;
-  gap: 2rem;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .contactSection {
   margin: 0 1rem;
+  margin-bottom: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
-.contactSection h3 {
-  margin-bottom: 1rem;
-}
-
+.contactSection h3,
 .contactSection p {
-  margin-bottom: 0.5rem;
+  margin: 0.25rem 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .contactSection a {
@@ -61,15 +81,122 @@
 }
 
 @media (max-width: 768px) {
+  .contactTitle {
+    text-align: left;
+    padding-left: 1rem;
+  }
   .contactInfo {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: left;
+    text-align: left;
+    padding: 0 1rem;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
   }
   
   .contactSection {
-    margin-bottom: 1.5rem;
+    flex: none;
+    width: 100%;
+    max-width: 100%;
   }
+  
+  .callToAction {
+    padding: 1.5rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .callToAction h2 {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 1.25rem;
+  }
+  
+  .ctaButton {
+    margin: 0 auto;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .footer {
+    padding: 2rem 1rem;
+    overflow-x: hidden;
+  }
+}
+
+/* Additional breakpoint for smaller screens */
+@media (max-width: 480px) {
+  .footer {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .contactInfo {
+    gap: 1.25rem;
+  }
+  
+  .contactSection h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contactSection p, 
+  .contactSection a {
+    font-size: 0.85rem;
+  }
+  
+  .callToAction {
+    padding: 1.25rem 0.75rem;
+  }
+  
+  .callToAction h2 {
+    font-size: 1.2rem;
+  }
+  
+  .ctaButton {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .contactTitle {
+    font-size: 1.1rem;
+    margin-left: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .footer {
+    padding: 1.25rem 0.5rem;
+  }
+  
+  .callToAction h2 {
+    font-size: 1.1rem;
+  }
+  
+  .ctaButton {
+    width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .contactSection h3 {
+    font-size: 0.95rem;
+  }
+  
+  .contactSection p, 
+  .contactSection a {
+    font-size: 0.8rem;
+  }
+}
+
+/* Ensure all elements have proper box-sizing */
+.footer *,
+.footer *::before,
+.footer *::after {
+  box-sizing: border-box;
 }
 
 .contactWrapper {
@@ -77,9 +204,15 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .contactTitle {
   margin-bottom: 1rem;
   margin-left: 1rem;
+  width: 100%;
+  max-width: calc(100% - 2rem);
+  box-sizing: border-box;
+  word-wrap: break-word;
 } 

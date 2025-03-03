@@ -39,13 +39,38 @@
   .content {
     flex-direction: column;
     gap: 2rem;
+    padding: 1.5rem;
   }
   
   .logoContainer, .addressContainer {
     justify-content: center;
+    width: 100%;
+  }
+  
+  .logo {
+    max-width: 80%;
+    height: auto;
   }
   
   .address {
     text-align: center;
+    font-size: 2rem;
+    line-height: 1.5;
+    padding: 0 1rem;
+  }
+  
+  .amsterdamContainer {
+    padding: 2rem 1rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .address {
+    font-size: 2rem;
+  }
+  
+  .content {
+    gap: 1.5rem;
   }
 } 
