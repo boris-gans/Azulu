@@ -1,45 +1,47 @@
 import React from 'react';
-import styles from '../styles/Pages.module.css';
+import styles from '../styles/About.module.css';
 
 function About() {
   return (
-    <div className={styles.pageContainer}>
-      <h1 className={styles.heading1}>About Azulu</h1>
+    <div className={styles.container}>
       <div className={styles.aboutContent}>
-        <div className={styles.placeholder}></div>
-        <div className={styles.aboutText}>
-          <p>
-            Azulu is a premier events company dedicated to creating memorable experiences.
-            Founded in [year], we have been bringing people together through innovative and
-            exciting events.
-          </p>
-          <p>
-            Our team of experienced professionals is committed to excellence in event planning,
-            management, and execution. We pride ourselves on attention to detail and creating
-            customized experiences that exceed expectations.
-          </p>
-          <h2 className={styles.heading2}>Our Mission</h2>
-          <p>
-            To create unforgettable events that inspire, connect, and entertain people while
-            delivering exceptional value to our clients and partners.
-          </p>
-        </div>
-      </div>
-      
-      <div className={styles.teamSection}>
-        <h2 className={styles.heading2}>Our Team</h2>
-        <div className={styles.teamGrid}>
-          {/* Team member cards will go here */}
-          <div className={styles.teamCard}>
-            <div className={styles.placeholder}></div>
-            <h3>Team Member</h3>
-            <p>Position</p>
-          </div>
-          <div className={styles.teamCard}>
-            <div className={styles.placeholder}></div>
-            <h3>Team Member</h3>
-            <p>Position</p>
-          </div>
+        <p>
+          Azulu is more than an event—it's an immersive journey into the heart of Afro and Deep House, 
+          where music, fashion, and art collide to create something truly transformative.
+        </p>
+        
+        <p>
+          Curated by Benja, the rising force in the Afro/Deep House scene and the mind behind 
+          the hit record Yamore in collaboration with MoBlack Records, Azulu is a global movement 
+          redefining the nightlife experience.
+        </p>
+        
+        <p>
+          From electrifying live sets to unforgettable party's in the world's most extraordinary 
+          locations, Azulu is where rhythm meets artistry. Every event is a carefully crafted blend 
+          of sound, culture, and visual storytelling, bringing together a community of music lovers 
+          and creatives.
+        </p>
+        
+        <p>
+          Beyond the music, we support emerging artists, shaping the next generation of talent 
+          while constantly evolving our concept to new heights.
+        </p>
+        
+        <p className={styles.quote}>
+          Azulu is not just a party—it's an experience, a moment, a revolution.
+        </p>
+        
+        <p>
+          Welcome to the future of sound. Welcome to Azulu.
+        </p>
+
+        <div className={styles.logoContainer}>
+          <img 
+            src="/assets/icons/logoWhite.svg" 
+            alt="Azulu Logo" 
+            className={styles.logoImage} 
+          />
         </div>
       </div>
     </div>

@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import gsap from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+
+// Register the plugin
+gsap.registerPlugin(MotionPathPlugin);
 
 const LoadingScreen = ({ onHeroPreload }) => {
   const [animationComplete, setAnimationComplete] = useState(false);
@@ -114,6 +119,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 let heroPreloaded = false;
 const handleHeroPreload = () => {
   heroPreloaded = true;
+  animateGrowLogo();
 };
 
 root.render(
@@ -177,4 +183,67 @@ if ('chrome' in window) {
     });
   }
 }
+
+// Update the animateGrowLogo function with a more natural growth pattern
+const animateGrowLogo = () => {
+  const logo = document.querySelector('.grow-logo'); // Update selector to match your logo element
+  
+  if (!logo) return;
+  
+  // Set initial state
+  gsap.set(logo, {
+    scale: 0.2,
+    opacity: 0,
+    rotation: -8
+  });
+  
+  // Create a natural "sprouting" effect
+  const tl = gsap.timeline();
+  
+  // First movement: sprout up with a slight bounce
+  tl.to(logo, {
+    duration: 1.2,
+    scale: 1,
+    opacity: 1,
+    y: -40,
+    rotation: 0,
+    ease: "elastic.out(1, 0.4)",
+  })
+  
+  // Second movement: small spiral bloom effect
+  .to(logo, {
+    duration: 0.8,
+    y: -90,
+    scale: 1.15,
+    ease: "power2.out",
+    motionPath: {
+      path: [
+        {x: 0, y: 0},
+        {x: 15, y: -15},
+        {x: 5, y: -30},
+        {x: -8, y: -40},
+        {x: 0, y: -50}
+      ],
+      curviness: 1.6
+    }
+  })
+  
+  // Final settling with slight overshoot
+  .to(logo, {
+    duration: 0.7,
+    scale: 1,
+    ease: "back.out(1.7)",
+    y: -70,
+    onComplete: () => {
+      // Add a subtle breathing effect
+      gsap.to(logo, {
+        scale: 1.03,
+        duration: 2.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+    }
+  });
+};
 

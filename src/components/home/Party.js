@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../styles/components/Party.module.css';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
 
 function Party() {
   // State to track if image is preloaded
@@ -177,18 +178,20 @@ function Party() {
                 <span className={styles.partyLink}>
                   SEE WHERE WE'RE GOING NEXT
                 </span>
-                <motion.div 
-                  className={styles.arrowContainer}
-                  whileHover={{ backgroundColor: "#cc0000" }}
-                  whileTap={{ backgroundColor: "#990000" }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <span className={styles.arrowIcon}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 19L19 5M19 5H12M19 5V12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
-                </motion.div>
+                <Link to="/events">
+                  <motion.div 
+                    className={styles.arrowContainer}
+                    whileHover={{ backgroundColor: "#cc0000" }}
+                    whileTap={{ backgroundColor: "#990000" }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <span className={styles.arrowIcon}>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 19L19 5M19 5H12M19 5V12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                  </motion.div>
+                </Link>
               </div>
             </div>
           </motion.div>

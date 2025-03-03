@@ -53,16 +53,10 @@ export default {
               title: 'Artist Name',
               type: 'string'
             },
-            {
-              name: 'time',
-              title: 'Set Time',
-              type: 'string'
-            }
           ],
           preview: {
             select: {
               title: 'artist',
-              subtitle: 'time'
             }
           }
         }
@@ -75,10 +69,15 @@ export default {
       of: [{ type: 'string' }],
       options: {
         list: [
-          { title: 'House', value: 'house' },
-          { title: 'Techno', value: 'techno' },
           { title: 'Deep House', value: 'deep-house' },
-          { title: 'Tech House', value: 'tech-house' }
+          { title: 'Afro House', value: 'afro-house' },
+          { title: 'Electronic', value: 'electronic' },
+          { title: 'Techno', value: 'techno' },
+          { title: 'House', value: 'house' },
+          { title: 'Melodic Techno', value: 'melodic-techno' },
+          { title: 'Progressive House', value: 'progressive-house' },
+          { title: 'Minimal', value: 'minimal' },
+          { title: 'Disco', value: 'disco' }
         ]
       }
     },

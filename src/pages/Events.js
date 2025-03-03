@@ -69,6 +69,10 @@ function Events() {
 
   return (
     <div className={styles.pageContainer}>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>Upcoming Events</h1>
+      </div>
+      
       <div className={styles.eventsContainer}>
         {Object.entries(groupedEvents).map(([dateKey, dateEvents]) => (
           <div key={dateKey} className={styles.dateSection}>
@@ -110,8 +114,15 @@ function Events() {
                   
                   {event.lineup && event.lineup.length > 0 && (
                     <div className={styles.lineupContainer}>
-                      <div className={styles.lineupLabel}>Lineup</div>
-                      <div className={styles.lineup}>{event.lineup.join(', ')}</div>
+                      <h4 className={styles.lineupHeading}>LINEUP</h4>
+                      <div className={styles.lineupList}>
+                        {event.lineup.map((item, index) => (
+                          <span key={item._key} className={styles.lineupArtist}>
+                            {item.artist}
+                            {index < event.lineup.length - 1 ? ', ' : ''}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   )}
                   

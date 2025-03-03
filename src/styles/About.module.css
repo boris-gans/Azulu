@@ -1,0 +1,63 @@
+/* Ultra minimal About page styles with smaller font sizes */
+.container {
+  background-color: #000;
+  min-height: 100vh;
+  color: white;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.aboutContent {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.aboutContent p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.8rem;
+  color: #fff;
+  font-weight: 300;
+}
+
+.quote {
+  /* Subtly different but not overly emphasized */
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 1.8rem 0;
+  color: #fff;
+  font-weight: 300;
+  border-left: 2px solid #FF4B4B;
+  border-right: 2px solid #FF4B4B;
+  padding: 0 1.5rem;
+}
+
+.logoContainer {
+  margin-top: 4rem;
+  width: 100px;
+  margin: 0 auto;
+}
+
+.logoImage {
+  width: 100%;
+  height: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .aboutContent p, .quote {
+    font-size: 0.85rem;
+  }
+  
+  .quote {
+    padding: 0 1rem;
+  }
+  
+  .container {
+    padding: 50px 20px;
+  }
+} 
