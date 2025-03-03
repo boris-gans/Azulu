@@ -132,19 +132,6 @@ function Party() {
           </div>
         </motion.div>
         
-        {/* Location info */}
-        <motion.div 
-          ref={locationRef}
-          className={styles.locationHighlight}
-          initial="hidden"
-          animate={locationControls}
-          variants={fadeIn}
-        >
-          <p className={styles.cityName}>
-            51ST BROAD STREET<br />
-            MADRID, SPAIN
-          </p>
-        </motion.div>
         
         {/* Party image with overlay card */}
         <div className={styles.partyImageWrapper} ref={imageRef}>

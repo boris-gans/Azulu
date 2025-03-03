@@ -10,11 +10,14 @@ const LoadingScreen = ({ onHeroPreload }) => {
     const img = new Image();
     img.src = '/assets/images/Hero.webp';
     img.fetchPriority = 'high';
-    img.decoding = 'sync';
-    // Add connection preload hint
+    img.decoding = 'async';
+    
+    // Create a proper preload link with correct attributes
     const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preconnect';
-    preloadLink.href = new URL(img.src, window.location.origin).origin;
+    preloadLink.rel = 'preload';
+    preloadLink.href = '/assets/images/Hero.webp';
+    preloadLink.as = 'image';
+    preloadLink.type = 'image/webp';
     document.head.appendChild(preloadLink);
     
     const preloadHero = async () => {
@@ -109,12 +112,13 @@ const criticalAssets = [
 ];
 
 const nonCriticalAssets = [
-  '/assets/images/homepage grid/Azulu@W-hotel-001.webp',
-  '/assets/images/homepage grid/Azulu@W-hotel-008.webp',
-  '/assets/images/homepage grid/Azulu@W-hotel-047.webp',
-  '/assets/images/homepage grid/DSCF9414.webp',
-  '/assets/images/homepage grid/DSCF9570.webp',
-  '/assets/images/homepage grid/DSCF9647.webp',
+  '/assets/images/homepage grid/Azulu@W-hotel-001.avif',
+  '/assets/images/homepage grid/Azulu@W-hotel-008.avif',
+  '/assets/images/homepage grid/Azulu@W-hotel-047.avif',
+  '/assets/images/homepage grid/Azulu@W-hotel-022.avif',
+  '/assets/images/homepage grid/DSCF9414.avif',
+  '/assets/images/homepage grid/DSCF9570.avif',
+  '/assets/images/homepage grid/DSCF9647.avif',
 ];
 
 const iconAssets = [
@@ -131,7 +135,7 @@ const loadImage = (asset) => {
     if (asset.priority === 'highest') {
       img.fetchPriority = 'high';
       img.loading = 'eager';
-      img.decoding = 'sync';
+      img.decoding = 'async';
     } else {
       img.loading = 'lazy';
       img.decoding = 'async';
@@ -173,7 +177,6 @@ const loadImage = (asset) => {
       link.as = 'image';
       link.href = asset.src;
       link.type = 'image/webp';
-      link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
       
       // Add connection preload hint

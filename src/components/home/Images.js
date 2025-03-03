@@ -18,37 +18,37 @@ function Images() {
   const images = shuffleArray([
     {
       id: 1,
-      src: "/assets/images/homepage grid/Azulu@W-hotel-001.webp",
+      src: "/assets/images/homepage grid/Azulu@W-hotel-001.avif",
       alt: "Azulu at W Hotel"
     },
     {
       id: 2,
-      src: "/assets/images/homepage grid/Azulu@W-hotel-008.webp",
+      src: "/assets/images/homepage grid/Azulu@W-hotel-008.avif",
       alt: "Azulu at W Hotel performance"
     },
     {
       id: 3,
-      src: "/assets/images/homepage grid/Azulu@W-hotel-047.webp",
+      src: "/assets/images/homepage grid/Azulu@W-hotel-047.avif",
       alt: "Azulu event"
     },
     {
       id: 4,
-      src: "/assets/images/homepage grid/DSCF9414.webp",
+      src: "/assets/images/homepage grid/DSCF9414.avif",
       alt: "Azulu performance"
     },
     {
       id: 5,
-      src: "/assets/images/homepage grid/DSCF9570.webp",
+      src: "/assets/images/homepage grid/DSCF9570.avif",
       alt: "Azulu event"
     },
     {
       id: 6,
-      src: "/assets/images/homepage grid/DSCF9647.webp",
+      src: "/assets/images/homepage grid/DSCF9647.avif",
       alt: "Azulu event"
     },
     {
       id: 7,
-      src: "/assets/images/homepage grid/Azulu@W-hotel-022.webp",
+      src: "/assets/images/homepage grid/Azulu@W-hotel-022.avif",
       alt: "Azulu event"
     }
   ]);
