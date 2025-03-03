@@ -2,52 +2,61 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/assets/icons/logoWhite.png" />
+    <!-- Updated favicon section for cross-browser compatibility -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="any" />
+    <link rel="icon" href="%PUBLIC_URL%/assets/icons/logoWhite.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <!-- Improved meta description for SEO -->
     <meta
       name="description"
-      content="Azulu Worldwide"
+      content="Azulu Worldwide - Experience premium events and nightlife across the globe"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/assets/icons/logoWhite.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
+    
     <!-- Preload Critical Assets -->
     <link rel="preload" as="image" href="%PUBLIC_URL%/assets/icons/logoWhite.svg" />
     
-    <!-- Preload Cloudinary Images -->
+    <!-- Preload Cloudinary Images with optimal settings -->
     <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/party-crowd_kgnwom" fetchpriority="high" />
-    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/FataMorgana" fetchpriority="high" />
-    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/Benjaa" />
-    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/Romy" />
+    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/image_copy_3_ktk8k2" fetchpriority="high" />
+    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/image_copy_4_wyul9v" />
+    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/image_copy_5_yq0z0y" />
     <!-- End Preload Critical Assets -->
     
-    <!-- Preconnect to Cloudinary -->
+    <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
-    
-    <!-- Existing preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Load Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    
+    <!-- Optimized font loading with display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <!-- Fallback for font loading -->
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap" rel="stylesheet">
+    </noscript>
+    
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
+    
     <title>Azulu</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js"></script>
+    
+    <!-- Defer non-critical scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js" defer></script>
     <script>
-      gsap.registerPlugin(MotionPathPlugin);
+      // Register GSAP plugin after it loads
+      window.addEventListener('DOMContentLoaded', function() {
+        if (window.gsap) {
+          gsap.registerPlugin(MotionPathPlugin);
+        }
+      });
     </script>
+    
+    <!-- DNS prefetching for external resources -->
+    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
