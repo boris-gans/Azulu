@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
 const LoadingScreen = ({ onHeroPreload }) => {
-  // Preload the hero image during loading screen
+  const [animationComplete, setAnimationComplete] = useState(false);
+
   React.useEffect(() => {
+    // Set up animation end detection
+    const logoElement = document.querySelector('.loading-logo');
+    logoElement?.addEventListener('animationend', () => {
+      setAnimationComplete(true);
+    });
+
+    // Preload hero image
     const img = new Image();
     img.src = '/assets/images/Hero.webp';
     img.fetchPriority = 'high';
@@ -23,10 +31,15 @@ const LoadingScreen = ({ onHeroPreload }) => {
         if (img.decode) {
           await img.decode();
         }
-        onHeroPreload();
+        // Only trigger hero preload if animation is complete
+        if (animationComplete) {
+          onHeroPreload();
+        }
       } catch (error) {
         console.error('Error preloading hero:', error);
-        onHeroPreload(); // Continue anyway
+        if (animationComplete) {
+          onHeroPreload();
+        }
       }
     };
 
@@ -41,7 +54,14 @@ const LoadingScreen = ({ onHeroPreload }) => {
     partyCrowdImg.src = '/assets/images/party-crowd.webp';
     partyCrowdImg.loading = 'eager';
     partyCrowdImg.decoding = 'async';
-  }, [onHeroPreload]);
+  }, [onHeroPreload, animationComplete]);
+
+  // Watch for animation completion
+  React.useEffect(() => {
+    if (animationComplete) {
+      onHeroPreload();
+    }
+  }, [animationComplete, onHeroPreload]);
 
   return (
     <div style={{
@@ -61,7 +81,8 @@ const LoadingScreen = ({ onHeroPreload }) => {
       <div style={{ textAlign: 'center' }}>
         <img 
           src="/assets/icons/logoWhite.svg" 
-          alt="Logo" 
+          alt="Logo"
+          className="loading-logo"
           style={{
             width: '150px',
             marginBottom: '20px',

@@ -98,7 +98,7 @@ function LineUp() {
     {
       id: 1,
       artist: "BENJA",
-      image: "/assets/images/Benjaa.png",
+      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/Benjaa_wuel5z",
       socials: {
         instagram: "https://www.instagram.com/benjamusic.dj/",
         tiktok: "https://www.tiktok.com/@benjamusic.dj?lang=en",
@@ -108,7 +108,7 @@ function LineUp() {
     {
       id: 2,
       artist: "ROMY JANSSEN",
-      image: "/assets/images/Romy.png",
+      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/Romy_aceyeu",
       socials: {
         instagram: "https://www.instagram.com/romyjanssendj/",
         tiktok: "https://www.tiktok.com/@romyjanssendj?lang=en",
@@ -119,7 +119,7 @@ function LineUp() {
     {
       id: 3,
       artist: "FATA MORGANA",
-      image: "/assets/images/FataMorgana.png",
+      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/FataMorgana_i5uimu",
       socials: {
         instagram: "https://www.instagram.com/fatamorganagroup/",
         spotify: "https://open.spotify.com/artist/7JqRlV02zd5qwCwzn1aQhf?si=HmPXOpcFRjKtDroBHekblQ",

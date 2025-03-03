@@ -6,30 +6,61 @@ function Hero() {
   const logoRef = useRef(null);
 
   useEffect(() => {
+    // Create preload link
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'image';
+    preloadLink.href = '/assets/images/Hero.webp';
+    preloadLink.type = 'image/webp';
+    document.head.appendChild(preloadLink);
+
+    // Create connection preload hint
+    const preconnectLink = document.createElement('link');
+    preconnectLink.rel = 'preconnect';
+    preconnectLink.href = window.location.origin;
+    document.head.appendChild(preconnectLink);
+
+    // Preload image with high priority
     const img = new Image();
     img.src = '/assets/images/Hero.webp';
+    img.fetchPriority = 'high';
+    img.decoding = 'async';
     
+    const loadImage = async () => {
+      try {
+        if (img.decode) {
+          await img.decode();
+          document.documentElement.style.setProperty('--hero-image', `url(${img.src})`);
+        }
+      } catch (error) {
+        console.error('Error decoding hero image:', error);
+      }
+    };
+
     if (img.complete) {
-      // Image is already loaded
+      loadImage();
     } else {
-      img.onload = () => {
-        // Image is now loaded
-      };
+      img.onload = loadImage;
     }
+
+    // Cleanup
+    return () => {
+      document.head.removeChild(preloadLink);
+      document.head.removeChild(preconnectLink);
+    };
   }, []);
 
+  // Banner animation
   useEffect(() => {
     const banner = bannerRef.current;
     if (!banner) return;
 
-    // Animation for smooth scrolling
     let animationId;
     let position = 0;
-    const speed = 0.5; // Adjust speed as needed
+    const speed = 0.5;
 
     const animate = () => {
       position -= speed;
-      // Reset position when first content is scrolled out of view
       if (position <= -50) {
         position = 0;
       }
@@ -44,7 +75,6 @@ function Hero() {
     };
   }, []);
 
-  // Create a single repeating content array
   const bannerItems = [
     "MARCH 28 2025",
     "AZULU IS BACK",
@@ -68,7 +98,6 @@ function Hero() {
       <div className={styles.eventBannerWrapper}>
         <div className={styles.eventBanner} ref={bannerRef}>
           <div className={styles.bannerContent}>
-            {/* Generate banner items with dots between each item */}
             {Array(8).fill(0).map((_, index) => (
               <React.Fragment key={index}>
                 {bannerItems.map((item, itemIndex) => (
