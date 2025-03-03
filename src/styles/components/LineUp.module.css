@@ -130,6 +130,7 @@
 
 .featuredEventCard {
   min-width: 480px;
+  max-width: 480px;
   background-color: #111;
   overflow: hidden;
   flex-shrink: 0;
