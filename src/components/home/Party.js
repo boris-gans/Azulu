@@ -39,7 +39,7 @@ function Party() {
   // Preload image as soon as component mounts
   useEffect(() => {
     const img = new Image();
-    img.src = "/assets/images/party-crowd.webp";
+    img.src = "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/party-crowd_kgnwom";
     
     img.onload = () => {
       setImageLoaded(true);
@@ -140,7 +140,7 @@ function Party() {
             initial="hidden"
             animate={imageControls}
             variants={imageAppear}
-            src="/assets/images/party-crowd.webp" 
+            src={`https://res.cloudinary.com/dsjkhhpbl/image/upload/party-crowd_kgnwom`} 
             alt="Party crowd" 
             className={styles.partyImage}
             loading="eager" 

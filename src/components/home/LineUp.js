@@ -98,7 +98,7 @@ function LineUp() {
     {
       id: 1,
       artist: "BENJA",
-      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/Benjaa_wuel5z",
+      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/e9dayolv0ssd24f1dqlh_aljcmt",
       socials: {
         instagram: "https://www.instagram.com/benjamusic.dj/",
         tiktok: "https://www.tiktok.com/@benjamusic.dj?lang=en",
@@ -108,7 +108,7 @@ function LineUp() {
     {
       id: 2,
       artist: "ROMY JANSSEN",
-      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/Romy_aceyeu",
+      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/image_copy_4_wyul9v",
       socials: {
         instagram: "https://www.instagram.com/romyjanssendj/",
         tiktok: "https://www.tiktok.com/@romyjanssendj?lang=en",
@@ -119,7 +119,7 @@ function LineUp() {
     {
       id: 3,
       artist: "FATA MORGANA",
-      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/FataMorgana_i5uimu",
+      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/image_copy_3_ktk8k2",
       socials: {
         instagram: "https://www.instagram.com/fatamorganagroup/",
         spotify: "https://open.spotify.com/artist/7JqRlV02zd5qwCwzn1aQhf?si=HmPXOpcFRjKtDroBHekblQ",
@@ -166,7 +166,7 @@ function LineUp() {
             variants={staggerList}
           >
             <motion.h2 variants={fadeUp}>OUR LINEUP</motion.h2>
-            <motion.p variants={fadeUp}>THE BEST OF THE BEST</motion.p>
+            <motion.p variants={fadeUp}>AZULU'S CORE GROUP OF ARTISTS WHO EMOBODY THE ESSENCE OF THE BRAND, THESE ARTISTS ARE CENTRAL TO AZULUS IDENTITY AND THE SOUND WE CREATE.</motion.p>
           </motion.div>
           
           <motion.div 
