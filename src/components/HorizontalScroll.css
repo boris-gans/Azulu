@@ -1,0 +1,25 @@
+.horizontal-scroll-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.scroll-trigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.horizontal-content {
+  position: relative;
+  display: flex;
+  white-space: nowrap;
+  will-change: transform;
+  height: 100vh; /* Height of the horizontal section */
+}
+
+.horizontal-content > * {
+  flex-shrink: 0;
+} 
