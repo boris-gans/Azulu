@@ -8,6 +8,8 @@
   min-height: 70vh;
   overflow: visible;
   padding-top: 150px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .partyContent {
