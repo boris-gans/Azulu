@@ -12,12 +12,18 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/assets/icons/logoWhite.png" />
     <!-- Preload Critical Assets -->
     <link rel="preload" as="image" href="%PUBLIC_URL%/assets/icons/logoWhite.svg" />
-    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/party-crowd.webp" fetchpriority="high" />
-    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/images/FataMorgana.png" fetchpriority="high" />
-    <link rel="preload" href="%PUBLIC_URL%/assets/images/Benjaa.png" as="image" />
-    <link rel="preload" href="%PUBLIC_URL%/assets/images/Romy.png" as="image" />
+    
+    <!-- Preload Cloudinary Images -->
+    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/party-crowd_kgnwom" fetchpriority="high" />
+    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/FataMorgana" fetchpriority="high" />
+    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/Benjaa" />
+    <link rel="preload" as="image" href="https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/Romy" />
     <!-- End Preload Critical Assets -->
-    <!-- Preconnect to External Resources -->
+    
+    <!-- Preconnect to Cloudinary -->
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+    
+    <!-- Existing preconnects -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Load Fonts -->

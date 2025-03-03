@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../../styles/components/Party.module.css';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
@@ -36,10 +36,41 @@ function Party() {
     rootMargin: "0px 0px -5% 0px" 
   });
   
+  // Add reduced motion hook to respect user preferences
+  const shouldReduceMotion = useReducedMotion();
+  
+  // Add image preloading with useEffect
+  useEffect(() => {
+    const preloadImages = () => {
+      // The confirmed public ID
+      const publicId = 'party-crowd_kgnwom';
+      
+      // Helper function to get optimized Cloudinary URL
+      const getOptimizedUrl = (publicId) => {
+          return `https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/${publicId}`;
+        };
+      
+      // Create Image object to preload
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = getOptimizedUrl(publicId);
+      });
+    };
+    
+    // Start preloading
+    preloadImages()
+      .then(() => console.log('Party crowd image preloaded successfully'))
+      .catch(err => console.warn('Error preloading party crowd image:', err));
+      
+  }, []); // Empty dependency array means this runs once on mount
+  
   // Preload image as soon as component mounts
   useEffect(() => {
+    // Preload the party crowd image with lower priority
     const img = new Image();
-    img.src = "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/party-crowd_kgnwom";
+    img.src = `https://res.cloudinary.com/dsjkhhpbl/image/upload/f_auto,q_auto:good/party-crowd_kgnwom`;
     
     img.onload = () => {
       setImageLoaded(true);
@@ -53,7 +84,11 @@ function Party() {
       }
     }, 500);
     
-    return () => clearTimeout(fallbackTimer);
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+      clearTimeout(fallbackTimer);
+    };
   }, [imageControls, imageLoaded]);
   
   // Trigger animations when elements come into view
@@ -65,36 +100,43 @@ function Party() {
   }, [imageInView, cardInView, brandingInView, locationInView, 
       imageControls, cardControls, brandingControls, locationControls]);
 
-  // Animation variants
-  const fadeIn = {
-    hidden: { opacity: 0 },
-    visible: { 
+  // Optimized animation variants
+  const containerVariants = {
+    initial: { opacity: 0 },
+    animate: { 
       opacity: 1,
-      transition: { duration: 0.25, ease: "easeOut" }
-    }
-  };
-  
-  const slideIn = {
-    hidden: { x: -20, opacity: 0, scale: 0.98 },
-    visible: { 
-      x: 0, 
-      opacity: 1,
-      scale: 1,
       transition: { 
-        duration: 0.35, 
-        ease: [0.16, 0.01, 0.15, 1],
-        opacity: { duration: 0.25 },
-        x: { duration: 0.3 },
-        scale: { duration: 0.3 }
+        duration: 0.4,
+        ease: [0.25, 0.1, 0.25, 1], // cubic-bezier for smoother motion
+        when: "beforeChildren",
+        staggerChildren: 0.1
       }
     }
   };
   
-  const imageAppear = {
-    hidden: { opacity: 0.3 },
-    visible: { 
-      opacity: 1,
-      transition: { duration: 0.4, ease: "easeOut" }
+  const childVariants = {
+    initial: { opacity: 0, y: shouldReduceMotion ? 0 : 15 },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    }
+  };
+  
+  const buttonVariants = {
+    initial: { scale: 1 },
+    hover: { 
+      backgroundColor: "#cc0000",
+      scale: shouldReduceMotion ? 1 : 1.05,
+      transition: { duration: 0.2 }
+    },
+    tap: { 
+      backgroundColor: "#990000",
+      scale: shouldReduceMotion ? 1 : 0.98,
+      transition: { duration: 0.1 }
     }
   };
 
@@ -121,7 +163,7 @@ function Party() {
           className={styles.azuluBranding}
           initial="hidden"
           animate={brandingControls}
-          variants={fadeIn}
+          variants={containerVariants}
         >
           <div className={styles.azuluRepeated}>
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
@@ -129,7 +171,6 @@ function Party() {
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
-
           </div>
         </motion.div>
         
@@ -139,7 +180,7 @@ function Party() {
           <motion.img 
             initial="hidden"
             animate={imageControls}
-            variants={imageAppear}
+            variants={childVariants}
             src={`https://res.cloudinary.com/dsjkhhpbl/image/upload/party-crowd_kgnwom`} 
             alt="Party crowd" 
             className={styles.partyImage}
@@ -147,7 +188,7 @@ function Party() {
             fetchpriority="high"
             style={{ 
               opacity: imageLoaded ? 1 : 0,
-              willChange: 'opacity'
+              willChange: 'opacity, transform'
             }}
           />
           
@@ -165,7 +206,7 @@ function Party() {
             className={styles.partyOverlayCard}
             initial="hidden"
             animate={cardControls}
-            variants={slideIn}
+            variants={containerVariants}
           >
             <div className={styles.cardContent}>
               <h2 className={styles.partyTitle}>
@@ -178,12 +219,13 @@ function Party() {
                 <span className={styles.partyLink}>
                   SEE WHERE WE'RE GOING NEXT
                 </span>
-                <Link to="/events">
-                  <motion.div 
-                    className={styles.arrowContainer}
-                    whileHover={{ backgroundColor: "#cc0000" }}
-                    whileTap={{ backgroundColor: "#990000" }}
-                    transition={{ duration: 0.2 }}
+                <Link to="/events" className={styles.linkWrapper}>
+                  <motion.div
+                    className={styles.button}
+                    variants={buttonVariants}
+                    initial="initial"
+                    whileHover="hover"
+                    whileTap="tap"
                   >
                     <span className={styles.arrowIcon}>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

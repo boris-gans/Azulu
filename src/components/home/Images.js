@@ -77,6 +77,36 @@ function Images() {
     return () => cancelAnimationFrame(animationId);
   }, []);
 
+  // Add a function to preload all images
+  useEffect(() => {
+    const preloadAllImages = () => {
+      // Extract all publicIds from your images array
+      const publicIds = images.map(image => image.publicId);
+      
+      console.log('Preloading gallery images:', publicIds);
+      
+      // Use your existing getOptimizedUrl function
+      const preloadPromises = publicIds.map(publicId => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(publicId);
+          img.onerror = () => resolve(publicId); // Resolve anyway to not block
+          img.src = getOptimizedUrl(publicId);
+        });
+      });
+      
+      // Preload all images in parallel
+      Promise.all(preloadPromises)
+        .then(() => console.log('All gallery images preloaded'))
+        .catch(err => console.warn('Error preloading images:', err));
+    };
+    
+    preloadAllImages();
+  }, [images]); // Dependency on images array
+  
+  // Then export the publicIds for use in index.js preloader
+  window.galleryImageIds = images.map(image => image.publicId);
+
   return (
     <div className={styles.imagesContainer}>
       <div className={styles.topBar}></div>
