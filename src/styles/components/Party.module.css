@@ -278,32 +278,57 @@
 @media (max-width: 768px) {
   .partyContent {
     flex-direction: column;
+    padding: 0 1.5rem;
   }
   
   .aboutSection {
     width: 100%;
     padding-right: 0;
     margin-bottom: 3rem;
+    border-right: none;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 2rem;
   }
   
   .partyImageWrapper {
     width: 100%;
+    height: 450px;
   }
   
   .partyOverlayCard {
-    width: 60%;
+    width: 70%;
     max-width: none;
+    left: -50px;
   }
   
   .cityName {
     font-size: 4rem;
   }
+
+  .redAccentBar {
+    right: 50px;
+    width: 30px;
+  }
+
+  .azuluRepeated {
+    left: -50px;
+    font-size: 3.2rem;
+  }
 }
 
 @media (max-width: 480px) {
+  .partyContainer {
+    padding-top: 100px;
+    min-height: auto;
+  }
+
+  .partyContent {
+    padding: 0 1rem;
+  }
+  
   .partyImageWrapper {
     margin-left: 0;
-    height: auto;
+    height: 300px;
   }
   
   .partyOverlayCard {
@@ -312,10 +337,31 @@
     position: relative;
     bottom: 0;
     flex-direction: column;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cardContent {
+    padding: 1.5rem;
+  }
+
+  .partyTitle {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .partyDescription {
+    font-size: 0.75rem;
+    margin-bottom: 1.2rem;
+    max-width: 100%;
   }
   
   .arrowContainer {
     align-items: flex-start;
+  }
+
+  .arrowIcon {
+    width: 50px;
+    height: 50px;
   }
   
   .cityName {
@@ -325,5 +371,71 @@
   .cityName::after {
     width: 40px;
     height: 4px;
+  }
+
+  .redAccentBar {
+    display: none;
+  }
+
+  .azuluRepeated {
+    left: -20px;
+    font-size: 2.5rem;
+  }
+
+  .azuluRepeatedText:nth-child(1) { top: 0; }
+  .azuluRepeatedText:nth-child(2) { top: 2.5rem; }
+  .azuluRepeatedText:nth-child(3) { top: 5rem; }
+  .azuluRepeatedText:nth-child(4) { top: 7.5rem; }
+  .azuluRepeatedText:nth-child(5) { top: 10rem; }
+
+  .locationInfo {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .locationAddress h3 {
+    font-size: 1.2rem;
+  }
+
+  .locationAddress p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Additional small-screen optimizations */
+@media (max-width: 360px) {
+  .partyContainer {
+    padding-top: 80px;
+  }
+
+  .partyImageWrapper {
+    height: 250px;
+  }
+
+  .cardContent {
+    padding: 1.2rem;
+  }
+
+  .partyTitle {
+    font-size: 1rem;
+  }
+
+  .partyLink {
+    font-size: 0.7rem;
+  }
+
+  .arrowIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .arrowIcon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cityName {
+    font-size: 2rem;
   }
 } 
