@@ -129,11 +129,6 @@ function Party() {
   
   const buttonVariants = {
     initial: { scale: 1 },
-    hover: { 
-      backgroundColor: "#cc0000",
-      scale: shouldReduceMotion ? 1 : 1.05,
-      transition: { duration: 0.2 }
-    },
     tap: { 
       backgroundColor: "#990000",
       scale: shouldReduceMotion ? 1 : 0.98,
