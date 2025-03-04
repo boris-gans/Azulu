@@ -32,6 +32,21 @@ const SmoothScroll = ({ children }) => {
       infinite: false,
     });
 
+    // Find the navbar element
+    const navbar = document.querySelector('[data-fixed-navbar]');
+    
+    // Create a wrapper for content that will be scrolled
+    const contentWrapper = document.querySelector('.App');
+    
+    if (navbar && contentWrapper) {
+      // We don't need to manually set transform here anymore
+      // as it's handled by the Navbar component's own state
+      lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
+        // Only ensure position is fixed, but don't override transform
+        navbar.style.position = 'fixed';
+      });
+    }
+
     // Connect GSAP ScrollTrigger and Lenis with debounced updates
     let scrollTriggerTimeout;
     lenis.on('scroll', () => {

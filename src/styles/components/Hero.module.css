@@ -11,6 +11,7 @@
   opacity: 0;
   transform: scale(1.02);
   transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  margin-top: 0;
 }
 
 .heroContainer.loaded {

@@ -41,3 +41,11 @@
     }
   }
 }
+
+/* Add padding to the top of the App container to account for the fixed navbar */
+.App {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
