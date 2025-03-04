@@ -20,7 +20,7 @@ function Navbar() {
   };
 
   // Use useCallback to memoize the scroll handler
-  const handleScroll = useCallback(
+  const handleScroll = useCallback(() => {
     throttle(() => {
       const currentScrollPos = window.pageYOffset;
       
@@ -31,9 +31,8 @@ function Navbar() {
       
       setVisible(isVisible);
       setPrevScrollPos(currentScrollPos);
-    }, 100), // Throttle to 100ms
-    [prevScrollPos]
-  );
+    }, 100)();
+  }, [prevScrollPos]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });

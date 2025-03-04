@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo, useState } from 'react';
+import React, { useRef, useEffect, useMemo, useState, useCallback } from 'react';
 import styles from '../../styles/components/LineUp.module.css';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -38,78 +38,8 @@ function LineUp() {
     if (cardsInView) cardsControls.start('visible');
   }, [headerInView, listInView, cardsInView, headerControls, listControls, cardsControls]);
   
-  // Animation variants
+  // Animation variants - simplified for better performance
   const fadeUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }
-    }
-  };
-  
-  const staggerList = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
-  };
-  
-  const listItem = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }
-    }
-  };
-  
-  const staggerCards = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.05
-      }
-    }
-  };
-  
-  const cardAnimation = {
-    hidden: { opacity: 0, scale: 0.95, y: 15 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      y: 0,
-      transition: { 
-        duration: 0.35,
-        ease: [0.2, 0.05, 0.2, 1],
-        opacity: { duration: 0.25 },
-        scale: { duration: 0.35 }
-      }
-    }
-  };
-  
-  // Define shared animation variants for consistent animations
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
-  
-  // Used for child elements of the container
-  const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
@@ -118,20 +48,64 @@ function LineUp() {
     }
   };
   
-  const scrollButtonVariants = {
-    hidden: { opacity: 0, x: 20 },
+  const staggerList = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1
+      }
+    }
+  };
+  
+  const listItem = {
+    hidden: { opacity: 0, x: -15 },
     visible: { 
       opacity: 1, 
       x: 0,
-      transition: { delay: 0.5, duration: 0.3, ease: "easeOut" }
-    },
-    hover: { 
-      scale: 1.05, 
-      transition: { duration: 0.2 }
-    },
-    tap: { 
-      scale: 0.95,
-      transition: { duration: 0.1 }
+      transition: { duration: 0.3, ease: "easeOut" }
+    }
+  };
+  
+  const staggerCards = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.06
+      }
+    }
+  };
+  
+  const cardAnimation = {
+    hidden: { opacity: 0, scale: 0.97, y: 10 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      y: 0,
+      transition: { 
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    }
+  };
+  
+  // Simplified container animation
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { duration: 0.4 }
+    }
+  };
+  
+  // Simplified item variant
+  const itemVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { duration: 0.3 }
     }
   };
   
@@ -180,69 +154,73 @@ function LineUp() {
     { artist: "FATA MORGANA" },
   ], []); // Empty dependency array since this data is static
 
-  // Check if content is scrollable
-  const checkScrollable = () => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const hasHorizontalScroll = container.scrollWidth > container.clientWidth + 5; // Add small buffer
-      console.log('Scroll check:', { 
-        scrollWidth: container.scrollWidth, 
-        clientWidth: container.clientWidth, 
-        hasHorizontalScroll 
-      });
-      setIsScrollable(hasHorizontalScroll);
-    }
-  };
-  
-  // Check scrollability on mount and window resize
-  useEffect(() => {
-    // Initial check needs a small delay to ensure accurate measurements
-    setTimeout(() => {
-      checkScrollable();
-    }, 500);
+  // Optimized scroll check using ResizeObserver
+  const checkScrollable = useCallback(() => {
+    if (!scrollContainerRef.current) return;
     
-    const handleResize = () => {
-      checkScrollable();
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const container = scrollContainerRef.current;
+    const hasHorizontalScroll = container.scrollWidth > container.clientWidth + 5;
+    setIsScrollable(hasHorizontalScroll);
   }, []);
   
-  // Check scrollability whenever the content might change
+  // Check scrollability with ResizeObserver
   useEffect(() => {
-    checkScrollable();
-  }, [events]);
-  
-  // Handle scroll buttons
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      // Log current scroll position for debugging
-      console.log('Scrolling right from:', container.scrollLeft);
-      container.scrollBy({ left: 300, behavior: 'smooth' });
-    }
-  };
-
-  // Preload images
-  useEffect(() => {
-    events.forEach(event => {
-      const img = new Image();
-      img.src = event.image;
+    // Initial check with a delay
+    const initialCheck = setTimeout(checkScrollable, 300);
+    
+    // Use ResizeObserver for more efficient monitoring
+    const resizeObserver = new ResizeObserver(() => {
+      // Debounce the check to avoid excessive calculations
+      if (window.scrollCheckTimeout) {
+        clearTimeout(window.scrollCheckTimeout);
+      }
+      window.scrollCheckTimeout = setTimeout(checkScrollable, 100);
     });
-  }, [events]); // Added events to dependency array
+    
+    if (scrollContainerRef.current) {
+      resizeObserver.observe(scrollContainerRef.current);
+    }
+    
+    // Also observe the main container in case parent dimensions change
+    const container = document.querySelector(`.${styles.lineupContainer}`);
+    if (container) {
+      resizeObserver.observe(container);
+    }
+    
+    return () => {
+      clearTimeout(initialCheck);
+      if (window.scrollCheckTimeout) {
+        clearTimeout(window.scrollCheckTimeout);
+      }
+      resizeObserver.disconnect();
+    };
+  }, [checkScrollable]);
+  
+  // Optimized scroll function
+  const scrollRight = useCallback(() => {
+    if (!scrollContainerRef.current) return;
+    
+    const container = scrollContainerRef.current;
+    const scrollAmount = Math.min(300, container.clientWidth * 0.8);
+    container.scrollBy({ 
+      left: scrollAmount, 
+      behavior: 'smooth' 
+    });
+    
+    // Recheck scrollability after animation completes
+    setTimeout(checkScrollable, 500);
+  }, [checkScrollable]);
 
   return (
     <div>
       <div>
         <div>
-          {/* Wrap your main content in a motion.div with variants */}
+          {/* Main container - fewer layout animations */}
           <motion.div 
             variants={containerVariants}
             initial="hidden"
             animate="visible"
             className={styles.lineupContainer}
-            layout
           >
             <div className={styles.lineupContent}>
               {/* Left side - Simple list and header */}
@@ -253,10 +231,9 @@ function LineUp() {
                   initial="hidden"
                   animate={headerControls}
                   variants={staggerList}
-                  layout
                 >
-                  <motion.h2 variants={fadeUp} layout>OUR LINEUP</motion.h2>
-                  <motion.p variants={fadeUp} layout>AZULU'S CORE GROUP OF ARTISTS WHO EMOBODY THE ESSENCE OF THE BRAND, THESE ARTISTS ARE CENTRAL TO AZULUS IDENTITY AND THE SOUND WE CREATE.</motion.p>
+                  <motion.h2 variants={fadeUp}>OUR LINEUP</motion.h2>
+                  <motion.p variants={fadeUp}>AZULU'S CORE GROUP OF ARTISTS WHO EMOBODY THE ESSENCE OF THE BRAND, THESE ARTISTS ARE CENTRAL TO AZULUS IDENTITY AND THE SOUND WE CREATE.</motion.p>
                 </motion.div>
                 
                 <motion.div 
@@ -265,14 +242,12 @@ function LineUp() {
                   initial="hidden"
                   animate={listControls}
                   variants={staggerList}
-                  layout
                 >
                   {upcomingEvents.map((event, index) => (
                     <motion.div 
                       key={index} 
                       className={styles.upcomingEvent}
                       variants={listItem}
-                      layout
                     >
                       <div className={styles.eventDetails}>
                         <div className={styles.eventArtist}>{event.artist}</div>
@@ -282,26 +257,29 @@ function LineUp() {
                 </motion.div>
               </div>
               
-              {/* Right side - Horizontal scrolling cards */}
+              {/* Right side - Horizontal scrolling cards with simpler animations */}
               <div className={styles.featuredEventsContainer}>
                 <motion.div 
-                  ref={(node) => {
-                    cardsRef(node);
-                    scrollContainerRef.current = node;
-                  }}
                   className={styles.featuredEvents} 
                   initial="hidden"
                   animate={cardsControls}
                   variants={staggerCards}
-                  layout
-                  onLoad={checkScrollable} // Check scrollability after content loads
+                  ref={(node) => {
+                    if (node) {
+                      scrollContainerRef.current = node;
+                      cardsRef(node);
+                      
+                      // One-time check after initial render
+                      setTimeout(checkScrollable, 100);
+                    }
+                  }}
+                  onLoad={checkScrollable}
                 >
                   {events.map((event) => (
                     <motion.div 
                       key={event.id} 
                       className={styles.featuredEventCard}
                       variants={cardAnimation}
-                      layout
                     >
                       <div className={styles.cardImageContainer}>
                         <motion.img 
@@ -309,18 +287,12 @@ function LineUp() {
                           alt={event.artist} 
                           className={styles.cardImage}
                           loading="eager"
-                          initial={{ opacity: 0.6 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.3 }}
                           variants={itemVariants}
                         />
                         <div className={styles.cardArtist}>{event.artist}</div>
                       </div>
                       <motion.div 
                         className={styles.cardSocials}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.3 }}
                         variants={itemVariants}
                       >
                         {event.socials && (
@@ -380,18 +352,17 @@ function LineUp() {
                   ))}
                 </motion.div>
                 
-                {/* Scroll button positioned next to the cards */}
+                {/* Scroll button with smoother animations */}
                 <AnimatePresence>
                   {isScrollable && (
                     <motion.button 
                       className={styles.scrollButton} 
                       onClick={scrollRight}
-                      variants={scrollButtonVariants}
-                      initial="hidden"
-                      animate="visible"
-                      whileHover="hover"
-                      whileTap="tap"
-                      exit={{ opacity: 0, x: 20 }}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0, transition: { delay: 0.3, duration: 0.2 } }}
+                      whileHover={{ scale: 1.05, transition: { duration: 0.15 } }}
+                      whileTap={{ scale: 0.95, transition: { duration: 0.05 } }}
+                      exit={{ opacity: 0, x: 20, transition: { duration: 0.2 } }}
                       style={{
                         position: 'absolute',
                         right: '10px',

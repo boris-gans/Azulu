@@ -29,7 +29,10 @@ function Events() {
           genres,
           description,
           "posterUrl": poster.asset->url,
-          price
+          price {
+            amount,
+            currency
+          }
         } | order(date asc)`;
         
         const results = await client.fetch(query);
@@ -52,6 +55,19 @@ function Events() {
       day: 'numeric',
       month: 'short'
     }).toUpperCase();
+  };
+
+  const getCurrencySymbol = (currencyCode) => {
+    const currencySymbols = {
+      'EUR': '€',
+      'GBP': '£',
+      'USD': '$',
+      'CAD': 'C$',
+      'AUD': 'A$',
+      'JPY': '¥',
+      'CHF': 'Fr'
+    };
+    return currencySymbols[currencyCode] || currencyCode;
   };
 
   if (loading) return <div className={styles.loading}>LOADING<span>.</span><span>.</span><span>.</span></div>;
@@ -106,7 +122,9 @@ function Events() {
                         </div>
                         
                         {event.price && event.price.amount && (
-                          <span className={styles.priceInfo}>€{event.price.amount}</span>
+                          <span className={styles.priceInfo}>
+                            {getCurrencySymbol(event.price.currency)}{event.price.amount}
+                          </span>
                         )}
                       </div>
                     )}

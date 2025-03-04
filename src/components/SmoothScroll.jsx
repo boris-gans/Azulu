@@ -1,112 +1,78 @@
-import React, { useEffect, useRef } from 'react';
-import Lenis from 'lenis';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger);
+import React, { useRef, useEffect } from 'react';
 
 const SmoothScroll = ({ children }) => {
   const scrollRef = useRef(null);
-  
+
   useEffect(() => {
-    // Detect Firefox browser
-    const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-    
-    // If Firefox is detected, don't initialize Lenis
-    if (isFirefox) {
-      console.log('Firefox detected, disabling custom smooth scrolling');
-      return;
-    }
-    
-    // Initialize Lenis with optimized parameters for performance
-    const lenis = new Lenis({
-      duration: 0.7,  // Reduced from 0.9 for better performance
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 0.85, // Further reduced for better performance
-      smoothTouch: false,   // Disable smooth touch to improve performance on mobile
-      touchMultiplier: 1.8,
-      infinite: false,
-    });
+    // Import Lenis dynamically to avoid SSR issues
+    const initLenis = async () => {
+      try {
+        const Lenis = (await import('https://cdn.skypack.dev/@studio-freight/lenis')).default;
+        
+        // Create Lenis instance with optimized settings
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          direction: 'vertical',
+          gestureDirection: 'vertical',
+          smooth: true,
+          mouseMultiplier: 1,
+          smoothTouch: false,
+          touchMultiplier: 2,
+          infinite: false,
+        });
 
-    // Find the navbar element
-    const navbar = document.querySelector('[data-fixed-navbar]');
-    
-    // Create a wrapper for content that will be scrolled
-    const contentWrapper = document.querySelector('.App');
-    
-    if (navbar && contentWrapper) {
-      // We don't need to manually set transform here anymore
-      // as it's handled by the Navbar component's own state
-      lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
-        // Only ensure position is fixed, but don't override transform
-        navbar.style.position = 'fixed';
-      });
-    }
+        // Find the navbar element
+        const navbar = document.querySelector('[data-fixed-navbar]');
+        
+        // Get the main content wrapper
+        const contentWrapper = document.querySelector('.App') || scrollRef.current;
+        
+        if (navbar && contentWrapper) {
+          // Ensure the navbar is excluded from smooth scrolling effects
+          lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
+            // Keep the navbar in a fixed position
+            navbar.style.transform = 'none';
+            navbar.style.position = 'fixed';
+            navbar.style.top = '0';
+            navbar.style.left = '0';
+            navbar.style.width = '100%';
+            navbar.style.zIndex = '1000';
+          });
+        }
 
-    // Connect GSAP ScrollTrigger and Lenis with debounced updates
-    let scrollTriggerTimeout;
-    lenis.on('scroll', () => {
-      clearTimeout(scrollTriggerTimeout);
-      scrollTriggerTimeout = setTimeout(() => {
-        ScrollTrigger.update();
-      }, 16); // 60fps timing
-    });
+        // Connect to RAF for optimal performance
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        
+        requestAnimationFrame(raf);
 
-    // Update ScrollTrigger on Lenis scroll with optimized performance
-    const scrollFn = (time) => {
-      lenis.raf(time * 1000);
-    };
-    
-    gsap.ticker.add(scrollFn);
+        // Recalculate on resize
+        const handleResize = () => {
+          if (lenis) {
+            lenis.resize();
+          }
+        };
 
-    // Use RAF instead of gsap ticker for smoother performance
-    gsap.ticker.lagSmoothing(0);
+        window.addEventListener('resize', handleResize);
 
-    // Initialize ScrollTrigger with simpler refresh
-    ScrollTrigger.refresh();
-
-    // Add a way to detect if scrolling feels too constrained and adjust
-    let lastScrollTop = 0;
-    let scrollTimeout = null;
-    
-    const scrollListener = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const scrollDelta = Math.abs(scrollTop - lastScrollTop);
-      
-      // If user is trying to scroll rapidly, temporarily increase responsiveness
-      if (scrollDelta > 60) {
-        lenis.options.lerp = 0.03; // Faster response when user scrolls quickly (lower is faster)
-      } else {
-        lenis.options.lerp = 0.07; // Slightly more responsive than before
+        // Cleanup
+        return () => {
+          window.removeEventListener('resize', handleResize);
+          lenis.destroy();
+        };
+      } catch (error) {
+        console.error("Failed to initialize smooth scrolling:", error);
       }
-      
-      lastScrollTop = scrollTop;
-      
-      // Reset lerp after scrolling stops
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        lenis.options.lerp = 0.07;
-      }, 150);
     };
-    
-    window.addEventListener('scroll', scrollListener, { passive: true });
 
-    return () => {
-      // Clean up the Lenis instance when component unmounts
-      lenis.destroy();
-      gsap.ticker.remove(scrollFn);
-      window.removeEventListener('scroll', scrollListener);
-      clearTimeout(scrollTimeout);
-      clearTimeout(scrollTriggerTimeout);
-    };
+    initLenis();
   }, []);
 
   return (
-    <div ref={scrollRef} data-scroll-container>
+    <div ref={scrollRef} style={{ position: 'relative', width: '100%' }}>
       {children}
     </div>
   );

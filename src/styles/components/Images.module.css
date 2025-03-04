@@ -25,30 +25,39 @@
 
 .imagesScrollContainer {
   width: 100%;
-  overflow-x: scroll;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  overflow: hidden;
+  position: relative;
+  display: block;
 }
 
+/* Remove scrollbar styling since we're not scrolling anymore */
 .imagesScrollContainer::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
-.imagesGrid {
-  display: flex;
-  gap: 0.1rem; /* Removed gap between images */
+/* New styles for image tracks */
+.imagesTrack {
+  display: inline-flex;
+  gap: 0.1rem;
   padding: 0 2rem;
-  /* Make the grid wider than the container to enable scrolling */
   width: max-content;
+  will-change: transform;
+  white-space: nowrap;
+}
+
+/* Place tracks in a single row */
+.animateTrack1, .animateTrack2 {
+  display: inline-flex;
 }
 
 .imageWrapper {
   position: relative;
-  width: 400px; /* Wider for landscape orientation */
-  height: 300px; /* Shorter height for landscape orientation */
+  width: 400px;
+  height: 300px;
   overflow: hidden;
   contain: content;
   will-change: transform;
+  flex-shrink: 0;
 }
 
 .artistImage {

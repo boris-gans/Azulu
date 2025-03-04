@@ -154,7 +154,7 @@
 .redAccentBar {
   position: absolute;
   top: 56px;
-  bottom: 56px;
+  bottom: 0px;
   right: 85px;
   width: 40px;
   background-color: #ff0000;

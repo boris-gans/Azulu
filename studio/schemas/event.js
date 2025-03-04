@@ -119,7 +119,13 @@ export default {
           initialValue: 'EUR',
           options: {
             list: [
-              { title: 'EUR (€)', value: 'EUR' }
+              { title: 'EUR (€)', value: 'EUR' },
+              { title: 'GBP (£)', value: 'GBP' },
+              { title: 'USD ($)', value: 'USD' },
+              { title: 'CAD (C$)', value: 'CAD' },
+              { title: 'AUD (A$)', value: 'AUD' },
+              { title: 'JPY (¥)', value: 'JPY' },
+              { title: 'CHF (Fr)', value: 'CHF' }
             ]
           }
         }

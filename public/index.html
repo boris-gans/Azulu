@@ -41,18 +41,6 @@
     
     <title>Azulu</title>
     
-    <!-- Defer non-critical scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/MotionPathPlugin.min.js" defer></script>
-    <script>
-      // Register GSAP plugin after it loads
-      window.addEventListener('DOMContentLoaded', function() {
-        if (window.gsap) {
-          gsap.registerPlugin(MotionPathPlugin);
-        }
-      });
-    </script>
-    
     <!-- DNS prefetching for external resources -->
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />

@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import gsap from 'gsap';
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import { animate } from 'framer-motion';
+import { PARTY_IMAGE_URL, PARTY_IMAGE_LOW_QUALITY_URL } from './components/home/Party';
 
-// Register the plugin
-gsap.registerPlugin(MotionPathPlugin);
+// No need for plugin registration with Framer Motion
 
 const LoadingScreen = ({ onHeroPreload }) => {
   const [animationComplete, setAnimationComplete] = React.useState(false);
@@ -17,42 +16,6 @@ const LoadingScreen = ({ onHeroPreload }) => {
     logoElement?.addEventListener('animationend', () => {
       setAnimationComplete(true);
     });
-
-    // Preload hero image
-    const img = new Image();
-    img.src = '/assets/images/Hero.avif';
-    img.fetchPriority = 'high';
-    img.decoding = 'async';
-    
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.href = '/assets/images/Hero.avif';
-    preloadLink.as = 'image';
-    preloadLink.type = 'image/avif';
-    document.head.appendChild(preloadLink);
-    
-    const preloadHero = async () => {
-      try {
-        if (img.decode) {
-          await img.decode();
-        }
-        // Only trigger hero preload if animation is complete
-        if (animationComplete) {
-          onHeroPreload();
-        }
-      } catch (error) {
-        console.error('Error preloading hero:', error);
-        if (animationComplete) {
-          onHeroPreload();
-        }
-      }
-    };
-
-    if (img.complete) {
-      preloadHero();
-    } else {
-      img.onload = preloadHero;
-    }
 
   }, [onHeroPreload, animationComplete]);
 
@@ -179,66 +142,79 @@ if ('chrome' in window) {
   }
 }
 
-// Update the animateGrowLogo function with a more natural growth pattern
+// Update the animateGrowLogo function with Framer Motion
 const animateGrowLogo = () => {
   const logo = document.querySelector('.grow-logo'); // Update selector to match your logo element
   
   if (!logo) return;
   
   // Set initial state
-  gsap.set(logo, {
-    scale: 0.2,
-    opacity: 0,
-    rotation: -8
-  });
+  logo.style.transform = 'scale(0.2) rotate(-8deg)';
+  logo.style.opacity = '0';
   
-  // Create a natural "sprouting" effect
-  const tl = gsap.timeline();
+  // Create a natural "sprouting" effect using Framer Motion's animate function
   
   // First movement: sprout up with a slight bounce
-  tl.to(logo, {
-    duration: 1.2,
+  animate(logo, {
     scale: 1,
     opacity: 1,
     y: -40,
-    rotation: 0,
-    ease: "elastic.out(1, 0.4)",
-  })
-  
-  // Second movement: small spiral bloom effect
-  .to(logo, {
-    duration: 0.8,
-    y: -90,
-    scale: 1.15,
-    ease: "power2.out",
-    motionPath: {
-      path: [
-        {x: 0, y: 0},
-        {x: 15, y: -15},
-        {x: 5, y: -30},
-        {x: -8, y: -40},
-        {x: 0, y: -50}
-      ],
-      curviness: 1.6
-    }
-  })
-  
-  // Final settling with slight overshoot
-  .to(logo, {
-    duration: 0.7,
-    scale: 1,
-    ease: "back.out(1.7)",
-    y: -70,
-    onComplete: () => {
-      // Add a subtle breathing effect
-      gsap.to(logo, {
-        scale: 1.03,
-        duration: 2.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut"
-      });
-    }
+    rotate: 0
+  }, {
+    duration: 1.2,
+    type: "spring",
+    stiffness: 100,
+    damping: 10
+  }).then(() => {
+    // Second movement: small spiral bloom effect
+    const path = [
+      {x: 0, y: 0},
+      {x: 15, y: -15},
+      {x: 5, y: -30},
+      {x: -8, y: -40},
+      {x: 0, y: -50}
+    ];
+    
+    // Animate along path
+    let i = 0;
+    const pathAnimation = setInterval(() => {
+      if (i >= path.length) {
+        clearInterval(pathAnimation);
+        
+        // Final settling with slight overshoot
+        animate(logo, {
+          scale: 1,
+          y: -70
+        }, {
+          duration: 0.7,
+          type: "spring",
+          stiffness: 200,
+          damping: 15,
+          onComplete: () => {
+            // Add a subtle breathing effect
+            animate(logo, 
+              { scale: 1.03 }, 
+              { 
+                duration: 2.5,
+                repeat: Infinity,
+                repeatType: "mirror",
+                ease: "easeInOut"
+              }
+            );
+          }
+        });
+      } else {
+        animate(logo, {
+          x: path[i].x,
+          y: path[i].y - 90, // Adjust for the -90 in the original
+          scale: i === path.length - 1 ? 1.15 : 1 + (i * 0.03)
+        }, {
+          duration: 0.2,
+          ease: "easeOut"
+        });
+        i++;
+      }
+    }, 160); // Distribute the 0.8s over the path points
   });
 };
 
@@ -262,17 +238,30 @@ const preloadImage = (src) => {
 const preloadAllImages = async () => {
   // Critical images that should load first
   const criticalImages = [
-    getOptimizedUrl('party-crowd_kgnwom'),
-    getOptimizedUrl('FataMorgana'),
-    getOptimizedUrl('Benjaa'),
-    getOptimizedUrl('Romy')
+    PARTY_IMAGE_URL, // Use the exported constant directly
+    getOptimizedUrl('image_copy_3_ktk8k2'),
+    getOptimizedUrl('image_copy_4_wyul9v'),
+    getOptimizedUrl('image_copy_5_yq0z0y')
   ];
+
+  // Add link preload tags for all critical images
+  criticalImages.forEach(src => {
+    const linkElement = document.createElement('link');
+    linkElement.rel = 'preload';
+    linkElement.href = src;
+    linkElement.as = 'image';
+    document.head.appendChild(linkElement);
+  });
   
   console.log('Starting image preload...');
   
   try {
     // Load critical images
     await Promise.all(criticalImages.map(src => preloadImage(src)));
+    
+    // Also preload the low quality image for blur-up effect
+    await preloadImage(PARTY_IMAGE_LOW_QUALITY_URL);
+    
     console.log('Critical images preloaded successfully');
     return true;
   } catch (err) {

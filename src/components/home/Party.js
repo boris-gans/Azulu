@@ -4,6 +4,10 @@ import { motion, useAnimation, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
+// Export the image URLs for preloading
+export const PARTY_IMAGE_URL = "https://res.cloudinary.com/dsjkhhpbl/image/upload/q_auto,f_auto,w_1200/party-crowd_kgnwom";
+export const PARTY_IMAGE_LOW_QUALITY_URL = "https://res.cloudinary.com/dsjkhhpbl/image/upload/q_10,f_auto,w_50,e_blur:1000/party-crowd_kgnwom";
+
 function Party() {
   // State to track if image is preloaded
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -25,15 +29,38 @@ function Party() {
   // Add reduced motion hook to respect user preferences
   const shouldReduceMotion = useReducedMotion();
   
-  // Preload image with a more efficient approach
+  // Define image URL and optimization parameters
+  const imageUrl = PARTY_IMAGE_URL;
+  const lowQualityImageUrl = PARTY_IMAGE_LOW_QUALITY_URL;
+  
+  // Enhanced preloading strategy
   useEffect(() => {
-    // Single preloading strategy to avoid duplicate efforts
-    if (imageRef.current && !imageLoaded) {
-      // Capture the current value of the ref
-      const currentImageRef = imageRef.current;
+    // Check if the image is already loaded (could be preloaded during initial load)
+    const checkIfAlreadyLoaded = () => {
+      const cachedImage = new Image();
+      cachedImage.src = imageUrl;
       
-      // Use native loading attribute on the image element
-      currentImageRef.onload = () => {
+      // If image is already in browser cache, we can consider it loaded
+      if (cachedImage.complete) {
+        setImageLoaded(true);
+        if (inView) {
+          imageControls.start('visible');
+          cardControls.start('visible');
+          brandingControls.start('visible');
+        }
+        return true;
+      }
+      return false;
+    };
+    
+    // If not already loaded/cached, set up loading
+    if (!checkIfAlreadyLoaded()) {
+      // Preload the high-quality image
+      const preloadImage = new Image();
+      preloadImage.src = imageUrl;
+      
+      // Once the high-quality image is loaded, update state
+      preloadImage.onload = () => {
         setImageLoaded(true);
         
         // Start all animations at once for better performance
@@ -59,14 +86,11 @@ function Party() {
       }, 800);
       
       return () => {
-        // Use the captured ref value instead of accessing .current in cleanup
-        if (currentImageRef) {
-          currentImageRef.onload = null;
-        }
+        preloadImage.onload = null;
         clearTimeout(fallbackTimer);
       };
     }
-  }, [imageControls, cardControls, brandingControls, imageLoaded, inView]);
+  }, [imageControls, cardControls, brandingControls, imageLoaded, inView, imageUrl]);
   
   // Trigger animations when elements come into view - simplified approach
   useEffect(() => {
@@ -114,20 +138,11 @@ function Party() {
 
   return (
     <div className={styles.partyContainer} ref={rootRef}>
-      {/* Red accent bar positioned independently - simplified animation */}
-      <motion.div 
+      {/* Red accent bar - using CSS instead of motion */}
+      <div 
         className={styles.redAccentBar}
-        initial={{ height: 0 }}
-        animate={imageControls}
-        variants={{
-          hidden: { height: 0 },
-          visible: { 
-            height: "100%",
-            transition: { duration: 0.3, ease: "easeOut", delay: 0.1 } // Reduced delay and duration
-          }
-        }}
-        style={{ willChange: 'height' }} // Add will-change for GPU acceleration
-      ></motion.div>
+        style={{ willChange: 'height' }}
+      ></div>
       
       <div className={styles.partyContent}>
         {/* Azulu branding background - simplified animation */}
@@ -149,19 +164,39 @@ function Party() {
         
         {/* Party image with overlay card - simplified animation */}
         <div className={styles.partyImageWrapper}>
+          {/* Background blur-up image */}
+          {!imageLoaded && (
+            <img 
+              src={lowQualityImageUrl}
+              alt="" 
+              aria-hidden="true"
+              className={styles.partyImage}
+              style={{ 
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+            />
+          )}
+        
           <motion.img 
             ref={imageRef}
             initial="hidden"
             animate={imageControls}
             variants={childVariants}
-            src={`https://res.cloudinary.com/dsjkhhpbl/image/upload/party-crowd_kgnwom`} 
+            src={imageUrl} 
             alt="Party crowd" 
             className={styles.partyImage}
+            width="1200"
+            height="800"
             loading="eager" 
             fetchpriority="high"
+            decoding="async"
             style={{ 
               opacity: imageLoaded ? 1 : 0,
-              willChange: 'opacity, transform' // Explicitly mark properties that will change
+              willChange: 'opacity, transform', // Explicitly mark properties that will change
+              objectFit: 'cover'
             }}
           />
           

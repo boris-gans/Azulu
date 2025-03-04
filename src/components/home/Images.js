@@ -1,9 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styles from '../../styles/components/Images.module.css';
 
 function Images() {
-  const scrollContainerRef = useRef(null);
-  
   const shuffleArray = (array) => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -56,27 +54,6 @@ function Images() {
     return `https://res.cloudinary.com/dsjkhhpbl/image/upload/c_fill,w_800,h_600,q_auto,f_auto/${publicId}`;
   };
 
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    let scrollPosition = 0;
-    const scrollSpeed = 0.5;
-    let animationId;
-
-    const scroll = () => {
-      scrollPosition += scrollSpeed;
-      if (scrollPosition >= container.scrollWidth - container.clientWidth) {
-        scrollPosition = 0;
-      }
-      container.scrollLeft = scrollPosition;
-      animationId = requestAnimationFrame(scroll);
-    };
-
-    animationId = requestAnimationFrame(scroll);
-    return () => cancelAnimationFrame(animationId);
-  }, []);
-
   // Add a function to preload all images
   useEffect(() => {
     const preloadAllImages = () => {
@@ -104,15 +81,23 @@ function Images() {
     preloadAllImages();
   }, [images]); // Dependency on images array
   
-  // Then export the publicIds for use in index.js preloader
+  // Set images for potential global preloading
   window.galleryImageIds = images.map(image => image.publicId);
 
   return (
     <div className={styles.imagesContainer}>
       <div className={styles.topBar}></div>
       
-      <div className={styles.imagesScrollContainer} ref={scrollContainerRef}>
-        <div className={styles.imagesGrid}>
+      {/* Use CSS-based animation for a single row of images */}
+      <div 
+        className={styles.imagesScrollContainer}
+        style={{ 
+          pointerEvents: 'none', // Disable all pointer events
+          userSelect: 'none' // Prevent text selection
+        }}
+      >
+        {/* Single track with all images */}
+        <div className={`${styles.imagesTrack} ${styles.animateTrack1}`}>
           {images.map((image, index) => (
             <div key={image.id} className={styles.imageWrapper}>
               <img 
@@ -122,11 +107,12 @@ function Images() {
                 loading={index < 3 ? "eager" : "lazy"}
                 width="800"
                 height="600"
+                draggable="false"
               />
             </div>
           ))}
           
-          {/* Duplicate images */}
+          {/* Duplicate images in the same track for seamless looping */}
           {images.map((image) => (
             <div key={`dup-${image.id}`} className={styles.imageWrapper}>
               <img 
@@ -136,6 +122,7 @@ function Images() {
                 loading="lazy"
                 width="800"
                 height="600"
+                draggable="false"
               />
             </div>
           ))}
@@ -143,6 +130,29 @@ function Images() {
       </div>
       
       <div className={styles.bottomBar}></div>
+      
+      {/* Add inline styles for the animation */}
+      <style jsx="true">{`
+        @keyframes slideLeft {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        
+        .${styles.animateTrack1} {
+          animation: slideLeft 50s linear infinite;
+        }
+        
+        /* Pause animations when reduced motion is preferred */
+        @media (prefers-reduced-motion) {
+          .${styles.animateTrack1} {
+            animation-play-state: paused;
+          }
+        }
+      `}</style>
     </div>
   );
 }
