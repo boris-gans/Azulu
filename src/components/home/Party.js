@@ -29,8 +29,11 @@ function Party() {
   useEffect(() => {
     // Single preloading strategy to avoid duplicate efforts
     if (imageRef.current && !imageLoaded) {
+      // Capture the current value of the ref
+      const currentImageRef = imageRef.current;
+      
       // Use native loading attribute on the image element
-      imageRef.current.onload = () => {
+      currentImageRef.onload = () => {
         setImageLoaded(true);
         
         // Start all animations at once for better performance
@@ -56,8 +59,9 @@ function Party() {
       }, 800);
       
       return () => {
-        if (imageRef.current) {
-          imageRef.current.onload = null;
+        // Use the captured ref value instead of accessing .current in cleanup
+        if (currentImageRef) {
+          currentImageRef.onload = null;
         }
         clearTimeout(fallbackTimer);
       };

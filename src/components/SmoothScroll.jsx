@@ -10,6 +10,15 @@ const SmoothScroll = ({ children }) => {
   const scrollRef = useRef(null);
   
   useEffect(() => {
+    // Detect Firefox browser
+    const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+    
+    // If Firefox is detected, don't initialize Lenis
+    if (isFirefox) {
+      console.log('Firefox detected, disabling custom smooth scrolling');
+      return;
+    }
+    
     // Initialize Lenis with optimized parameters for performance
     const lenis = new Lenis({
       duration: 0.7,  // Reduced from 0.9 for better performance

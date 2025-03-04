@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styles from '../../styles/components/Azulu.module.css';
-import { motion, useScroll, useTransform, useAnimation, useMotionValue, animate } from 'framer-motion';
+import { motion, useScroll, useTransform, animate } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 function Azulu() {
