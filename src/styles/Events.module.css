@@ -1,76 +1,601 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap');
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
 .pageContainer {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px 40px;
+  padding: 0 24px 0; /* Remove bottom padding */
   background: #000;
-  color: white;
+  color: #fff;
   font-family: 'Sora', sans-serif;
-  margin-top: 0;
-  min-height: 100vh;
-  padding-top: 120px;
+  position: relative;
+  height: 100vh; /* Set container to full viewport height */
+  overflow: hidden; /* Hide overflow for container */
+}
+
+.pageTitle {
+  font-size: 32px; /* Reduced from 64px */
+  font-weight: 800;
+  letter-spacing: -1px;
+  position: fixed; /* Keep fixed position */
+  top: 40px;
+  padding: 60px 0 20px; /* Reduce padding */
+  margin: 0;
+  line-height: 1.1;
+  color: #fff;
+  width: calc(100% - 48px); /* Account for container padding */
+  max-width: 1152px; /* 1200px - 48px (24px padding on each side) */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  background: #000;
+  font-family: 'Sora', sans-serif;
+}
+
+.pageTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.pageLayout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  position: relative;
+  align-items: flex-start;
+  z-index: 1;
+  height: calc(100vh - 24px);
+}
+
+.eventsContainer {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  height: calc(100vh + 1000px); /* Adjust height calculation to allow full scrolling */
+  max-height: calc(100vh - 300px); /* Set max-height too for consistent scrolling */
+  overflow-y: auto; /* Make only this section scrollable */
+  padding-bottom: 120px; /* Further increase bottom padding */
+  padding-top: 120px; /* Increase top padding to ensure first date header is visible */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
+  -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
+}
+
+.eventsContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.eventsContainer::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.eventsContainer::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.dateGroup {
+  margin-bottom: 40px; /* Reduced from 60px */
+  position: relative;
+}
+
+.dateHeader {
+  color: #FF4B4B;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: none;
+  padding-bottom: 12px;
+  margin-bottom: 20px; /* Reduced from 20px */
+  display: inline-block;
+  position: relative;
+  margin-top: 20px;
+  align-items: left;
+}
+
+.dateHeader::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: #FF4B4B;
+  opacity: 0.7;
+}
+
+.eventsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Reduced from 16px */
+}
+
+.eventItem {
+  background: #181818;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px; /* Reduced from 10px */
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.eventItem:hover {
+  background: #222222;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.eventRow {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 24px;
+  min-height: 80px;
+  cursor: pointer;
+}
+
+.posterThumb {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.posterThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.posterThumb:hover img {
+  transform: scale(1.1);
+}
+
+.eventInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.eventName {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eventMeta {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-items: center;
+}
+
+.venueText::after {
+  content: '';
+  display: none;
+}
+
+.actionArea {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  min-width: 120px;
+}
+
+.priceTag {
+  font-size: 14px;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.ticketBtn {
+  display: inline-block;
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 4px;
+  text-align: center;
+  min-width: 90px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ticketBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transition: all 0.2s ease;
+}
+
+/* Expanded content */
+.expandedContent {
+  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  background: #111;
+}
+
+.expandedGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.blockLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.blockText {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.descriptionBlock {
+  margin-top: 8px;
+}
+
+.genreList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.genreTag {
+  background: rgba(26, 26, 26, 0.8);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding-left: 0px;
+}
+
+.descriptionText p {
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.8;
+  margin: 0 0 12px 0;
+}
+
+.descriptionText p:last-child {
+  margin-bottom: 0;
+}
+
+/* Map sidebar */
+.mapSidebar {
+  position: fixed;
+  width: 280px; /* 340px grid column - 24px gap */
+  right: max(36px, calc((100vw - 1200px) / 2 + 42px)); /* Responsive position relative to container */
+  top: 200px;
+  z-index: 5;
+  background: #111;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mapContainer {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  height: 320px;
+  background: #0D0D0D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.staticMap {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+  opacity: 0.9;
+}
+
+.staticMap:hover {
+  opacity: 1;
+}
+
+.mapPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  padding: 0;
+  background-color: #111;
+}
+
+.mapLoading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+
+/* Loading state */
+.loadingState, .errorState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+}
+
+.loadingState span {
+  animation: loadingDots 1.4s infinite;
+  animation-fill-mode: both;
+  margin: 0 2px;
+}
+
+.loadingState span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loadingState span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loadingDots {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .pageLayout {
+    grid-template-columns: 1fr;
+    padding-top: 110px;
+    height: auto;
+    overflow: visible;
+  }
+  
+  .pageContainer {
+    overflow-y: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .eventsContainer {
+    overflow: visible;
+    height: auto;
+    padding-bottom: 120px;
+  }
+  
+  .pageTitle {
+    position: sticky;
+    width: calc(100% - 48px);
+    max-width: 100%;
+    font-size: 48px; /* Adjusted for consistency */
+  }
+  
+  .mapSidebar {
+    position: relative;
+    width: 100%;
+    right: auto;
+    top: auto;
+    max-width: 100%;
+    margin-bottom: 40px;
+    border-radius: 6px;
+  }
+  
+  .mapContainer {
+    height: 380px; /* Taller on tablet for better visibility */
+  }
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 0 16px 40px;
+  }
+  
+  .pageTitle {
+    font-size: 36px; /* Reduced from 40px */
+    padding: 50px 0 20px;
+    width: calc(100% - 32px);
+  }
+  
+  .pageLayout {
+    padding-top: 90px;
+  }
+  
+  .pageTitle::before {
+    top: 30px;
+  }
+  
+  .eventRow {
+    grid-template-columns: 50px 1fr auto;
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  .posterThumb {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .eventsList {
+    gap: 12px;
+  }
+  
+  .dateGroup {
+    margin-bottom: 40px;
+  }
+  
+  .actionArea {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .mapContainer {
+    height: 340px; /* Slightly reduced on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 0 12px 30px;
+  }
+  
+  .pageTitle {
+    font-size: 28px;
+    padding: 40px 0 15px;
+    width: calc(100% - 24px);
+  }
+  
+  .pageLayout {
+    padding-top: 80px;
+  }
+  
+  .pageTitle::before {
+    top: 25px;
+  }
+  
+  .eventRow {
+    grid-template-columns: 40px 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+  
+  .posterThumb {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .eventInfo {
+    width: 100%;
+  }
+  
+  .eventMeta {
+    font-size: 12px;
+  }
+  
+  .formattedDate {
+    font-size: 13px;
+  }
+  
+  .actionArea {
+    flex-direction: column;
+    align-items: flex-start;
+    grid-column: 1 / span 2;
+    margin-top: 10px;
+    gap: 6px;
+  }
+  
+  .expandedContent {
+    padding: 15px;
+  }
+  
+  .mapSidebar {
+    margin-bottom: 20px;
+  }
+  
+  .dateGroup {
+    margin-bottom: 30px;
+  }
+  
+  .eventCard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  
+  .eventImage {
+    height: 220px;
+  }
+  
+  .eventInfo {
+    padding: 16px;
+  }
+}
+
+.pageHeader {
+  position: relative;
+  margin-bottom: 60px;
 }
 
 .eventsContainer {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .dateSection {
-  margin-bottom: 64px;
+  margin-bottom: 48px;
   position: relative;
-}
-
-.dateHeader {
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  position: relative;
-  z-index: 1;
-}
-
-.slash {
-  color: #FF4B4B;
-  font-size: 32px;
-  font-weight: bold;
-  margin-right: 8px;
-  line-height: 1;
+  width: 100%;
 }
 
 .dateText {
-  font-size: 20px;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #FF4B4B;
-  letter-spacing: 0.5px;
-  position: relative;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
 }
 
 .eventCard {
   display: grid;
-  grid-template-columns: 280px minmax(250px, 1fr) minmax(250px, 1fr) auto;
-  background: rgba(18, 18, 18, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 2px;
-  overflow: hidden;
-  position: relative;
-  backdrop-filter: blur(10px);
+  grid-template-columns: 350px 1fr 1fr 120px;
+  background: #111;
+  border: 0.5px solid rgba(217, 217, 217, 0.2);
   margin-bottom: 16px;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.eventImageWrapper {
-  position: relative;
   overflow: hidden;
-  border-radius: 4px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.eventCard:hover .eventImageWrapper {
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 
 .eventImage {
@@ -80,124 +605,73 @@
   position: relative;
 }
 
-.eventImage::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
-  z-index: 1;
-}
-
 .eventImage img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.6s ease;
+  transition: transform 0.3s ease;
 }
 
 
-.priceTag {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  background: rgba(255, 75, 75, 0.9);
-  color: white;
-  padding: 6px 12px;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 2px;
-  z-index: 2;
-}
-
-.eventContent {
-  padding: 32px;
+.eventInfo {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .eventTitle {
-  font-size: 36px;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: white;
   margin: 0;
   line-height: 1.1;
-  letter-spacing: -0.5px;
-}
-
-.eventDetails {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.venueRow {
-  display: flex;
-  align-items: center;
+  letter-spacing: 0.05em;
 }
 
 .venueInfo {
-  font-size: 18px;
-  color: #999;
-  font-weight: 300;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.venueDash {
-  color: #FF4B4B;
-  font-weight: bold;
-  margin-top: 5px;
-}
-
-.venueDetails {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
 .venueName {
-  font-size: 18px;
-  color: #999;
+  font-size: 0.8rem;
+  color: #fff;
+  opacity: 0.8;
 }
 
 .venueAddress {
-  font-size: 14px;
-  color: #777;
-  margin-top: 2px;
-  font-weight: 300;
+  font-size: 0.7rem;
+  color: #fff;
+  opacity: 0.7;
+  letter-spacing: 0.05em;
 }
 
 .priceInfo {
-  font-size: 16px;
-  font-weight: 500;
-  color: #FF4B4B;
-  margin-left: 8px;
-  padding: 2px 8px;
-  border: 1px solid rgba(255, 75, 75, 0.3);
-  border-radius: 4px;
-  align-self: flex-start;
-  margin-top: 3px;
+  font-size: 0.8rem;
+  color: #fff;
+  opacity: 0.8;
+  margin-top: 4px;
+  display: inline-block;
+  border: 0.5px solid rgba(217, 217, 217, 0.2);
+  padding: 2px 6px;
 }
 
 .lineupContainer {
-  margin: 1.2rem 0;
-  border-left: 2px solid rgba(255, 75, 75, 0.4);
-  padding-left: 10px;
+  margin-top: 8px;
+  border-left: 1px solid rgba(217, 217, 217, 0.2);
+  padding-left: 8px;
 }
 
 .lineupHeading {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 600;
-  color: #FF4B4B;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  color: #fff;
+  opacity: 0.7;
+  display: block;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
 }
 
 .lineupList {
@@ -207,113 +681,66 @@
 }
 
 .lineupArtist {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: white;
   font-weight: 400;
-  position: relative;
-  padding-right: 12px;
-  margin-right: 8px;
-}
-
-.lineupArtist:not(:last-child)::after {
-  content: "•";
-  position: absolute;
-  right: 0;
-  color: #FF4B4B;
-  font-size: 0.8rem;
-}
-
-.lineupArtist:hover {
-  color: #FF4B4B;
-  transition: color 0.2s ease;
-}
-
-.eventDescriptionColumn {
-  padding: 32px 16px 32px 0;
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
-  max-height: 280px;
-  overflow-y: auto;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.eventDescription {
-  color: #BBB;
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 300;
-  padding-left: 24px;
-}
-
-.eventDescription p {
-  margin: 0 0 12px 0;
-}
-
-.eventDescription p:last-child {
-  margin-bottom: 0;
 }
 
 .genreContainer {
   display: flex;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 
 .genre {
-  background: rgba(255, 255, 255, 0.05);
-  color: #BBB;
-  padding: 6px 12px;
-  font-size: 14px;
-  letter-spacing: 0.5px;
+  background: rgba(26, 26, 26, 0.8);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
   font-weight: 400;
-  position: relative;
+  border: 0.5px solid rgba(217, 217, 217, 0.2);
+}
+
+.eventDescription {
+  padding: 24px 16px;
+  border-left: 0.5px solid rgba(217, 217, 217, 0.2);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.eventDescription p {
+  color: #fff;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  font-weight: 300;
+  margin: 0 0 8px 0;
+  opacity: 0.8;
+  letter-spacing: 0.05em;
 }
 
 .eventActions {
-  padding: 32px;
+  padding: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .ticketButton {
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 0.5px solid rgba(217, 217, 217, 0.2);
   color: white;
   background: transparent;
-  padding: 12px 24px;
+  padding: 8px 16px;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 14px;
-  letter-spacing: 2px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
   font-weight: 500;
-  overflow: hidden;
-  transition: color 0.3s ease;
-  z-index: 1;
-}
-
-.ticketButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #FF4B4B;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.7, 0, 0.3, 1);
-  z-index: -1;
 }
 
 .ticketButton:hover {
-  color: #fff;
-  border-color: #FF4B4B;
-}
-
-.ticketButton:hover::before {
-  transform: scaleX(1);
-  transform-origin: left;
+  background: #1a1a1a;
 }
 
 .loading, .error {
@@ -321,9 +748,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  letter-spacing: 2px;
-  color: #FF4B4B;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+  opacity: 0.7;
   font-weight: 300;
 }
 
@@ -349,66 +777,61 @@
 
 @media (max-width: 1024px) {
   .eventCard {
-    grid-template-columns: 280px minmax(0, 1fr) auto;
+    grid-template-columns: 320px 1fr 1fr 120px;
   }
   
-  .eventDescriptionColumn {
+  .eventImage {
+    height: 200px;
+  }
+  
+  .eventInfo {
     grid-column: 2;
+    grid-row: 1;
+  }
+  
+  .eventDescription {
+    grid-column: 1 / span 2;
     grid-row: 2;
-    padding: 0 32px 24px 32px;
     border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 0.5px solid rgba(217, 217, 217, 0.2);
     max-height: none;
   }
   
   .eventActions {
-    grid-column: 3;
-    grid-row: 1;
+    grid-column: 1 / span 2;
+    grid-row: 3;
+    border-top: 0.5px solid rgba(217, 217, 217, 0.2);
+    justify-content: flex-start;
   }
 }
 
 @media (max-width: 768px) {
+  .pageTitle {
+    font-size: 2.2rem;
+  }
+
   .eventCard {
-    grid-template-columns: 1fr;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto auto;
   }
 
   .eventImage {
-    width: 100%;
-    height: 240px;
+    height: 180px;
   }
   
-  .eventDescriptionColumn {
+  .eventInfo {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  .eventDescription {
     grid-column: 1;
     grid-row: 3;
-    padding: 0 24px 24px 24px;
   }
   
   .eventActions {
     grid-column: 1;
     grid-row: 4;
-    padding: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    justify-content: center;
-  }
-  
-  .eventDetails {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .priceInfo {
-    align-self: flex-start;
-  }
-
-  .lineupContainer {
-    margin: 1rem 0;
-    padding-left: 8px;
-  }
-  
-  .lineupArtist {
-    font-size: 0.85rem;
-    margin-bottom: 4px;
   }
 }
 
@@ -533,14 +956,21 @@
 }
 
 .pageTitle {
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 32px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 370;
   margin: 0;
   color: white;
   letter-spacing: -0.5px;
   position: relative;
   display: inline-block;
+  text-transform: uppercase;
 }
+.pageTitle h1 {
+  font-size: 12px;
+  font-weight: 700;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -552,4 +982,66 @@
     font-size: 2.2rem;
     margin-bottom: 30px;
   }
-} 
+}
+
+.mapCaption {
+  padding: 14px 16px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Shadow at the top of the map */
+.mapContainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Highlight effect for active pins */
+@keyframes pinPulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+/* Improve date formatting styles */
+.formattedDate {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 200;
+  margin-bottom: 2px;
+}
+
+.dayText {
+  color: #FF4B4B;
+  font-weight: 400;
+}
+
+.monthText {
+  color: #FF4B4B;
+  font-weight: 400;
+}
+
+.dateNum {
+  color: #FF4B4B;
+  font-weight: 400;
+}
+
+/* Add a media query to adjust map position for slightly smaller screens */
+@media (max-width: 1260px) {
+  .mapSidebar {
+    right: 24px; /* Stick to right edge of container on smaller screens */
+  }
+}
