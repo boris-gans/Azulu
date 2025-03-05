@@ -246,8 +246,10 @@ html, body {
   transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
+/* Shine effect */
 .ticketBtn::after {
   content: '';
   position: absolute;
@@ -264,19 +266,49 @@ html, body {
   transform: skewX(-25deg);
   transition: all 0.7s ease;
   opacity: 0;
+  z-index: 2;
+}
+
+/* Background glow effect */
+.ticketBtn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: -1;
+  transform: scale(0.9);
+  border-radius: 4px;
 }
 
 .ticketBtn:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.10), 
-              inset 0 0 5px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15), 
+              inset 0 0 5px rgba(255, 255, 255, 0.05);
   letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 1);
 }
 
 .ticketBtn:hover::after {
   left: 120%;
   opacity: 1;
+}
+
+.ticketBtn:hover::before {
+  opacity: 1;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Active state */
+.ticketBtn:active {
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease;
 }
 
 /* Expanded content */
