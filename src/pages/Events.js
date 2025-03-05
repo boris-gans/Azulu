@@ -145,7 +145,24 @@ function Events() {
   const [error, setError] = useState(null);
   const [expandedEvent, setExpandedEvent] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   
+  // Check if mobile on mount and when window is resized
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Check on mount
+    checkIfMobile();
+    
+    // Add resize listener
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Clean up
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -186,8 +203,8 @@ function Events() {
     
     return (
       <div className={styles.formattedDate}>
-        <span className={styles.dayText}>{day},</span>
-        <span className={styles.monthText}>{month}</span>
+        <span className={styles.dayText}>{day},</span>{' '}
+        <span className={styles.monthText}>{month}</span>{' '}
         <span className={styles.dateNum}>{dayNum}</span>
       </div>
     );
@@ -344,12 +361,14 @@ function Events() {
           ))}
         </div>
         
-        <div className={styles.mapSidebar}>
-          <GlobalVenueMap venues={allVenues} selectedAddress={selectedAddress} />
-          <div className={styles.mapCaption}>
-            GLOBAL LOCATIONS
+        {!isMobile && (
+          <div className={styles.mapSidebar}>
+            <GlobalVenueMap venues={allVenues} selectedAddress={selectedAddress} />
+            <div className={styles.mapCaption}>
+              GLOBAL LOCATIONS
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

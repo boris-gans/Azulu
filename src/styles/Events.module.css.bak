@@ -5,25 +5,20 @@ html, body {
   padding: 0;
   height: 100%;
   background: #000;
-  overflow-y: auto; /* Change from hidden to auto to allow vertical scrolling */
-  overflow-x: hidden; /* Only prevent horizontal scrolling */
+  overflow: auto; /* Changed from hidden to allow normal page scroll */
   -webkit-font-smoothing: antialiased;
-  color: #fff;
-  font-family: 'Sora', sans-serif;
 }
 
 .pageContainer {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px 60px; /* Add bottom padding to ensure content is not cut off */
+  padding: 0 24px 0;
   background: #000;
   color: #fff;
   font-family: 'Sora', sans-serif;
   position: relative;
-  min-height: 100vh; /* Changed from height to min-height */
-  overflow-x: hidden; /* Only hide horizontal overflow */
-  overflow-y: visible; /* Ensure vertical content is visible */
+  min-height: 100vh;
 }
 
 .pageTitle {
@@ -32,12 +27,13 @@ html, body {
   letter-spacing: -1px;
   position: sticky;
   top: 0;
-  padding: 60px 0 20px;
-  margin: 0;
+  padding: 40px 0 20px;
+  margin: 0 0 20px 0;
   text-transform: uppercase;
   line-height: 1.1;
   color: #fff;
-  width: 100%;
+  width: calc(100% - 48px);
+  max-width: 1152px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   z-index: 10;
   background: #000;
@@ -60,15 +56,22 @@ html, body {
   position: relative;
   align-items: flex-start;
   z-index: 1; /* Lower z-index so it scrolls under the title */
-  margin-top: 80px;
+  padding-top: 10px; /* Reduced padding since title is sticky */
+  height: calc(100vh - 24px);
 }
 
 .eventsContainer {
   width: 100%;
   position: relative;
   z-index: 1;
-  height: auto;
-  padding-bottom: 60px;
+  height: calc(100vh - 150px); /* Adjust height calculation to allow full scrolling */
+  max-height: calc(100vh - 150px); /* Set max-height too for consistent scrolling */
+  overflow-y: auto; /* Make only this section scrollable */
+  padding-bottom: 120px; /* Further increase bottom padding */
+  padding-top: 30px; /* Increase top padding to ensure first date header is visible */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
+  -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
 }
 
 .eventsContainer::-webkit-scrollbar {
@@ -85,21 +88,22 @@ html, body {
 }
 
 .dateGroup {
-  margin-bottom: 40px;
+  margin-bottom: 40px; /* Reduced from 60px */
   position: relative;
 }
 
 .dateHeader {
-  color: #FF4B4B;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  border-bottom: none;
-  padding-bottom: 12px;
-  margin-bottom: 16px;
-  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
   position: relative;
-  margin-top: 30px;
+  padding: 30px 0 16px;
+  z-index: 2;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* Add background styling for better visibility */
+  background: linear-gradient(to bottom, #000 80%, rgba(0,0,0,0.8) 100%);
 }
 
 .dateHeader::after {
@@ -297,9 +301,9 @@ html, body {
 
 /* Map sidebar */
 .mapSidebar {
-  position: sticky;
-  top: 100px; /* Position it below the sticky title */
-  width: 316px;
+  position: sticky; /* Change to sticky from fixed */
+  top: 120px; /* Position it below the sticky title */
+  width: 316px; /* 340px grid column - 24px gap */
   align-self: flex-start;
   z-index: 5;
   background: #111;
@@ -413,17 +417,16 @@ html, body {
   
   .pageTitle {
     position: sticky;
+    top: 0;
+    font-size: 48px;
     width: calc(100% - 48px);
     max-width: 100%;
-    font-size: 48px; /* Adjusted for consistency */
+    z-index: 10;
   }
   
   .mapSidebar {
-    position: relative;
+    position: static;
     width: 100%;
-    right: auto;
-    top: auto;
-    max-width: 100%;
     margin-bottom: 40px;
     border-radius: 6px;
   }
@@ -439,10 +442,9 @@ html, body {
   }
   
   .pageTitle {
-    font-size: 28px;
-    padding: 50px 0 15px;
-    position: relative; /* Change from fixed to relative for better scrolling */
-    top: 0;
+    font-size: 36px;
+    padding: 30px 0 20px;
+    width: calc(100% - 32px);
   }
   
   .pageLayout {
@@ -1030,7 +1032,6 @@ html, body {
   display: inline-block;
   text-transform: uppercase;
   position:sticky;
-  top: 40px;
 }
 .pageTitle h1 {
   font-size: 12px;
