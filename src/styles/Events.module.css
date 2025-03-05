@@ -28,7 +28,7 @@ html, body {
 }
 
 .pageTitle {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 300;
   letter-spacing: -1px;
   position: fixed; /* Change from sticky to fixed */
@@ -58,7 +58,7 @@ html, body {
   gap: 10px;
   position: relative;
   z-index: 1;
-  margin-top: 150px; /* Space for fixed header */
+  margin-top: 155px; /* Space for fixed header */
   flex: 1;
   height: calc(100vh - 160px); /* Slightly reduce height to ensure no overflow */
   overflow: hidden;
@@ -66,7 +66,7 @@ html, body {
 }
 
 .eventsContainer {
-  width: 150%;
+  width: 100%;
   position: relative;
   z-index: 1;
   max-height: 100%; /* Use max-height instead of height */
@@ -140,6 +140,8 @@ html, body {
   transition: all 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0; /* Reset padding */
+  max-width: 95%;
+  align-items: center;
 }
 
 .eventItem:hover {
@@ -356,7 +358,7 @@ html, body {
 
 .genreTag {
   background: rgba(0, 0, 0, 0.8);
-  border: 0.5px solid rgba(91, 4, 4, 0.723);
+  border: 0.5px solid  #d9d9d93d;
   padding: 4px 10px;
   font-size: 11px;
   border-radius: 4px;
@@ -379,8 +381,8 @@ html, body {
 /* Map sidebar */
 .mapSidebar {
   position: fixed; /* Change from sticky to fixed */
-  top: 190px; /* Position below fixed header */
-  right: calc((100% - 1200px) / 2 + 24px); /* Align with right edge of content */
+  top: 230px; /* Position below fixed header */
+  right: calc((100% - 1200px) / 2 + 0px); /* Align with right edge of content */
   width: 280px;
   z-index: 5;
   background: #111;
@@ -862,27 +864,104 @@ html, body {
   }
 
   .eventCard {
-    grid-template-columns: 260px 1fr;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 15px;
+    padding: 15px;
   }
 
   .eventImage {
-    height: 180px;
+    grid-column: 1;
+    grid-row: 1;
+    height: 200px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
   }
   
   .eventInfo {
     grid-column: 1;
     grid-row: 2;
+    padding: 0;
+  }
+  
+  .eventTitle {
+    font-size: 1.3rem;
+  }
+  
+  .venueInfo {
+    margin-top: 5px;
   }
   
   .eventDescription {
     grid-column: 1;
     grid-row: 3;
+    padding: 0;
+    border: none;
   }
   
   .eventActions {
     grid-column: 1;
     grid-row: 4;
+    padding: 10px 0 0;
+    border-top: 0.5px solid rgba(217, 217, 217, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .priceInfo {
+    margin-bottom: 8px;
+  }
+  
+  .lineupList {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 0 12px;
+  }
+  
+  .pageTitle {
+    font-size: 28px;
+    padding: 24px 12px 15px;
+  }
+  
+  .eventCard {
+    margin-bottom: 20px;
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .eventImage {
+    height: 180px;
+  }
+  
+  .eventTitle {
+    font-size: 1.1rem;
+  }
+  
+  .venueName, .venueAddress {
+    font-size: 0.75rem;
+  }
+  
+  .ticketButton {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .lineupArtist {
+    padding: 2px 6px;
+    font-size: 11px;
+  }
+  
+  .dateHeader {
+    padding: 8px 0;
+    margin-bottom: 10px;
   }
 }
 
@@ -1119,7 +1198,7 @@ html, body {
 
 .lineupArtist {
   background: rgba(255, 75, 75, 0.031);
-  border: 0.5px solid rgba(255, 75, 75, 0.3);
+  border: 0.5px solid #d9d9d93d;
   padding: 3px 8px;
   font-size: 12px;
   border-radius: 4px;
