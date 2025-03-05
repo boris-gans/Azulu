@@ -292,6 +292,11 @@ function Events() {
                             </span>
                           </div>
                         )}
+                        {event.lineup && event.lineup.length > 0 && (
+                          <div className={styles.lineupPreview}>
+                            {event.lineup.map(item => item.artist).join(' • ')}
+                          </div>
+                        )}
                       </div>
                       
                       <div className={styles.actionArea}>
@@ -323,6 +328,17 @@ function Events() {
                               <div className={styles.addressBlock}>
                                 <div className={styles.blockLabel}>LOCATION</div>
                                 <div className={styles.blockText}>{event.venue.address}</div>
+                              </div>
+                            )}
+                            
+                            {event.lineup && event.lineup.length > 0 && (
+                              <div className={styles.lineupBlock}>
+                                <div className={styles.blockLabel}>LINEUP</div>
+                                <div className={styles.lineupList}>
+                                  {event.lineup.map((artist, i) => (
+                                    <span key={i} className={styles.lineupArtist}>{artist.artist}</span>
+                                  ))}
+                                </div>
                               </div>
                             )}
                             

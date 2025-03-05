@@ -133,7 +133,7 @@ html, body {
 
 .eventRow {
   display: grid;
-  grid-template-columns: 70px 1fr auto;
+  grid-template-columns: 90px 1fr auto;
   gap: 16px;
   padding: 16px;
   align-items: center;
@@ -141,8 +141,8 @@ html, body {
 }
 
 .posterThumb {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   overflow: hidden;
   border-radius: 4px;
   background: #0a0a0a;
@@ -276,12 +276,14 @@ html, body {
 }
 
 .genreTag {
-  background: rgba(26, 26, 26, 0.8);
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 0.5px solid rgba(91, 4, 4, 0.723);
+  padding: 4px 10px;
   font-size: 11px;
+  border-radius: 4px;
   letter-spacing: 0.05em;
-  padding-left: 0px;
+  text-align: center;
+  align-items: center;
 }
 
 .descriptionText p {
@@ -765,6 +767,8 @@ html, body {
   letter-spacing: 0.05em;
   font-weight: 400;
   border: 0.5px solid rgba(217, 217, 217, 0.2);
+  align-items: center;
+  text-align: center;
 }
 
 .eventDescription {
@@ -1126,4 +1130,35 @@ html, body {
     max-height: none;
     overflow-y: visible;
   }
+}
+
+.lineupPreview {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.lineupBlock {
+  margin-top: 16px;
+}
+
+.lineupList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.lineupArtist {
+  background: rgba(255, 75, 75, 0.031);
+  border: 0.5px solid rgba(255, 75, 75, 0.3);
+  padding: 3px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  text-align: center;
+  align-items: center;
 }
