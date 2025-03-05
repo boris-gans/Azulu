@@ -29,7 +29,7 @@ html, body {
 
 .pageTitle {
   font-size: 24px;
-  font-weight: 250;
+  font-weight: 300;
   letter-spacing: -1px;
   position: fixed; /* Change from sticky to fixed */
   top: 15px;
@@ -43,7 +43,7 @@ html, body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   z-index: 50;
   background: #000;
-  margin-top: 40px;
+  margin-top: 70px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-family: 'Sora', sans-serif;
 }
@@ -55,7 +55,7 @@ html, body {
 .pageLayout {
   display: grid;
   grid-template-columns: 1fr 340px;
-  gap: 30px;
+  gap: 10px;
   position: relative;
   z-index: 1;
   margin-top: 150px; /* Space for fixed header */
@@ -66,13 +66,13 @@ html, body {
 }
 
 .eventsContainer {
-  width: 100%;
+  width: 150%;
   position: relative;
   z-index: 1;
   max-height: 100%; /* Use max-height instead of height */
   overflow-y: auto;
   padding-right: 15px;
-  padding-top: 25px;
+  padding-top: 55px;
   padding-bottom: 0;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   scrollbar-width: thin;
@@ -105,7 +105,7 @@ html, body {
 
 .dateGroup:first-child {
   margin-top: 0;
-  padding-top: 30px; /* Increased from 20px */
+  padding-top: 30px; /* Increased for better spacing */
 }
 
 .dateGroup:last-child {
@@ -130,7 +130,7 @@ html, body {
 .eventsList {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Increased from 12px to 16px */
+  gap: 18px; /* Increased from 16px for more spacing between cards */
 }
 
 .eventItem {
@@ -139,24 +139,26 @@ html, body {
   background: rgba(255, 255, 255, 0.03);
   transition: all 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0; /* Reset padding */
 }
 
 .eventItem:hover {
   background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .eventRow {
   display: grid;
-  grid-template-columns: 90px 1fr auto;
+  grid-template-columns: 110px 1fr auto; /* Increased from 90px to 110px for larger image */
   gap: 16px;
-  padding: 16px;
+  padding: 20px; /* Increased from 16px to 20px for more vertical space */
   align-items: center;
   cursor: pointer;
 }
 
 .posterThumb {
-  width: 80px;
-  height: 80px;
+  width: 100px; /* Increased from 80px to 100px */
+  height: 100px; /* Increased from 80px to 100px */
   overflow: hidden;
   border-radius: 4px;
   background: #0a0a0a;
@@ -170,28 +172,29 @@ html, body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
 }
 
 .posterThumb:hover img {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 .eventInfo {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px; /* Increased from 4px to 6px for more spacing */
   overflow: hidden;
 }
 
 .eventName {
-  font-size: 16px;
+  font-size: 17px; /* Increased from 16px to 17px */
   font-weight: 500;
   margin: 0;
   letter-spacing: 0.03em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 2px; /* Add a bit of space after the name */
 }
 
 .eventMeta {
@@ -203,11 +206,12 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   align-items: center;
+  margin: 2px 0;
 }
 
-.venueText::after {
-  content: '';
-  display: none;
+.venueText {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
 }
 
 .actionArea {
@@ -219,15 +223,16 @@ html, body {
 }
 
 .priceTag {
-  font-size: 14px;
+  font-size: 15px; /* Slightly increased */
   white-space: nowrap;
   text-align: right;
+  font-weight: 500; /* Added weight */
 }
 
 .ticketBtn {
   display: inline-block;
   border: 0.5px solid rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
+  padding: 10px 18px;
   text-transform: uppercase;
   font-size: 11px;
   font-weight: 600;
@@ -238,17 +243,45 @@ html, body {
   text-align: center;
   min-width: 90px;
   background: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ticketBtn::after {
+  content: '';
+  position: absolute;
+  left: -20%;
+  top: 0;
+  height: 100%;
+  width: 60%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0)
+  );
+  transform: skewX(-25deg);
+  transition: all 0.7s ease;
+  opacity: 0;
 }
 
 .ticketBtn:hover {
   background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-  transition: all 0.2s ease;
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.10), 
+              inset 0 0 5px rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.15em;
+}
+
+.ticketBtn:hover::after {
+  left: 120%;
+  opacity: 1;
 }
 
 /* Expanded content */
 .expandedContent {
-  padding: 24px;
+  padding: 28px; /* Increased from 24px */
   background: rgba(0, 0, 0, 0.7);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -314,7 +347,7 @@ html, body {
 /* Map sidebar */
 .mapSidebar {
   position: fixed; /* Change from sticky to fixed */
-  top: 170px; /* Position below fixed header */
+  top: 190px; /* Position below fixed header */
   right: calc((100% - 1200px) / 2 + 24px); /* Align with right edge of content */
   width: 280px;
   z-index: 5;
@@ -516,13 +549,13 @@ html, body {
   
   /* Mobile event item styling */
   .eventRow {
-    grid-template-columns: 60px 1fr;
-    padding: 16px;
+    grid-template-columns: 80px 1fr; /* Smaller but still larger than original 60px */
+    padding: 18px; /* Increased padding */
   }
   
   .posterThumb {
-    width: 60px;
-    height: 60px;
+    width: 80px; /* Reduced for mobile but still larger than original 60px */
+    height: 80px;
   }
   
   .actionArea {
@@ -656,13 +689,18 @@ html, body {
 .lineupList {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .lineupArtist {
-  font-size: 0.75rem;
-  color: white;
-  font-weight: 400;
+  background: rgba(255, 75, 75, 0.05); /* Slightly brighter */
+  border: 0.5px solid rgba(255, 75, 75, 0.3);
+  padding: 4px 10px; /* Increased from 3px 8px */
+  font-size: 12px;
+  border-radius: 4px;
+  text-align: center;
+  align-items: center;
 }
 
 .genreContainer {
@@ -910,7 +948,7 @@ html, body {
   top: -50px;
   left: 24px;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 300;
   color: #FF4B4B;
   display: flex;
   align-items: center;
@@ -991,17 +1029,17 @@ html, body {
 
 .dayText {
   color: #FF4B4B;
-  font-weight: 400;
+  font-weight: 250;
 }
 
 .monthText {
   color: #FF4B4B;
-  font-weight: 400;
+  font-weight: 250;
 }
 
 .dateNum {
   color: #FF4B4B;
-  font-weight: 400;
+  font-weight: 250;
 }
 
 /* Add a media query to adjust map position for slightly smaller screens */
@@ -1028,13 +1066,12 @@ html, body {
 }
 
 .lineupPreview {
-  font-size: 12px;
+  font-size: 13px; /* Slightly increased font size */
   color: rgba(255, 255, 255, 0.7);
-  margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  margin-top: 4px; /* Add space above lineup */
 }
 
 .lineupBlock {
