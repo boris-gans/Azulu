@@ -16,59 +16,70 @@ html, body {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 24px 60px; /* Add bottom padding to ensure content is not cut off */
+  padding: 0 24px;
   background: #000;
   color: #fff;
   font-family: 'Sora', sans-serif;
   position: relative;
-  min-height: 100vh; /* Changed from height to min-height */
-  overflow-x: hidden; /* Only hide horizontal overflow */
-  overflow-y: visible; /* Ensure vertical content is visible */
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevent page-level scrolling */
+  display: flex;
+  flex-direction: column;
 }
 
 .pageTitle {
-  font-size: 54px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 250;
   letter-spacing: -1px;
-  position: sticky;
-  top: 0;
-  padding: 60px 0 20px;
-  margin: 0;
+  position: fixed; /* Change from sticky to fixed */
+  top: 15px;
+  left: 0;
+  right: 0;
+  padding: 40px 24px 10px; /* Add horizontal padding to match container */
+  margin: 0 auto;
+  max-width: 1200px; /* Match container width */
   text-transform: uppercase;
-  line-height: 1.1;
   color: #fff;
-  width: 100%;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  z-index: 10;
+  z-index: 50;
   background: #000;
+  margin-top: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Sora', sans-serif;
 }
 
 .pageTitle::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.2);
+  display: none;
 }
 
 .pageLayout {
   display: grid;
   grid-template-columns: 1fr 340px;
-  gap: 24px;
+  gap: 30px;
   position: relative;
-  align-items: flex-start;
-  z-index: 1; /* Lower z-index so it scrolls under the title */
-  margin-top: 80px;
+  z-index: 1;
+  margin-top: 150px; /* Space for fixed header */
+  flex: 1;
+  height: calc(100vh - 160px); /* Slightly reduce height to ensure no overflow */
+  overflow: hidden;
+  padding-bottom: 0; /* Remove bottom padding */
 }
 
 .eventsContainer {
   width: 100%;
   position: relative;
   z-index: 1;
-  height: auto;
-  padding-bottom: 60px;
+  max-height: 100%; /* Use max-height instead of height */
+  overflow-y: auto;
+  padding-right: 15px;
+  padding-top: 25px;
+  padding-bottom: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .eventsContainer::-webkit-scrollbar {
@@ -77,6 +88,7 @@ html, body {
 
 .eventsContainer::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
 }
 
 .eventsContainer::-webkit-scrollbar-thumb {
@@ -85,8 +97,21 @@ html, body {
 }
 
 .dateGroup {
-  margin-bottom: 40px;
+  margin-bottom: 50px; /* Increased bottom margin */
   position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Add subtle separator */
+  padding-bottom: 30px;
+}
+
+.dateGroup:first-child {
+  margin-top: 0;
+  padding-top: 30px; /* Increased from 20px */
+}
+
+.dateGroup:last-child {
+  border-bottom: none;
+  margin-bottom: 80px; /* Increased margin to ensure scrolling reaches the end */
+  padding-bottom: 60px;
 }
 
 .dateHeader {
@@ -96,31 +121,20 @@ html, body {
   letter-spacing: 0.05em;
   border-bottom: none;
   padding-bottom: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 38px; /* Increased further from 28px to 32px */
   display: inline-block;
   position: relative;
   margin-top: 30px;
 }
 
-.dateHeader::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 30px;
-  height: 2px;
-  background: #FF4B4B;
-  opacity: 0.7;
-}
-
 .eventsList {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Reduced from 16px */
+  gap: 16px; /* Increased from 12px to 16px */
 }
 
 .eventItem {
-  margin-bottom: 12px;
+  margin-bottom: 16px; /* Increased from 12px to 16px */
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.03);
   transition: all 0.2s ease;
@@ -299,13 +313,13 @@ html, body {
 
 /* Map sidebar */
 .mapSidebar {
-  position: sticky;
-  top: 100px; /* Position it below the sticky title */
-  width: 316px;
-  align-self: flex-start;
+  position: fixed; /* Change from sticky to fixed */
+  top: 170px; /* Position below fixed header */
+  right: calc((100% - 1200px) / 2 + 24px); /* Align with right edge of content */
+  width: 280px;
   z-index: 5;
   background: #111;
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -317,7 +331,6 @@ html, body {
   width: 100%;
   position: relative;
   overflow: hidden;
-  height: 320px;
   background: #0D0D0D;
   display: flex;
   align-items: center;
@@ -393,64 +406,87 @@ html, body {
 }
 
 /* Responsive styles */
-@media (max-width: 992px) {
-  .pageLayout {
-    grid-template-columns: 1fr;
-    padding-top: 110px;
-    height: auto;
-    overflow: visible;
+@media (max-width: 1240px) {
+  .mapSidebar {
+    right: 24px; /* Adjust for smaller screens */
   }
-  
+}
+
+@media (max-width: 992px) {
   .pageContainer {
-    overflow-y: auto;
     height: auto;
+    overflow-y: auto;
     min-height: 100vh;
   }
-  
-  .eventsContainer {
-    overflow: visible;
-    height: auto;
-    padding-bottom: 120px;
-  }
-  
+
   .pageTitle {
     position: sticky;
     width: calc(100% - 48px);
-    max-width: 100%;
-    font-size: 48px; /* Adjusted for consistency */
+    padding: 40px 0 20px;
+    top: 0;
+  }
+  
+  .pageLayout {
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+    height: auto;
+    gap: 30px;
+  }
+  
+  .eventsContainer {
+    max-height: none;
+    height: auto;
+    overflow-y: visible;
+    padding-bottom: 40px;
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
+  }
+  
+  .dateGroup:first-child {
+    padding-top: 0;
+  }
+  
+  .dateGroup:last-child {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
   }
   
   .mapSidebar {
     position: relative;
-    width: 100%;
-    right: auto;
     top: auto;
+    right: auto;
+    width: 100%;
+    height: 400px;
     max-width: 100%;
     margin-bottom: 40px;
-    border-radius: 6px;
-  }
-  
-  .mapContainer {
-    height: 380px; /* Taller on tablet for better visibility */
   }
 }
 
 @media (max-width: 768px) {
   .pageContainer {
-    padding: 0 16px 80px; /* Increase bottom padding for more space */
+    padding: 0 16px;
+    height: auto;
+    overflow-y: auto;
   }
   
   .pageTitle {
-    font-size: 28px;
-    padding: 50px 0 15px;
-    position: relative; /* Change from fixed to relative for better scrolling */
+    position: sticky;
     top: 0;
+    font-size: 32px;
+    padding: 30px 16px 15px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    z-index: 50;
   }
   
   .pageLayout {
     display: block;
-    padding-top: 0; /* Remove top padding since title is now relative */
-    min-height: auto;
+    margin-top: 20px;
+    height: auto;
   }
   
   .eventsContainer {
@@ -460,84 +496,33 @@ html, body {
     padding-top: 20px;
     padding-bottom: 40px;
     width: 100%;
+    border-right: none;
+    padding-right: 0;
   }
   
+  .dateHeader {
+    position: relative;
+    top: 0;
+    background: #000;
+    z-index: 5;
+    padding: 16px 0;
+    margin-bottom: 24px;
+  }
+  
+  .dateGroup {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+  }
+  
+  /* Mobile event item styling */
   .eventRow {
     grid-template-columns: 60px 1fr;
     padding: 16px;
   }
   
-  .eventItem {
-    margin-bottom: 16px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.03);
-    transition: all 0.2s ease;
-  }
-  
-  .eventItem:hover {
-    background: rgba(255, 255, 255, 0.06);
-  }
-  
   .posterThumb {
     width: 60px;
     height: 60px;
-  }
-  
-  .dateHeader {
-    position: sticky;
-    top: 0; /* Change from 120px to 0 since title is no longer fixed */
-    background: #000;
-    z-index: 5;
-    padding: 16px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .pageContainer {
-    padding: 0 12px 80px; /* Increase bottom padding */
-    overflow-x: hidden;
-    width: 100%;
-  }
-  
-  .pageTitle {
-    font-size: 28px;
-    padding: 20px 0 15px; /* Reduce padding further */
-    margin-bottom: 10px;
-  }
-  
-  .pageLayout {
-    padding-top: 0; /* Remove top padding since title is now relative */
-    display: block;
-    overflow-x: hidden;
-    width: 100%;
-    min-height: auto;
-  }
-  
-  .pageTitle::before {
-    top: 25px;
-  }
-  
-  .eventRow {
-    grid-template-columns: 50px 1fr;
-    gap: 10px;
-    padding: 14px;
-  }
-  
-  .posterThumb {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .eventInfo {
-    width: 100%;
-  }
-  
-  .eventMeta {
-    font-size: 12px;
-  }
-  
-  .formattedDate {
-    font-size: 13px;
   }
   
   .actionArea {
@@ -547,87 +532,16 @@ html, body {
     margin-top: 10px;
     gap: 6px;
   }
-  
-  .expandedContent {
-    padding: 16px;
-    width: 100%;
-    box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    padding: 0 12px;
   }
   
-  .blockLabel {
-    font-size: 12px;
-    margin-bottom: 4px;
-  }
-  
-  .blockText {
-    font-size: 14px;
-    margin-bottom: 16px;
-  }
-  
-  /* Ensure the events are fully visible on mobile */
-  .eventsContainer {
-    padding-top: 10px;
-    height: auto !important;
-    overflow: visible !important;
-  }
-  
-  .mapSidebar {
-    display: none; /* Hide map completely on mobile */
-  }
-  
-  .dateGroup {
-    margin-bottom: 30px;
-  }
-  
-  .eventCard {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-  }
-  
-  .eventImage {
-    height: 220px;
-  }
-  
-  .eventInfo {
-    padding: 16px;
-  }
-  
-  .eventItem {
-    margin-bottom: 12px;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .ticketBtn {
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    margin-top: 8px;
-  }
-  
-  .eventName {
-    font-size: 16px;
-    line-height: 1.3;
-  }
-  
-  .dateHeader {
-    padding: 16px 0 12px;
-    position: sticky;
-    top: 0; /* Change from 120px to 0 since title is no longer fixed */
-    background: #000;
-    z-index: 5;
-    /* Add box shadow for better separation */
-    box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
-  }
-  
-  .eventsList {
-    margin-top: 8px;
-    margin-bottom: 30px;
-  }
-  
-  html, body {
-    overflow-x: hidden;
+  .pageTitle {
+    font-size: 28px;
+    padding: 24px 12px 15px;
   }
 }
 
@@ -678,7 +592,6 @@ html, body {
   object-position: center;
   transition: transform 0.3s ease;
 }
-
 
 .eventInfo {
   display: flex;
@@ -1023,25 +936,6 @@ html, body {
   margin-bottom: 80px;
 }
 
-.pageTitle {
-  font-size: 32px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 370;
-  margin: 0;
-  color: white;
-  letter-spacing: -0.5px;
-  position: relative;
-  display: inline-block;
-  text-transform: uppercase;
-  position:sticky;
-  top: 40px;
-}
-.pageTitle h1 {
-  font-size: 12px;
-  font-weight: 700;
-}
-
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .pageContainer {
@@ -1055,12 +949,13 @@ html, body {
 }
 
 .mapCaption {
-  padding: 14px 16px;
+  padding: 12px;
+  text-align: center;
   font-size: 12px;
   letter-spacing: 0.1em;
-  font-weight: 500;
-  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 600;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
 }
@@ -1161,4 +1056,10 @@ html, body {
   border-radius: 4px;
   text-align: center;
   align-items: center;
+}
+
+/* Add a spacer at the top of the first date group to create space below header */
+.dateGroup:first-child {
+  margin-top: 0; /* Reset any existing margin */
+  padding-top: 20px; /* Add space at the top of the first group */
 }

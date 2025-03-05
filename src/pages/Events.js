@@ -258,7 +258,7 @@ function Events() {
 
   return (
     <div className={styles.pageContainer}>
-      <h1 className={styles.pageTitle}>Upcoming Events</h1>
+      <div className={styles.pageTitle}>Upcoming Events</div>
       
       <div className={styles.pageLayout}>
         <div className={styles.eventsContainer}>
