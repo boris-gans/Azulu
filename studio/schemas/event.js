@@ -56,14 +56,7 @@ export default {
       name: 'ticketLink',
       title: 'Ticket Link',
       type: 'url',
-      description: 'Only required if tickets are available',
-      validation: Rule => Rule.custom((ticketLink, context) => {
-        const { ticketStatus } = context.parent;
-        if (ticketStatus === 'available' && !ticketLink) {
-          return 'Ticket link is required when tickets are available';
-        }
-        return true;
-      })
+      description: 'Optional: Add ticket link if available'
     },
     {
       name: 'lineup',
