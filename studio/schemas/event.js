@@ -46,7 +46,8 @@ export default {
       options: {
         list: [
           { title: 'Available', value: 'available' },
-          { title: 'Sold Out', value: 'soldOut' }
+          { title: 'Sold Out', value: 'soldOut' },
+          { title: 'Sold at the Door', value: 'soldAtDoor' }
         ]
       },
       initialValue: 'available',
@@ -56,7 +57,14 @@ export default {
       name: 'ticketLink',
       title: 'Ticket Link',
       type: 'url',
-      description: 'Optional: Add ticket link if available'
+      description: 'Required if tickets are available online',
+      validation: Rule => Rule.custom((ticketLink, context) => {
+        const { ticketStatus } = context.parent;
+        if (ticketStatus === 'available' && !ticketLink) {
+          return 'Ticket link is required when tickets are available online';
+        }
+        return true;
+      })
     },
     {
       name: 'lineup',

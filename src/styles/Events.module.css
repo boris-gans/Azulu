@@ -151,7 +151,7 @@ html, body {
 
 .eventRow {
   display: grid;
-  grid-template-columns: 110px 1fr auto; /* Increased from 90px to 110px for larger image */
+  grid-template-columns: 120px 1fr auto; /* Updated from 100px to 120px to match new poster size */
   gap: 16px;
   padding: 20px; /* Increased from 16px to 20px for more vertical space */
   align-items: center;
@@ -159,8 +159,8 @@ html, body {
 }
 
 .posterThumb {
-  width: 100px; /* Increased from 80px to 100px */
-  height: 100px; /* Increased from 80px to 100px */
+  width: 120px; /* Increased from 100px to 120px */
+  height: 120px; /* Increased from 100px to 120px */
   overflow: hidden;
   border-radius: 4px;
   background: #0a0a0a;
@@ -583,13 +583,13 @@ html, body {
   
   /* Mobile event item styling */
   .eventRow {
-    grid-template-columns: 80px 1fr; /* Smaller but still larger than original 60px */
+    grid-template-columns: 100px 1fr; /* Updated from 80px to 100px to match new poster size */
     padding: 18px; /* Increased padding */
   }
   
   .posterThumb {
-    width: 80px; /* Reduced for mobile but still larger than original 60px */
-    height: 80px;
+    width: 100px; /* Increased from 80px to 100px for mobile */
+    height: 100px; /* Increased from 80px to 100px for mobile */
   }
   
   .actionArea {
@@ -1210,4 +1210,65 @@ html, body {
 .dateGroup:first-child {
   margin-top: 0; /* Reset any existing margin */
   padding-top: 20px; /* Add space at the top of the first group */
+}
+
+.eventTimes {
+  font-size: 0.9rem;
+  margin-top: 4px;
+  color: #b3b3b3;
+  letter-spacing: 0.5px;
+}
+
+.timeBlock {
+  margin-bottom: 20px;
+}
+
+.soldOutTag {
+  background-color: #ff4b4b;
+  color: white;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.soldAtDoorTag {
+  background-color: #ff9900;
+  color: white;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.noEventsMessage {
+  padding: 40px 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  letter-spacing: 1px;
+  font-weight: 300;
+  width: 100%;
+}
+
+.pastEventsSection {
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.pastEventsSection .pageTitle {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .pastEventsSection {
+    margin-top: 60px;
+    padding-top: 30px;
+  }
 }

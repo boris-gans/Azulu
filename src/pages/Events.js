@@ -170,7 +170,9 @@ function Events() {
           _id,
           name,
           venue,
-          date,
+          startTime,
+          endTime,
+          ticketStatus,
           ticketLink,
           lineup,
           genres,
@@ -180,7 +182,7 @@ function Events() {
             amount,
             currency
           }
-        } | order(date asc)`;
+        } | order(startTime asc)`;
         
         const eventsData = await client.fetch(query);
         setEvents(eventsData);
@@ -210,11 +212,22 @@ function Events() {
     );
   };
 
+  const formatTime = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase();
+  };
+
   const getCurrencySymbol = (currencyCode) => {
     switch(currencyCode) {
       case 'EUR': return '€';
       case 'GBP': return '£';
       case 'USD': return '$';
+      case 'CAD': return 'C$';
+      case 'AUD': return 'A$';
+      case 'JPY': return '¥';
+      case 'CHF': return 'Fr';
+
       default: return currencyCode;
     }
   };
@@ -245,7 +258,8 @@ function Events() {
 
   // Group events by date
   const groupedEvents = events.reduce((groups, event) => {
-    const dateKey = new Date(event.date).toDateString();
+    // Use startTime for grouping
+    const dateKey = new Date(event.startTime).toDateString();
     if (!groups[dateKey]) {
       groups[dateKey] = [];
     }
@@ -292,6 +306,10 @@ function Events() {
                             </span>
                           </div>
                         )}
+                        <div className={styles.eventTimes}>
+                          {formatTime(event.startTime)}
+                          {event.endTime && ` - ${formatTime(event.endTime)}`}
+                        </div>
                         {event.lineup && event.lineup.length > 0 && (
                           <div className={styles.lineupPreview}>
                             {event.lineup.map(item => item.artist).join(' • ')}
@@ -306,7 +324,11 @@ function Events() {
                           </span>
                         )}
                         
-                        {event.ticketLink && (
+                        {event.ticketStatus === 'soldOut' ? (
+                          <span className={styles.soldOutTag}>SOLD OUT</span>
+                        ) : event.ticketStatus === 'soldAtDoor' ? (
+                          <span className={styles.soldAtDoorTag}>SOLD AT DOOR</span>
+                        ) : event.ticketLink ? (
                           <a 
                             href={event.ticketLink} 
                             className={styles.ticketBtn}
@@ -316,7 +338,7 @@ function Events() {
                           >
                             TICKETS
                           </a>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                     
@@ -324,6 +346,14 @@ function Events() {
                       <div className={styles.expandedContent}>
                         <div className={styles.expandedGrid}>
                           <div className={styles.leftColumn}>
+                            <div className={styles.timeBlock}>
+                              <div className={styles.blockLabel}>TIME</div>
+                              <div className={styles.blockText}>
+                                {formatTime(event.startTime)}
+                                {event.endTime && ` - ${formatTime(event.endTime)}`}
+                              </div>
+                            </div>
+                            
                             {event.venue && event.venue.address && (
                               <div className={styles.addressBlock}>
                                 <div className={styles.blockLabel}>LOCATION</div>

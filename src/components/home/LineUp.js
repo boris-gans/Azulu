@@ -232,7 +232,7 @@ function LineUp() {
                   animate={headerControls}
                   variants={staggerList}
                 >
-                  <motion.h2 variants={fadeUp}>OUR LINEUP</motion.h2>
+                  <motion.h2 variants={fadeUp}>OUR ARTISTS</motion.h2>
                   <motion.p variants={fadeUp}>AZULU'S CORE GROUP OF ARTISTS WHO EMOBODY THE ESSENCE OF THE BRAND, THESE ARTISTS ARE CENTRAL TO AZULUS IDENTITY AND THE SOUND WE CREATE.</motion.p>
                 </motion.div>
                 
