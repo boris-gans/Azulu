@@ -29,16 +29,41 @@ export default {
       ]
     },
     {
-      name: 'date',
-      title: 'Event Date & Time',
+      name: 'startTime',
+      title: 'Start Time',
       type: 'datetime',
+      validation: Rule => Rule.required()
+    },
+    {
+      name: 'endTime',
+      title: 'End Time',
+      type: 'datetime'
+    },
+    {
+      name: 'ticketStatus',
+      title: 'Ticket Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Available', value: 'available' },
+          { title: 'Sold Out', value: 'soldOut' }
+        ]
+      },
+      initialValue: 'available',
       validation: Rule => Rule.required()
     },
     {
       name: 'ticketLink',
       title: 'Ticket Link',
       type: 'url',
-      validation: Rule => Rule.required()
+      description: 'Only required if tickets are available',
+      validation: Rule => Rule.custom((ticketLink, context) => {
+        const { ticketStatus } = context.parent;
+        if (ticketStatus === 'available' && !ticketLink) {
+          return 'Ticket link is required when tickets are available';
+        }
+        return true;
+      })
     },
     {
       name: 'lineup',
