@@ -1,54 +1,53 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/components/Hero.module.css';
+
+// Export the video ID and URL for preloading
+export const HERO_VIDEO_ID = 'pvpy9ncw8kvb7f7plz1e';
+export const HERO_VIDEO_URL = `https://res.cloudinary.com/dsjkhhpbl/video/upload/q_auto/f_auto/${HERO_VIDEO_ID}`;
 
 function Hero() {
   const bannerRef = useRef(null);
   const logoRef = useRef(null);
+  const videoRef = useRef(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   
-  // Cloudinary image URL
-  const cloudinaryImageUrl = 'https://res.cloudinary.com/dsjkhhpbl/image/upload/c_fill,w_800,h_600,q_auto,f_auto/Hero_uukgl4';
+  // Cloudinary video URL
+  const cloudinaryVideoId = HERO_VIDEO_ID;
+
+  // Handle video loading events
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    
+    if (videoElement) {
+      // Handle when enough of the video has loaded to play without buffering
+      const handleCanPlay = () => {
+        console.log('Hero video can play now');
+        setVideoLoaded(true);
+      };
+      
+      // Set up event listeners
+      videoElement.addEventListener('canplay', handleCanPlay);
+      
+      // If video is already loaded/cached
+      if (videoElement.readyState >= 3) {
+        setVideoLoaded(true);
+      }
+      
+      return () => {
+        videoElement.removeEventListener('canplay', handleCanPlay);
+      };
+    }
+  }, []);
   
   useEffect(() => {
-    // Create preload link
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'image';
-    preloadLink.href = cloudinaryImageUrl; // Use Cloudinary URL instead
-    preloadLink.type = 'image/webp';
-    document.head.appendChild(preloadLink);
-
-    // Create connection preload hint
+    // Create preconnect hint for Cloudinary
     const preconnectLink = document.createElement('link');
     preconnectLink.rel = 'preconnect';
     preconnectLink.href = 'https://res.cloudinary.com'; // Connect to Cloudinary
     document.head.appendChild(preconnectLink);
 
-    // Preload image with high priority
-    const img = new Image();
-    img.src = cloudinaryImageUrl; // Use Cloudinary URL instead
-    img.fetchPriority = 'high';
-    img.decoding = 'async';
-
-    const loadImage = async () => {
-      try {
-        if (img.decode) {
-          await img.decode();
-          document.documentElement.style.setProperty('--hero-image', `url(${img.src})`);
-        }
-      } catch (error) {
-        console.error('Error decoding hero image:', error);
-      }
-    };
-
-    if (img.complete) {
-      loadImage();
-    } else {
-      img.onload = loadImage;
-    }
-
     // Cleanup
     return () => {
-      document.head.removeChild(preloadLink);
       document.head.removeChild(preconnectLink);
     };
   }, []);
@@ -60,7 +59,7 @@ function Hero() {
 
     let animationId;
     let position = 0;
-    const speed = 0.5;
+    const speed = 3.5;
 
     const animate = () => {
       position -= speed;
@@ -86,6 +85,20 @@ function Hero() {
 
   return (
     <div className={`${styles.heroContainer} ${styles.loaded}`}>
+      <div className={styles.videoBackground}>
+        <video 
+          ref={videoRef}
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          className={styles.heroVideo}
+          preload="auto"
+        >
+          <source src={HERO_VIDEO_URL} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <div className={styles.heroOverlay}>
         <div className={styles.logoContainer} ref={logoRef}>
           <img 
@@ -117,5 +130,53 @@ function Hero() {
     </div>
   );
 }
+
+// Create a preload function that can be called before rendering
+export const preloadHeroVideo = () => {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.muted = true;
+    video.preload = 'auto';
+    
+    const source = document.createElement('source');
+    source.src = HERO_VIDEO_URL;
+    source.type = 'video/mp4';
+    
+    video.appendChild(source);
+    
+    // Handle successful loading
+    const handleCanPlay = () => {
+      console.log('Hero video preloaded successfully');
+      video.removeEventListener('canplay', handleCanPlay);
+      resolve(true);
+    };
+    
+    // Handle loading error - resolve anyway to not block the app
+    const handleError = (err) => {
+      console.warn('Error preloading hero video:', err);
+      video.removeEventListener('error', handleError);
+      resolve(false);
+    };
+    
+    video.addEventListener('canplay', handleCanPlay);
+    video.addEventListener('error', handleError);
+    
+    // Handle if already loaded from cache
+    if (video.readyState >= 3) {
+      handleCanPlay();
+    }
+    
+    // Start loading
+    video.load();
+    
+    // Set a timeout to prevent indefinite waiting
+    setTimeout(() => {
+      if (video.readyState < 3) {
+        console.warn('Video preload timeout - continuing anyway');
+        resolve(false);
+      }
+    }, 10000); // 10-second timeout
+  });
+};
 
 export default Hero; 

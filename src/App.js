@@ -5,12 +5,11 @@ import Home from './pages/Home';
 import Events from './pages/Events';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import SmoothScroll from './components/SmoothScroll';
 
 function App() {
   return (
     <Router>
-      <SmoothScroll>
+
         <div className="App">
           <Navbar />
           <Routes>
@@ -20,7 +19,6 @@ function App() {
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </div>
-      </SmoothScroll>
     </Router>
   );
 }

@@ -36,7 +36,7 @@
 }
 
 .lineupHeader h2 {
-  font-size: 3.2rem;
+  font-size: 3rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   letter-spacing: 0.05em;
@@ -45,7 +45,7 @@
 }
 
 .lineupHeader p {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   opacity: 0.7;
   letter-spacing: 0.05em;
   text-align: left;
