@@ -10,6 +10,14 @@ function Hero() {
   const logoRef = useRef(null);
   const videoRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [bannerItems, setBannerItems] = useState(["LOADING..."]);
+  
+  // Get banner items from global content store
+  useEffect(() => {
+    if (window.azuluContent && window.azuluContent.movingBanner) {
+      setBannerItems(window.azuluContent.movingBanner);
+    }
+  }, []);
   
   // Cloudinary video URL
   const cloudinaryVideoId = HERO_VIDEO_ID;
@@ -76,12 +84,6 @@ function Hero() {
       cancelAnimationFrame(animationId);
     };
   }, []);
-
-  const bannerItems = [
-    "MARCH 28 2025",
-    "AZULU IS BACK",
-    "AMSTERDAM"
-  ];
 
   return (
     <div className={`${styles.heroContainer} ${styles.loaded}`}>

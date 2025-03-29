@@ -5,6 +5,43 @@ import App from './App';
 import { animate } from 'framer-motion';
 import { PARTY_IMAGE_URL, PARTY_IMAGE_LOW_QUALITY_URL } from './components/home/Party';
 
+// Global content store
+window.azuluContent = {
+  movingBanner: ["MARCH 28 2025", "AZULU IS BACK", "AMSTERDAM"], // Default values
+  aboutPage: "" // Will be populated from API
+};
+
+// Function to fetch content from API
+const fetchContent = async () => {
+  try {
+    console.log('Fetching content from API...');
+    const response = await fetch('https://azulucrm.onrender.com/content');
+    
+    if (!response.ok) {
+      throw new Error(`Content API error: ${response.status}`);
+    }
+    
+    const contentData = await response.json();
+    console.log('Content loaded successfully');
+    
+    // Parse and store content data
+    contentData.forEach(item => {
+      if (item.key === 'movingBanner' && item.string_collection && item.string_collection.length > 0) {
+        window.azuluContent.movingBanner = item.string_collection;
+      }
+      else if (item.key === 'aboutPage' && item.big_string) {
+        window.azuluContent.aboutPage = item.big_string;
+      }
+    });
+    
+    return true;
+  } catch (err) {
+    console.error('Error fetching content:', err);
+    // Keep default values on error
+    return false;
+  }
+};
+
 // No need for plugin registration with Framer Motion
 
 const LoadingScreen = ({ onHeroPreload }) => {
@@ -75,10 +112,24 @@ const LoadingScreen = ({ onHeroPreload }) => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 let heroPreloaded = false;
+let contentLoaded = false;
+
 const handleHeroPreload = () => {
   heroPreloaded = true;
   animateGrowLogo();
 };
+
+// Initialize the app
+const initApp = async () => {
+  // Fetch content in parallel with other loading
+  contentLoaded = await fetchContent();
+  
+  // Continue with existing preload logic
+  // ...
+};
+
+// Start initialization
+initApp();
 
 root.render(
   <React.StrictMode>
