@@ -21,6 +21,7 @@ function Navbar() {
       </div>
       <div className={styles.rightSection}>
         <ul className={styles.rightNavLinks}>
+          <li><Link to="/pre-register">Join Us</Link></li>
           <li><Link to="/contact">Contact</Link></li>
         </ul>
       </div>

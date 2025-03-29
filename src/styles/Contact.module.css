@@ -84,4 +84,23 @@
   .pageContainer {
     padding: 3rem 1.5rem;
   }
+}
+
+.message {
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.successMessage {
+  background-color: rgba(46, 125, 50, 0.2);
+  color: #69f0ae;
+  border: 1px solid rgba(46, 125, 50, 0.4);
+}
+
+.errorMessage {
+  background-color: rgba(211, 47, 47, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(211, 47, 47, 0.4);
 } 
