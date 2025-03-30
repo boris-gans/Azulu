@@ -51,16 +51,32 @@ function About() {
       if (!heroRef.current) return;
       
       const heroRect = heroRef.current.getBoundingClientRect();
-      // Check if cursor is inside hero section
+      
+      // Get scroll position
+      const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // Calculate absolute position (relative to document, not viewport)
+      const absoluteMouseX = e.clientX + scrollX;
+      const absoluteMouseY = e.clientY + scrollY;
+      
+      // Calculate absolute position of hero section
+      const absoluteHeroTop = heroRect.top + scrollY;
+      const absoluteHeroBottom = heroRect.bottom + scrollY;
+      const absoluteHeroLeft = heroRect.left + scrollX;
+      const absoluteHeroRight = heroRect.right + scrollX;
+      
+      // Check if cursor is inside hero section (using absolute coordinates)
       if (
-        e.clientY < heroRect.top || 
-        e.clientY > heroRect.bottom || 
-        e.clientX < heroRect.left || 
-        e.clientX > heroRect.right
+        absoluteMouseY < absoluteHeroTop || 
+        absoluteMouseY > absoluteHeroBottom || 
+        absoluteMouseX < absoluteHeroLeft || 
+        absoluteMouseX > absoluteHeroRight
       ) {
         return;
       }
       
+      // Use viewport-relative coordinates for the gradient effect
       mouseX = e.clientX;
       mouseY = e.clientY;
       
@@ -70,12 +86,27 @@ function About() {
       // For logo masking, update directly via DOM (bypass React state for speed)
       if (logoRef.current && logoImageRef.current) {
         const logoRect = logoRef.current.getBoundingClientRect();
+        
+        // These are viewport-relative coordinates
         const currentLogoX = mouseX - logoRect.left;
         const currentLogoY = mouseY - logoRect.top;
         
         // Direct DOM update - much faster than setState
         logoImageRef.current.style.setProperty('--x', `${currentLogoX}px`);
         logoImageRef.current.style.setProperty('--y', `${currentLogoY}px`);
+        
+        // Adjust visibility based on whether logo is in viewport
+        const logoInView = 
+          logoRect.top < window.innerHeight &&
+          logoRect.bottom > 0 &&
+          logoRect.left < window.innerWidth &&
+          logoRect.right > 0;
+        
+        if (!logoInView) {
+          // If logo is not in view, don't show the reveal effect
+          logoRef.current.classList.remove('activeReveal');
+          return;
+        }
         
         // Detect when cursor is close to logo center for enhanced reveal effect
         const centerX = logoRect.width / 2;
@@ -98,16 +129,31 @@ function About() {
       const heroRect = heroRef.current.getBoundingClientRect();
       const touch = e.touches[0];
       
-      // Check if touch is inside hero section
+      // Get scroll position
+      const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // Calculate absolute position (relative to document, not viewport)
+      const absoluteTouchX = touch.clientX + scrollX;
+      const absoluteTouchY = touch.clientY + scrollY;
+      
+      // Calculate absolute position of hero section
+      const absoluteHeroTop = heroRect.top + scrollY;
+      const absoluteHeroBottom = heroRect.bottom + scrollY;
+      const absoluteHeroLeft = heroRect.left + scrollX;
+      const absoluteHeroRight = heroRect.right + scrollX;
+      
+      // Check if touch is inside hero section (using absolute coordinates)
       if (
-        touch.clientY < heroRect.top || 
-        touch.clientY > heroRect.bottom || 
-        touch.clientX < heroRect.left || 
-        touch.clientX > heroRect.right
+        absoluteTouchY < absoluteHeroTop || 
+        absoluteTouchY > absoluteHeroBottom || 
+        absoluteTouchX < absoluteHeroLeft || 
+        absoluteTouchX > absoluteHeroRight
       ) {
         return;
       }
       
+      // Use viewport-relative coordinates for visual effects
       mouseX = touch.clientX;
       mouseY = touch.clientY;
       
@@ -123,6 +169,19 @@ function About() {
         // Update the mask position based on touch
         logoImageRef.current.style.setProperty('--x', `${touchX}px`);
         logoImageRef.current.style.setProperty('--y', `${touchY}px`);
+        
+        // Adjust visibility based on whether logo is in viewport
+        const logoInView = 
+          logoRect.top < window.innerHeight &&
+          logoRect.bottom > 0 &&
+          logoRect.left < window.innerWidth &&
+          logoRect.right > 0;
+        
+        if (!logoInView) {
+          // If logo is not in view, don't show the reveal effect
+          logoRef.current.classList.remove('activeReveal');
+          return;
+        }
         
         // Always show more of the logo on mobile for better experience
         logoRef.current.classList.add('activeReveal');
@@ -195,14 +254,25 @@ function About() {
         ref={heroRef}
         className={styles.heroSection}
         style={{
-          background: `radial-gradient(
+          backgroundImage: `radial-gradient(
             circle 400px at ${mousePosition.x}px ${mousePosition.y}px, 
             rgba(25, 25, 25, 0.7) 0%, 
             rgba(10, 10, 10, 0.5) 40%, 
             rgba(0, 0, 0, 1) 80%
-          )`
+          )`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '100% 100%'
         }}
       >
+        {/* Title header with Azulu text logo */}
+        <div className={styles.titleHeader}>
+          <img 
+            src="/assets/images/Azulu white.png" 
+            alt="Azulu" 
+            className={styles.titleLogo}
+          />
+        </div>
+        
         <div className={styles.aboutContent} ref={contentRef}>
           <div className={`${styles.contentColumn} ${styles.leftColumn}`}>
             {leftParagraphs.map((paragraph, index) => (

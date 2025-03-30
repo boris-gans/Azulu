@@ -15,6 +15,31 @@
   box-sizing: border-box;
 }
 
+/* Title header styles */
+.titleHeader {
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5vh 0;
+  z-index: 10;
+  padding-bottom: 0;
+}
+
+.titleLogo {
+  max-width: 175px;
+  height: auto;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.titleLogo:hover {
+  opacity: 1;
+}
+
 /* Hero section styles */
 .heroSection {
   position: relative;
@@ -26,6 +51,9 @@
   padding: 10vh 0;
   box-sizing: border-box;
   overflow: hidden;
+  /* Use fixed positioning for the background gradient */
+  background-attachment: fixed !important;
+  contain: paint;
 }
 
 .aboutContent {
@@ -99,6 +127,7 @@
   background-color: rgba(255, 255, 255, 0.03);
 }
 
+/* Ensure the logo container stays visible in the viewport */
 .logoContainer {
   position: absolute;
   top: 50%;
@@ -113,6 +142,7 @@
   overflow: visible;
   pointer-events: none;
   transition: transform 0.5s ease;
+  contain: paint;
 }
 
 .logoContainer.activeReveal {
@@ -460,4 +490,25 @@
   }
   
   /* existing media query styles */
+}
+
+/* Media queries for title header */
+@media (max-width: 768px) {
+  .titleLogo {
+    max-width: 220px;
+  }
+  
+  .titleHeader {
+    padding: 3vh 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .titleLogo {
+    max-width: 180px;
+  }
+  
+  .titleHeader {
+    padding: 2vh 0;
+  }
 } 
