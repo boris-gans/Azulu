@@ -1,6 +1,7 @@
 .amsterdamContainer {
-  padding: 1rem 5rem;
+  padding: 0rem 10rem;
   background-color: #fff;
+  padding-top: 0px;
 }
 
 .content {
@@ -8,10 +9,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0 auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .logoContainer {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
   justify-content: flex-start;
 }
@@ -22,7 +26,7 @@
 }
 
 .addressContainer {
-  flex: 1;
+  margin-left: auto;
   display: flex;
   justify-content: flex-end;
 }
@@ -45,6 +49,7 @@
   .logoContainer, .addressContainer {
     justify-content: center;
     width: 100%;
+    margin-left: 0;
   }
   
   .logo {

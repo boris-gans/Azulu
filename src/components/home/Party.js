@@ -19,7 +19,6 @@ function Party() {
   const brandingControls = useAnimation();
   
   // Set up intersection observers with higher thresholds for better performance
-  // Use refs instead of multiple observers for better performance
   const [rootRef, inView] = useInView({ 
     threshold: 0.1,
     triggerOnce: true,
@@ -107,63 +106,86 @@ function Party() {
     visible: { 
       opacity: 1,
       transition: { 
-        duration: 0.3, // Reduced from 0.4
-        ease: "easeOut", // Simplified easing
+        duration: 0.3,
+        ease: "easeOut",
         when: "beforeChildren",
-        staggerChildren: 0.05 // Reduced from 0.1
+        staggerChildren: 0.05
       }
     }
   };
   
   const childVariants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 10 }, // Reduced y-offset
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 10 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.2, // Reduced from 0.3
+        duration: 0.2,
         ease: "easeOut"
       }
     }
   };
   
+  // Removed scaling from button, only changes color
   const buttonVariants = {
-    initial: { scale: 1 },
+    initial: { 
+      backgroundColor: "#ff0000" 
+    },
+    hover: { 
+      backgroundColor: "#cc0000",
+      transition: { duration: 0.2 }
+    },
     tap: { 
       backgroundColor: "#990000",
-      scale: shouldReduceMotion ? 1 : 0.98,
+      transition: { duration: 0.1 }
+    }
+  };
+  
+  // Added separate variants for the arrow icon
+  const arrowVariants = {
+    initial: { 
+      scale: 1, 
+      rotate: 0 
+    },
+    hover: {
+      scale: shouldReduceMotion ? 1 : 1.2,
+      rotate: shouldReduceMotion ? 0 : 15,
+      transition: { duration: 0.2 }
+    },
+    tap: {
+      scale: shouldReduceMotion ? 1 : 0.9,
       transition: { duration: 0.1 }
     }
   };
 
   return (
     <div className={styles.partyContainer} ref={rootRef}>
-      {/* Red accent bar - using CSS instead of motion */}
-      <div 
-        className={styles.redAccentBar}
-        style={{ willChange: 'height' }}
-      ></div>
-      
       <div className={styles.partyContent}>
+        {/* Noise overlay for brutalist texture */}
+        <div className={styles.noiseOverlay}></div>
+        
         {/* Azulu branding background - simplified animation */}
         <motion.div 
           className={styles.azuluBranding}
           initial="hidden"
           animate={brandingControls}
           variants={containerVariants}
-          style={{ willChange: 'opacity' }} // Add will-change for GPU acceleration
+          style={{ willChange: 'opacity' }}
         >
           <div className={styles.azuluRepeated}>
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
-            <span className={styles.azuluRepeatedText}>AZULU.NL</span>
+            <span className={`${styles.azuluRepeatedText} ${styles.azuluHighlight}`}>AZULU.NL</span>
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
             <span className={styles.azuluRepeatedText}>AZULU.NL</span>
           </div>
         </motion.div>
-        
+
         {/* Party image with overlay card - simplified animation */}
         <div className={styles.partyImageWrapper}>
+          {/* Red accent bar - moved inside image wrapper */}
+          <div className={styles.redAccentBar}></div>
+          
           {/* Background blur-up image */}
           {!imageLoaded && (
             <img 
@@ -195,10 +217,16 @@ function Party() {
             decoding="async"
             style={{ 
               opacity: imageLoaded ? 1 : 0,
-              willChange: 'opacity, transform', // Explicitly mark properties that will change
+              willChange: 'opacity, transform',
               objectFit: 'cover'
             }}
           />
+          
+          {/* Contrast overlay to enhance image brutalism */}
+          <div className={styles.contrastOverlay}></div>
+          
+          {/* Diagonal line element */}
+          <div className={styles.diagonalLine}></div>
           
           {/* Overlay card with animation - simplified */}
           <motion.div 
@@ -206,8 +234,9 @@ function Party() {
             initial="hidden"
             animate={cardControls}
             variants={containerVariants}
-            style={{ willChange: 'opacity, transform' }} // Add will-change for GPU acceleration
+            style={{ willChange: 'opacity, transform' }}
           >
+            <div className={styles.cardTopBar}></div>
             <div className={styles.cardContent}>
               <h2 className={styles.partyTitle}>
                 A PARTY LIKE NOTHING YOU'VE SEEN
@@ -227,15 +256,23 @@ function Party() {
                     whileHover="hover"
                     whileTap="tap"
                   >
-                    <span className={styles.arrowIcon}>
+                    <motion.span 
+                      className={styles.arrowIcon}
+                      variants={arrowVariants}
+                      initial="initial"
+                      whileHover="hover"
+                      whileTap="tap"
+                    >
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M5 19L19 5M19 5H12M19 5V12" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
-                    </span>
+                    </motion.span>
                   </motion.div>
                 </Link>
               </div>
             </div>
+            <div className={styles.energyLabel}>HOUSE MUSIC</div>
+
           </motion.div>
         </div>
       </div>

@@ -144,6 +144,11 @@
   .headerContainer {
     padding: 2rem 1rem;
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+    padding-right: 1rem;
   }
 
   .titleTop,
@@ -152,6 +157,30 @@
   }
 
   .lineContainer {
+    width: 100%;
+    padding-right: 1rem;
+  }
+  
+  .eventsContainer {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContainer {
+    padding: 1.5rem 1rem;
+  }
+  
+  .titleTop,
+  .titleBottom {
+    font-size: 2rem;
+  }
+  
+  .sectionTitle {
+    padding-right: 1rem;
+  }
+  
+  .redLine {
     width: 70%;
   }
 } 
