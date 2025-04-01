@@ -1,514 +1,216 @@
-/* Brutalist About page with unique structure and personality */
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500&display=swap');
+/* Import font if needed */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;700&display=swap');
 
-.container {
-  background-color: #000;
-  min-height: 100vh;
-  color: white;
-  padding: 0;
+/* Main container */
+.page_container {
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  position: relative;
-  width: 100%;
-  max-width: 100vw;
-  box-sizing: border-box;
-}
-
-/* Title header styles */
-.titleHeader {
-  position: absolute;
-  top: 75px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5vh 0;
-  z-index: 10;
-  padding-bottom: 0;
-}
-
-.titleLogo {
-  max-width: 175px;
-  height: auto;
-  opacity: 0.9;
-  transition: opacity 0.3s ease;
-}
-
-.titleLogo:hover {
-  opacity: 1;
-}
-
-/* Hero section styles */
-.heroSection {
-  position: relative;
-  width: 100%;
   min-height: 100vh;
+  background-color: #000000;
+  color: white;
+}
+
+/* Top section with content and grid */
+.about_page {
+  display: flex;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+/* Content section (left side) */
+.about_content {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10vh 0;
-  box-sizing: border-box;
+  max-width: 700px;
+  height: 100%;
   overflow: hidden;
-  /* Use fixed positioning for the background gradient */
-  background-attachment: fixed !important;
-  contain: paint;
+  border-right: 1px solid #333333;
 }
 
-.aboutContent {
+.content_wrapper {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: 'Sora', sans-serif;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 40px 20px;
   position: relative;
+  overflow: auto;
+}
+
+.main_content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.about_content h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: white;
+  text-align: center;
+}
+
+.paragraphs_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 40px;
+  align-items: center;
+  margin-top: 10vh;
+}
+
+.paragraphs_container p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  color: white;
+  text-align: center;
+  max-width: 85%;
+}
+
+/* Grid section (right side) */
+.decorative_grid {
+  flex: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4vw;
-  padding: 15vh 5vw;
-  column-gap: 15vw;
-  box-sizing: border-box;
-}
-
-.contentColumn {
+  grid-template-columns: repeat(10, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 0.5px;
+  background-color: #111111;
+  height: 100%;
+  overflow: hidden;
   position: relative;
 }
 
-.leftColumn {
-  padding-top: 5vh;
-}
-
-.rightColumn {
-  padding-top: 15vh;
-}
-
-.aboutContent p {
-  font-size: 1rem;
-  line-height: 1.7;
-  margin-bottom: 3.5rem;
-  color: #fff;
-  font-weight: 300;
-  letter-spacing: 0.01em;
-  position: relative;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  padding-bottom: 1.2rem;
-  transition: all 0.4s ease;
-  max-width: 100%;
-}
-
-.leftColumn p {
-  text-align: right;
-  margin-left: auto;
-  padding-right: 1.5rem;
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
-  border-bottom: none;
-}
-
-.rightColumn p {
-  padding-left: 1.5rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-  border-bottom: none;
-}
-
-.aboutContent p:hover {
-  transform: translateY(-5px);
-  background-color: rgba(255, 255, 255, 0.03);
-}
-
-.leftColumn p:hover {
-  transform: translateY(-5px) translateX(-5px);
-}
-
-.rightColumn p:hover {
-  transform: translateY(-5px) translateX(5px);
-}
-
-.highlightParagraph {
-  background-color: rgba(255, 255, 255, 0.03);
-}
-
-/* Ensure the logo container stays visible in the viewport */
-.logoContainer {
+.grid_logo {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 550px;
-  z-index: 5;
-  border-radius: 0;
-  padding: 0;
-  background-color: transparent;
-  box-shadow: none;
-  overflow: visible;
-  pointer-events: none;
-  transition: transform 0.5s ease;
-  contain: paint;
-}
-
-.logoContainer.activeReveal {
-  transform: translate(-50%, -50%) scale(1.02);
-}
-
-.logoImage {
-  width: 100%;
   height: auto;
-  opacity: 0.1;
-  filter: grayscale(70%) contrast(0.9);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
-  /* Multiple layers of masking for more robust reveal effect */
-  mask-image: 
-    radial-gradient(
-      circle 400px at var(--x, 50%) var(--y, 50%),
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 0.8) 20%,
-      rgba(0, 0, 0, 0.4) 40%,
-      rgba(0, 0, 0, 0.1) 60%,
-      rgba(0, 0, 0, 0) 80%
-    ),
-    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
-  -webkit-mask-image: 
-    radial-gradient(
-      circle 400px at var(--x, 50%) var(--y, 50%),
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 0.8) 20%,
-      rgba(0, 0, 0, 0.4) 40%,
-      rgba(0, 0, 0, 0.1) 60%,
-      rgba(0, 0, 0, 0) 80%
-    ),
-    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
-  mask-composite: intersect;
-  -webkit-mask-composite: source-in;
+  z-index: 20;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.grid_cell {
+  width: 100%;
   position: relative;
+  overflow: hidden;
+  border-radius: 0px;
+  background-color: #000000;
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
-.logoContainer.activeReveal .logoImage {
-  opacity: 0.5;
-  filter: grayscale(40%) contrast(1.1);
+.grid_cell::before {
+  content: "";
+  display: block;
+  padding-top: 100%; /* This creates a 1:1 aspect ratio */
 }
 
-/* Add a subtle glow when parts are revealed */
-.logoImage::after {
+.grid_cell::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle 150px at var(--x, 50%) var(--y, 50%),
-    rgba(255, 255, 255, 0.1) 0%,
-    transparent 80%
-  );
+  right: 0;
+  bottom: 0;
+  background-color: #ff0000; /* Red for highlighted cells */
   opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
-}
-
-.logoContainer.activeReveal .logoImage::after {
-  opacity: 1;
-}
-
-/* Background cursor effect container style - for the background in the About.js file */
-.backgroundCursorEffect {
-  --cursor-size: 700px; /* Variable to control gradient size */
-  --cursor-opacity: 0.8; /* Variable to control gradient opacity */
-}
-
-/* Remove the separate reveal effect since we're building it into the logo */
-.revealEffect {
-  display: none;
-}
-
-.pageTitle {
-  position: fixed;
-  top: 25vh;
-  left: 50%;
-  transform: translateX(-50%) rotate(-90deg);
-  font-size: 7rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.03);
-  letter-spacing: -0.05em;
-  z-index: -1;
+  transition: opacity 0.05s ease-in;
   pointer-events: none;
-  user-select: none;
 }
 
-@keyframes gentle-float {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-5px) scale(1.03);
-  }
-  100% {
-    transform: translateY(3px) scale(1.05);
-  }
+.grid_cell.hover::after {
+  opacity: 0.5;
 }
 
-@media (max-width: 1500px) {
-  .aboutContent {
-    column-gap: 12vw;
+.grid_cell.trail::after {
+  animation: trailEffect 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes trailEffect {
+  0% { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+/* Links section (bottom) */
+.links_section {
+  width: 100%;
+  padding: 0;
+  background-color: #000000;
+  border-top: 1px solid #333333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Loading state */
+.container {
+  width: 100%;
+  height: 100vh;
+  background-color: #000000;
+}
+
+.loadingState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  font-size: 18px;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about_page {
+    flex-direction: column;
+    min-height: 100vh;
   }
   
-  .logoContainer {
-    width: 500px;
+  .about_content {
+    max-width: 100%;
+    border-right: none;
+    border-bottom: none;
+    height: 100%;
+  }
+  
+  .decorative_grid {
+    display: none;
+  }
+  
+  .content_wrapper {
+    padding: 20px;
+  }
+  
+  .main_content {
+    padding-top: 0;
   }
 }
 
 @media (max-width: 1200px) {
-  .aboutContent {
-    column-gap: 10vw;
-  }
-  
-  .logoContainer {
-    width: 450px;
+  .grid_logo {
+    max-width: 30%;
   }
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .aboutContent {
-    grid-template-columns: 1fr;
-    padding: 10vh 8vw 30vh;
-    gap: 0;
-  }
-  
-  .leftColumn, .rightColumn {
-    padding-top: 0;
-  }
-  
-  .leftColumn p {
-    text-align: left;
-    padding-right: 0;
-    padding-left: 1.5rem;
-    border-right: none;
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
-    margin-left: 0;
-  }
-  
-  .pageTitle {
-    display: none;
-  }
-  
-  .logoContainer {
-    position: absolute;
-    top: auto;
-    bottom: 10vh;
-    transform: translateX(-50%);
-    width: 350px;
-    padding: 0;
-  }
-}
-
-@media (max-width: 600px) {
-  .aboutContent p {
-    font-size: 0.95rem;
-    margin-bottom: 2.5rem;
-  }
-  
-  .aboutContent {
-    padding: 8vh 5vw 30vh;
-  }
-  
-  .logoContainer {
-    width: 300px;
-    padding: 0;
-  }
-}
-
-.loadingState {
-  text-align: center;
-  padding: 3rem 1rem;
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 300;
-  letter-spacing: 0.05em;
-  background: rgba(255, 255, 255, 0.03);
-  border-left: 2px solid rgba(255, 255, 255, 0.2);
-  margin: 2rem 0;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
-}
-
-/* Enhanced mobile styles */
-@media (max-width: 768px) {
-  .container {
-    width: 100vw;
-    overflow-x: hidden;
-  }
-
-  .aboutContent {
-    padding: 10vh 5vw 35vh;
-    grid-template-columns: 1fr;
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  .leftColumn, .rightColumn {
-    padding-top: 0;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-    box-sizing: border-box;
-  }
-  
-  /* Consistent styling for all paragraphs on mobile */
-  .leftColumn p, .rightColumn p {
-    text-align: left;
-    padding-left: 1rem;
-    padding-right: 0;
-    border-right: none;
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
-    border-bottom: none;
-    margin-left: 0;
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 2.5rem;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  /* Logo containment for mobile */
-  .logoContainer {
-    position: fixed;
-    width: 75vw;
-    max-width: 350px;
-    bottom: 15vh;
-    top: auto;
-  }
-}
-
-/* Small mobile devices */
-@media (max-width: 480px) {
-  .aboutContent {
-    padding: 10vh 4vw 30vh;
-    overflow-x: hidden;
-  }
-  
-  .leftColumn p, .rightColumn p {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    padding-left: 0.75rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-  }
-  
-  .logoContainer {
-    width: 85vw;
-    max-width: 280px;
-    bottom: 15vh;
-  }
-  
-  /* Make the mask circle larger relative to smaller screens */
-  .logoImage {
-    mask-image: 
-      radial-gradient(
-        circle 300px at var(--x, 50%) var(--y, 50%),
-        rgba(0, 0, 0, 1) 0%,
-        rgba(0, 0, 0, 0.8) 20%,
-        rgba(0, 0, 0, 0.4) 40%,
-        rgba(0, 0, 0, 0.1) 60%,
-        rgba(0, 0, 0, 0) 80%
-      ),
-      linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-    -webkit-mask-image: 
-      radial-gradient(
-        circle 300px at var(--x, 50%) var(--y, 50%),
-        rgba(0, 0, 0, 1) 0%,
-        rgba(0, 0, 0, 0.8) 20%,
-        rgba(0, 0, 0, 0.4) 40%,
-        rgba(0, 0, 0, 0.1) 60%,
-        rgba(0, 0, 0, 0) 80%
-      ),
-      linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-  }
-  
-  /* Adjust base visibility for better mobile experience */
-  .logoContainer.activeReveal .logoImage {
-    opacity: 0.6;
-  }
-}
-
-/* Portrait orientation specific adjustments */
-@media (max-width: 768px) and (orientation: portrait) {
-  .logoContainer {
-    width: 75vw; /* Proportional size based on viewport width */
-    max-width: 350px; /* Maximum size cap */
-  }
-}
-
-/* Landscape orientation specific adjustments */
-@media (max-width: 926px) and (orientation: landscape) {
-  .aboutContent {
-    padding-bottom: 20vh;
-  }
-  
-  .logoContainer {
-    width: 300px;
-    bottom: 7vh;
-  }
-  
-  .leftColumn, .rightColumn {
-    max-height: 70vh;
-    overflow-y: auto;
-    /* Custom scrollbar for better touch experience */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-  }
-  
-  .leftColumn::-webkit-scrollbar, .rightColumn::-webkit-scrollbar {
-    width: 5px;
-  }
-  
-  .leftColumn::-webkit-scrollbar-thumb, .rightColumn::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-  }
-}
-
-/* Media queries for hero section */
-@media (max-width: 1024px) {
-  .heroSection {
-    min-height: 120vh;
-    padding: 5vh 0 15vh;
-  }
-  
-  /* existing media query styles */
-}
-
-@media (max-width: 768px) {
-  .heroSection {
-    min-height: 100vh;
-    padding: 5vh 0 30vh;
-  }
-  
-  /* existing media query styles */
-}
-
-/* Media queries for title header */
-@media (max-width: 768px) {
-  .titleLogo {
-    max-width: 220px;
-  }
-  
-  .titleHeader {
-    padding: 3vh 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .titleLogo {
-    max-width: 180px;
-  }
-  
-  .titleHeader {
-    padding: 2vh 0;
+@media (max-width: 992px) {
+  .grid_logo {
+    max-width: 42%;
   }
 } 

@@ -1,4 +1,8 @@
 /* Brutalist Link Section for About Page */
+.links_section {
+  padding-top: 0vh;
+  margin-top: 0vh;
+}
 .linksContainer {
   width: 100%;
   background-color: #080808;
@@ -7,7 +11,6 @@
   position: relative;
   z-index: 10;
   border-top: 2px solid rgba(255, 255, 255, 0.08);
-  margin-top: 10vh;
   box-sizing: border-box;
 }
 
@@ -22,6 +25,8 @@
 
 .linkSection, .contactSection {
   position: relative;
+  padding-top: 0vh;
+  margin-top: 0vh;
 }
 
 .sectionTitle {
