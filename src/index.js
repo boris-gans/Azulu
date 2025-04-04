@@ -15,7 +15,7 @@ window.azuluContent = {
 const fetchContent = async () => {
   try {
     console.log('Fetching content from API...');
-    const response = await fetch('https://azulucrm.onrender.com/content');
+    const response = await fetch('https://azulucms.onrender.com');
     
     if (!response.ok) {
       throw new Error(`Content API error: ${response.status}`);

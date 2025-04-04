@@ -1,0 +1,12 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
+
+Avoid editing any CSS and/or HTML as much as possible; try to avoid changing how the frontend looks. I am only concerned with the logic and the integration with my backend services.

@@ -23,7 +23,7 @@ function PreRegister() {
     setMessage({ text: '', isError: false });
     
     try {
-      const response = await fetch('https://azulucrm.onrender.com/mailing-list/subscribe', {
+      const response = await fetch('https://azulucms.onrender.com/mailing-list/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
