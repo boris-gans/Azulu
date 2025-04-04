@@ -22,7 +22,7 @@ const fetchContent = async () => {
     }
     
     const contentData = await response.json();
-    console.log('Content loaded successfully');
+    console.log('Content loaded successfully: ', contentData);
     
     // Parse and store content data
     contentData.forEach(item => {
@@ -31,6 +31,7 @@ const fetchContent = async () => {
       }
       else if (item.key === 'aboutPage' && item.big_string) {
         window.azuluContent.aboutPage = item.big_string;
+        console.log('About: ', window.azuluContent.aboutPage);
       }
     });
     

@@ -11,7 +11,7 @@ The `index.js` file serves as the entry point and handles several critical prelo
 
 1. **Content Management System (CMS) Integration**:
    - Initializes a global content store (`window.azuluContent`) with default values
-   - Fetches content from an external API (`https://azulucrm.onrender.com/content`)
+   - Fetches content from an external API (`https://azulucms.onrender.com/content`)
    - Stores structured content including moving banner text and about page content
 
 2. **Loading Screen**:
@@ -87,7 +87,7 @@ This page handles event pre-registration:
 
 1. **Mailing List Subscription**:
    - Form for collecting name and email
-   - Posts data to external API endpoint: 'https://azulucrm.onrender.com/mailing-list/subscribe'
+   - Posts data to external API endpoint: 'https://azulucms.onrender.com/mailing-list/subscribe'
    - Handles loading, success, and error states
 
 2. **UI Features**:
@@ -117,7 +117,7 @@ The Events page displays upcoming and past events:
    - Uses a common styling approach with CSS modules
 
 2. **Events Data Fetching**:
-   - UpcomingEvents component fetches data from: 'https://azulucrm.onrender.com/events/?upcoming=true'
+   - UpcomingEvents component fetches data from: 'https://azulucms.onrender.com/events/?upcoming=true'
    - PastEvents likely fetches from a similar endpoint with different parameters
    - Events are sorted by date and grouped for display
 
@@ -178,7 +178,7 @@ The Events page displays upcoming and past events:
 
 2. **UpcomingEvents.js**:
    - Component to display future events
-   - Fetches data from API: 'https://azulucrm.onrender.com/events/?upcoming=true'
+   - Fetches data from API: 'https://azulucms.onrender.com/events/?upcoming=true'
    - Groups events by date for organized display
    - Implements loading, error, and empty states
    - Formats dates and times for display
@@ -190,7 +190,7 @@ The Events page displays upcoming and past events:
 ### External API Calls
 
 1. **Content Management System**:
-   - URL: `https://azulucrm.onrender.com/content`
+   - URL: `https://azulucms.onrender.com/content`
    - Purpose: Fetches dynamic content including banner text and about page content
    - Called in: index.js during application initialization
    - Structure: Array of content items with keys like 'movingBanner' and 'aboutPage'
@@ -203,13 +203,13 @@ The Events page displays upcoming and past events:
    - Parameters: service_kt00sqc (service ID), template_xg4fkt8 (template ID)
 
 3. **Mailing List API**:
-   - URL: `https://azulucrm.onrender.com/mailing-list/subscribe`
+   - URL: `https://azulucms.onrender.com/mailing-list/subscribe`
    - Purpose: Registers users for the mailing list
    - Called in: PreRegister.js when subscription form is submitted
    - Data: Sends name and email
 
 4. **Events API**:
-   - URL: `https://azulucrm.onrender.com/events/?upcoming=true`
+   - URL: `https://azulucms.onrender.com/events/?upcoming=true`
    - Purpose: Fetches upcoming events data
    - Called in: UpcomingEvents.js component
    - Processing: Sorts events by start time and groups by date
