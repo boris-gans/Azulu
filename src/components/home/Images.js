@@ -60,7 +60,7 @@ function Images() {
       // Extract all publicIds from your images array
       const publicIds = images.map(image => image.publicId);
       
-      console.log('Preloading gallery images:', publicIds);
+      // console.log('Preloading gallery images:', publicIds);
       
       // Use your existing getOptimizedUrl function
       const preloadPromises = publicIds.map(publicId => {

@@ -29,7 +29,7 @@ function Hero() {
     if (videoElement) {
       // Handle when enough of the video has loaded to play without buffering
       const handleCanPlay = () => {
-        console.log('Hero video can play now');
+        // console.log('Hero video can play now');
         setVideoLoaded(true);
       };
       
@@ -148,7 +148,7 @@ export const preloadHeroVideo = () => {
     
     // Handle successful loading
     const handleCanPlay = () => {
-      console.log('Hero video preloaded successfully');
+      // console.log('Hero video preloaded successfully');
       video.removeEventListener('canplay', handleCanPlay);
       resolve(true);
     };

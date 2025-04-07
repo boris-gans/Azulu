@@ -14,7 +14,7 @@ window.azuluContent = {
 // Function to fetch content from API
 const fetchContent = async () => {
   try {
-    console.log('Fetching content from API...');
+    // console.log('Fetching content from API...');
     const response = await fetch('https://azulucms.onrender.com/content');
     
     if (!response.ok) {
@@ -22,7 +22,7 @@ const fetchContent = async () => {
     }
     
     const contentData = await response.json();
-    console.log('Content loaded successfully: ', contentData);
+    // console.log('Content loaded successfully: ', contentData);
     
     // Parse and store content data
     contentData.forEach(item => {
@@ -31,7 +31,7 @@ const fetchContent = async () => {
       }
       else if (item.key === 'aboutPage' && item.big_string) {
         window.azuluContent.aboutPage = item.big_string;
-        console.log('About: ', window.azuluContent.aboutPage);
+        // console.log('About: ', window.azuluContent.aboutPage);
       }
     });
     
@@ -305,7 +305,7 @@ const preloadAllImages = async () => {
     document.head.appendChild(linkElement);
   });
   
-  console.log('Starting image preload...');
+  // console.log('Starting image preload...');
   
   try {
     // Load critical images
@@ -314,7 +314,7 @@ const preloadAllImages = async () => {
     // Also preload the low quality image for blur-up effect
     await preloadImage(PARTY_IMAGE_LOW_QUALITY_URL);
     
-    console.log('Critical images preloaded successfully');
+    // console.log('Critical images preloaded successfully');
     return true;
   } catch (err) {
     console.warn('Error preloading critical images:', err);
