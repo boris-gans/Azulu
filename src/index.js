@@ -15,14 +15,16 @@ window.azuluContent = {
 const fetchContent = async () => {
   try {
     // console.log('Fetching content from API...');
-    const response = await fetch('https://azulucms.onrender.com/content');
+    // const response = await fetch('https://azulucms.onrender.com/content');
+    const response = await fetch('http://0.0.0.0:8000/content/');
+
     
     if (!response.ok) {
       throw new Error(`Content API error: ${response.status}`);
     }
     
     const contentData = await response.json();
-    // console.log('Content loaded successfully: ', contentData);
+    console.log('Content loaded successfully: ', contentData);
     
     // Parse and store content data
     contentData.forEach(item => {

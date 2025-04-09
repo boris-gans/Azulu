@@ -62,7 +62,8 @@ function EventCard({ event, onToggleExpand, isExpanded }) {
           )}
           <div className={styles.eventTimes}>
             {event.start_time}
-            {event.end_time && ` - ${formatTime(event.end_time, event.time_zone)}`}
+            {event.end_time && ` - ${event.end_time}`}
+            {/* {event.end_time && ` - ${formatTime(event.end_time, event.time_zone)}`} */}
           </div>
           {event.lineup && event.lineup.length > 0 && (
             <div className={styles.lineupPreview}>
