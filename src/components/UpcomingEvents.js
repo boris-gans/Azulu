@@ -11,17 +11,22 @@ function UpcomingEvents() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('https://azulucms.onrender.com/events/?upcoming=true');
+        // const response = await fetch('https://azulucms.onrender.com/events/?upcoming=true');
+        const response = await fetch('http://0.0.0.0:8000/events/?upcoming=true');
         
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
         }
         
         const eventsData = await response.json();
-        // Sort events by start_time
-        const sortedEvents = eventsData.sort((a, b) => 
-          new Date(a.start_time) - new Date(b.start_time)
-        );
+        // Sort events by combined start_date and start_time
+        const sortedEvents = eventsData.sort((a, b) => {
+          // Combine date and time for comparison
+          const dateA = new Date(`${a.start_date}T${a.start_time}`);
+          const dateB = new Date(`${b.start_date}T${b.start_time}`);
+          return dateA - dateB;
+        });
+        
         setEvents(sortedEvents);
         setLoading(false);
       } catch (err) {
@@ -48,10 +53,20 @@ function UpcomingEvents() {
     );
   };
 
-  const formatTime = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase();
+  const formatTime = (timeString, timeZone) => {
+    if (!timeString || !timeZone) return '';
+    
+    // Format time with timezone indicator
+    const formattedTime = timeString.toUpperCase();
+    
+    // Get timezone abbreviation
+    const now = new Date();
+    const tzAbbr = new Intl.DateTimeFormat('en', {
+      timeZoneName: 'short',
+      timeZone: timeZone
+    }).formatToParts(now).find(part => part.type === 'timeZoneName')?.value || timeZone;
+    
+    return `${formattedTime} ${tzAbbr}`;
   };
 
   const getCurrencySymbol = (currencyCode) => {
@@ -73,7 +88,7 @@ function UpcomingEvents() {
 
   // Group events by date
   const groupedEvents = !loading && !error ? events.reduce((groups, event) => {
-    const dateKey = new Date(event.start_time).toDateString();
+    const dateKey = event.start_date; // Use start_date directly
     if (!groups[dateKey]) {
       groups[dateKey] = [];
     }

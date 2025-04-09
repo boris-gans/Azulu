@@ -3,10 +3,25 @@ import { PortableText } from '@portabletext/react';
 import styles from '../styles/EventCard.module.css';
 
 function EventCard({ event, onToggleExpand, isExpanded }) {
-  const formatTime = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase();
+  const formatTime = (timeString, timeZone) => {
+    if (!timeString) return '';
+    
+    // Format time with timezone indicator
+    const formattedTime = timeString.toUpperCase();
+    
+    // Get timezone abbreviation if timezone is provided
+    let tzDisplay = '';
+    if (timeZone) {
+      const now = new Date();
+      const tzAbbr = new Intl.DateTimeFormat('en', {
+        timeZoneName: 'short',
+        timeZone: timeZone
+      }).formatToParts(now).find(part => part.type === 'timeZoneName')?.value || '';
+      
+      tzDisplay = tzAbbr ? ` ${tzAbbr}` : '';
+    }
+    
+    return `${formattedTime}${tzDisplay}`;
   };
 
   const getCurrencySymbol = (currencyCode) => {
@@ -46,8 +61,8 @@ function EventCard({ event, onToggleExpand, isExpanded }) {
             </div>
           )}
           <div className={styles.eventTimes}>
-            {formatTime(event.start_time)}
-            {event.end_time && ` - ${formatTime(event.end_time)}`}
+            {event.start_time}
+            {event.end_time && ` - ${formatTime(event.end_time, event.time_zone)}`}
           </div>
           {event.lineup && event.lineup.length > 0 && (
             <div className={styles.lineupPreview}>
@@ -88,8 +103,8 @@ function EventCard({ event, onToggleExpand, isExpanded }) {
               <div className={styles.timeBlock}>
                 <div className={styles.blockLabel}>TIME</div>
                 <div className={styles.blockText}>
-                  {formatTime(event.start_time)}
-                  {event.end_time && ` - ${formatTime(event.end_time)}`}
+                  {formatTime(event.start_time, event.time_zone)}
+                  {event.end_time && ` - ${formatTime(event.end_time, event.time_zone)}`}
                 </div>
               </div>
               
