@@ -3,11 +3,11 @@ import { PortableText } from '@portabletext/react';
 import styles from '../styles/EventCard.module.css';
 
 function EventCard({ event, onToggleExpand, isExpanded }) {
-  const formatTime = (timeString, timeZone) => {
-    if (!timeString) return '';
+  const formatTime = ( timeZone) => {
+    if (!timeZone) return '';
     
     // Format time with timezone indicator
-    const formattedTime = timeString.toUpperCase();
+    // const formattedTime = timeString.toUpperCase();
     
     // Get timezone abbreviation if timezone is provided
     let tzDisplay = '';
@@ -21,7 +21,7 @@ function EventCard({ event, onToggleExpand, isExpanded }) {
       tzDisplay = tzAbbr ? ` ${tzAbbr}` : '';
     }
     
-    return `${formattedTime}${tzDisplay}`;
+    return `${tzDisplay}`;
   };
 
   const getCurrencySymbol = (currencyCode) => {
@@ -104,8 +104,13 @@ function EventCard({ event, onToggleExpand, isExpanded }) {
               <div className={styles.timeBlock}>
                 <div className={styles.blockLabel}>TIME</div>
                 <div className={styles.blockText}>
-                  {formatTime(event.start_time, event.time_zone)}
-                  {event.end_time && ` - ${formatTime(event.end_time, event.time_zone)}`}
+                  {/* {formatTime(event.start_time, event.time_zone)} */}
+                  {event.start_time}
+                  {event.end_time && ` - ${event.end_time}`}
+                  {event.time_zone && ` ${formatTime(event.time_zone)}`}
+
+
+                  {/* {event.end_time && ` - ${formatTime(event.end_time, event.time_zone)}`} */}
                 </div>
               </div>
               
