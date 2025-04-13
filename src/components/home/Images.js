@@ -51,7 +51,7 @@ function Images() {
 
   // Simplified URL generation using direct Cloudinary URL
   const getOptimizedUrl = (publicId) => {
-    return `https://res.cloudinary.com/dsjkhhpbl/image/upload/c_fill,w_800,h_600,q_auto,f_auto/${publicId}`;
+    return `https://res.cloudinary.com/dg5vgikh5/image/upload/c_fill,w_800,h_600,q_auto,f_auto/${publicId}`;
   };
 
   // Add a function to preload all images

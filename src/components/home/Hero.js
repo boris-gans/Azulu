@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/components/Hero.module.css';
 
 // Export the video ID and URL for preloading
-export const HERO_VIDEO_ID = 'pvpy9ncw8kvb7f7plz1e';
-export const HERO_VIDEO_URL = `https://res.cloudinary.com/dsjkhhpbl/video/upload/q_auto/f_auto/${HERO_VIDEO_ID}`;
+export const HERO_VIDEO_ID = '20241021_HERO_VID';
+export const HERO_VIDEO_URL = `https://res.cloudinary.com/dg5vgikh5/video/upload/v1744573660/${HERO_VIDEO_ID}`;
 
 function Hero() {
   const bannerRef = useRef(null);
@@ -143,6 +143,7 @@ export const preloadHeroVideo = () => {
     const source = document.createElement('source');
     source.src = HERO_VIDEO_URL;
     source.type = 'video/mp4';
+    console.log(source.src)
     
     video.appendChild(source);
     

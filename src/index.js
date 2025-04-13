@@ -274,7 +274,7 @@ const animateGrowLogo = () => {
 
 // Define getOptimizedUrl in index.js directly
 const getOptimizedUrl = (publicId) => {
-  const cloudName = 'dsjkhhpbl'; // Replace with your actual Cloudinary cloud name
+  const cloudName = 'dg5vgikh5'; // Replace with your actual Cloudinary cloud name
   return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto:good/${publicId}`;
 };
 
