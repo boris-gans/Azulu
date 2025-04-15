@@ -14,37 +14,37 @@ function Images() {
   const images = shuffleArray([
     {
       id: 1,
-      publicId: 'Azulu_W-hotel-001_ugg2tl',
+      publicId: 'banner_1_m7kuhm',
       alt: "Azulu at W Hotel"
     },
     {
       id: 2,
-      publicId: 'Azulu_W-hotel-008_xwl03w',
+      publicId: 'banner_2_qjlmml',
       alt: "Azulu at W Hotel performance"
     },
     {
       id: 3,
-      publicId: 'Azulu_W-hotel-047_a9z32q',
+      publicId: 'banner_3_fwcqkx',
       alt: "Azulu event"
     },
     {
       id: 4,
-      publicId: 'DSCF9414_gioiwg',
+      publicId: 'banner_4_szgwor',
       alt: "Azulu performance"
     },
     {
       id: 5,
-      publicId: 'DSCF9570_tplfue',
+      publicId: 'banner_5_zvxwn9',
       alt: "Azulu event"
     },
     {
       id: 6,
-      publicId: 'DSCF9647_i5zgxx',
+      publicId: 'banner_6_f3svxw',
       alt: "Azulu event"
     },
     {
       id: 7,
-      publicId: 'Azulu_W-hotel-022_wvvwac',
+      publicId: 'banner_7_vdkcwm',
       alt: "Azulu event"
     }
   ]);
@@ -52,7 +52,8 @@ function Images() {
   // Simplified URL generation using direct Cloudinary URL
   const getOptimizedUrl = (publicId) => {
     return `https://res.cloudinary.com/dg5vgikh5/image/upload/c_fill,w_800,h_600,q_auto,f_auto/${publicId}`;
-  };
+  }; //dsjkhhpbl
+  // dg5vgikh5
 
   // Add a function to preload all images
   useEffect(() => {

@@ -5,8 +5,8 @@ import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
 // Export the image URLs for preloading
-export const PARTY_IMAGE_URL = "https://res.cloudinary.com/dsjkhhpbl/image/upload/q_auto,f_auto,w_1200/party-crowd_kgnwom";
-export const PARTY_IMAGE_LOW_QUALITY_URL = "https://res.cloudinary.com/dsjkhhpbl/image/upload/q_10,f_auto,w_50,e_blur:1000/party-crowd_kgnwom";
+export const PARTY_IMAGE_URL = "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/party_sdcxhw";
+export const PARTY_IMAGE_LOW_QUALITY_URL = "https://res.cloudinary.com/dg5vgikh5/image/upload/q_10,f_auto,w_50,e_blur:1000/party_sdcxhw";
 
 function Party() {
   // State to track if image is preloaded
