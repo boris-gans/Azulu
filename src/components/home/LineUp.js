@@ -6,6 +6,7 @@ import { useInView } from 'react-intersection-observer';
 function LineUp() {
   const scrollContainerRef = useRef(null);
   const [isScrollable, setIsScrollable] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
   
   // Animation controls
   const headerControls = useAnimation();
@@ -157,10 +158,11 @@ function LineUp() {
   // Optimized scroll check using ResizeObserver
   const checkScrollable = useCallback(() => {
     if (!scrollContainerRef.current) return;
-    
     const container = scrollContainerRef.current;
-    const hasHorizontalScroll = container.scrollWidth > container.clientWidth + 5;
-    setIsScrollable(hasHorizontalScroll);
+    const isRightScrollable = container.scrollWidth > container.clientWidth + container.scrollLeft;
+    const isLeftScrollable = container.scrollLeft > 0;
+    setIsScrollable(isRightScrollable);
+    setCanScrollLeft(isLeftScrollable);
   }, []);
   
   // Check scrollability with ResizeObserver
@@ -196,7 +198,22 @@ function LineUp() {
     };
   }, [checkScrollable]);
   
-  // Optimized scroll function
+  // Add left scroll function
+  const scrollLeft = useCallback(() => {
+    if (!scrollContainerRef.current) return;
+    
+    const container = scrollContainerRef.current;
+    const scrollAmount = Math.min(300, container.clientWidth * 0.8);
+    container.scrollBy({ 
+      left: -scrollAmount, 
+      behavior: 'smooth' 
+    });
+    
+    // Recheck scrollability after animation completes
+    setTimeout(checkScrollable, 500);
+  }, [checkScrollable]);
+
+  // Update scrollRight to use checkScrollable
   const scrollRight = useCallback(() => {
     if (!scrollContainerRef.current) return;
     
@@ -209,6 +226,15 @@ function LineUp() {
     
     // Recheck scrollability after animation completes
     setTimeout(checkScrollable, 500);
+  }, [checkScrollable]);
+
+  // Add scroll event listener to check scrollability
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScrollable);
+      return () => container.removeEventListener('scroll', checkScrollable);
+    }
   }, [checkScrollable]);
 
   return (
@@ -259,6 +285,42 @@ function LineUp() {
               
               {/* Right side - Horizontal scrolling cards with simpler animations */}
               <div className={styles.featuredEventsContainer}>
+                {/* Left scroll button */}
+                <AnimatePresence>
+                  {canScrollLeft && (
+                    <motion.button 
+                      className={styles.scrollButton} 
+                      onClick={scrollLeft}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0, transition: { delay: 0.3, duration: 0.2 } }}
+                      whileHover={{ scale: 1.05, transition: { duration: 0.15 } }}
+                      whileTap={{ scale: 0.95, transition: { duration: 0.05 } }}
+                      exit={{ opacity: 0, x: -20, transition: { duration: 0.2 } }}
+                      style={{
+                        position: 'absolute',
+                        left: '10px',
+                        top: '45%',
+                        transform: 'translateY(-50%)',
+                        zIndex: 10,
+                        background: 'rgba(0, 0, 0, 0.7)',
+                        borderRadius: '50%',
+                        width: '48px',
+                        height: '48px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        border: 'none',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'
+                      }}
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+
                 <motion.div 
                   className={styles.featuredEvents} 
                   initial="hidden"
@@ -352,7 +414,7 @@ function LineUp() {
                   ))}
                 </motion.div>
                 
-                {/* Scroll button with smoother animations */}
+                {/* Right scroll button */}
                 <AnimatePresence>
                   {isScrollable && (
                     <motion.button 

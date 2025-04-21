@@ -19,8 +19,16 @@ function PastEvents() {
         }
         
         const eventsData = await response.json();
+        
+        // Modify all past events to have 'Sold Out' status and null ticket link
+        const modifiedEvents = eventsData.map(event => ({
+          ...event,
+          ticket_status: 'Sold Out',
+          ticket_link: null
+        }));
+        
         // Sort events by combined start_date and start_time in descending order (newest first)
-        const sortedEvents = eventsData.sort((a, b) => {
+        const sortedEvents = modifiedEvents.sort((a, b) => {
           // Combine date and time for comparison
           const dateA = new Date(`${a.start_date}T${a.start_time}`);
           const dateB = new Date(`${b.start_date}T${b.start_time}`);

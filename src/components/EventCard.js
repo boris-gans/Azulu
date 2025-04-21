@@ -73,7 +73,11 @@ function EventCard({ event, onToggleExpand, isExpanded }) {
         </div>
         
         <div className={styles.actionArea}>
-          {event.price && (
+          {event.price === 0 ? (
+            <span className={styles.priceTag}>
+              
+            </span>
+          ) : (
             <span className={styles.priceTag}>
               {getCurrencySymbol(event.currency)}{event.price}
             </span>
