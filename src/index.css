@@ -17,3 +17,31 @@ body {
   /* overflow-y: hidden; */
 
 }
+
+/* Globally apply to body or html */
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent; /* or a subtle background */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(69, 69, 69, 0.4);
+  border-radius: 6px;
+  border: 2px solid transparent; /*optional: space around thumb */
+  background-clip: padding-box;
+}
+
+/* Optional: on hover */
+body::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+@-moz-document url-prefix() {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.4) transparent;
+  }
+}
