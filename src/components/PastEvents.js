@@ -26,7 +26,7 @@ function PastEvents() {
           ticket_status: 'Sold Out',
           ticket_link: null
         }));
-        
+        console.log(modifiedEvents);
         // Sort events by combined start_date and start_time in descending order (newest first)
         const sortedEvents = modifiedEvents.sort((a, b) => {
           // Combine date and time for comparison
@@ -34,6 +34,7 @@ function PastEvents() {
           const dateB = new Date(`${b.start_date}T${b.start_time}`);
           return dateB - dateA; // Descending order
         });
+        console.log(sortedEvents);
         
         setEvents(sortedEvents);
         setLoading(false);
@@ -94,15 +95,20 @@ function PastEvents() {
     setExpandedEvent(expandedEvent === id ? null : id);
   };
 
-  // Group events by date
+  // Group events by date while maintaining sorted order
   const groupedEvents = !loading && !error ? events.reduce((groups, event) => {
-    const dateKey = event.start_date; // Use start_date directly
+    const dateKey = event.start_date;
     if (!groups[dateKey]) {
       groups[dateKey] = [];
     }
     groups[dateKey].push(event);
     return groups;
   }, {}) : {};
+
+  // Sort the groups by date in descending order
+  const sortedGroupKeys = Object.keys(groupedEvents).sort((a, b) => {
+    return new Date(b) - new Date(a);
+  });
 
   return (
     <div className={styles.eventsSection}>
@@ -126,14 +132,14 @@ function PastEvents() {
             No previous events to display.
           </div>
         ) : (
-          Object.entries(groupedEvents).map(([dateKey, dateEvents]) => (
+          sortedGroupKeys.map((dateKey) => (
             <div key={dateKey} className={styles.dateGroup}>
               <div className={styles.dateHeader}>
                 {formatDate(dateKey)}
               </div>
               
               <div className={styles.eventsList}>
-                {dateEvents.map((event) => (
+                {groupedEvents[dateKey].map((event) => (
                   <EventCard
                     key={event.id}
                     event={event}
