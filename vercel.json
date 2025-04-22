@@ -59,8 +59,12 @@
       "destination": "/static/$1"
     },
     {
-      "source": "/assets/(.*)",
-      "destination": "/assets/$1"
+      "source": "/assets/icons/(.*)",
+      "destination": "/assets/icons/$1"
+    },
+    {
+      "source": "/assets/images/(.*)",
+      "destination": "/assets/images/$1"
     },
     {
       "source": "/(.*)",
