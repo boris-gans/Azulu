@@ -77,6 +77,10 @@ function EventCard({ event, onToggleExpand, isExpanded }) {
             <span className={styles.priceTag}>
               
             </span>
+          ) : event.ticket_status === 'Sold Out' ? (
+            <span className={styles.priceTag}>
+
+            </span>
           ) : (
             <span className={styles.priceTag}>
               {getCurrencySymbol(event.currency)}{event.price}
@@ -85,7 +89,7 @@ function EventCard({ event, onToggleExpand, isExpanded }) {
           
           {event.ticket_status === 'Sold Out' ? (
             <span className={styles.soldOutTag}>SOLD OUT</span>
-          ) : event.ticket_status === 'Sold At Door' ? (
+          ) : event.ticket_status === 'Sold At The Door' ? (
             <span className={styles.soldAtDoorTag}>SOLD AT DOOR</span>
           ) : event.ticket_link ? (
             <a 
