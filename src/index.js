@@ -17,9 +17,7 @@ const fetchContent = async () => {
     // console.log('Fetching content from API...');
     // const response = await fetch('https://azulucms.onrender.com/content');
     // const response = await fetch('http://0.0.0.0:8000/content/');
-    const response = await fetch('https://azulucms-pr-1.onrender.com');
-
-
+    const response = await fetch('https://azulucms-pr-1.onrender.com/content/');
     
     if (!response.ok) {
       throw new Error(`Content API error: ${response.status}`);

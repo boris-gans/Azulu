@@ -12,8 +12,9 @@ function UpcomingEvents() {
     const fetchEvents = async () => {
       try {
         // const response = await fetch('https://azulucms.onrender.com/events/?upcoming=true');
-        const response = await fetch('http://0.0.0.0:8000/events/?upcoming=true');
-        
+        // const response = await fetch('http://0.0.0.0:8000/events/?upcoming=true');
+        const response = await fetch('https://azulucms-pr-1.onrender.com/events/?upcoming=true');
+
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
         }
