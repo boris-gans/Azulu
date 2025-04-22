@@ -27,7 +27,7 @@ function PastEvents() {
           ticket_status: 'Sold Out',
           ticket_link: null
         }));
-        console.log(modifiedEvents);
+
         // Sort events by combined start_date and start_time in descending order (newest first)
         const sortedEvents = modifiedEvents.sort((a, b) => {
           // Combine date and time for comparison
@@ -35,7 +35,6 @@ function PastEvents() {
           const dateB = new Date(`${b.start_date}T${b.start_time}`);
           return dateB - dateA; // Descending order
         });
-        console.log(sortedEvents);
         
         setEvents(sortedEvents);
         setLoading(false);

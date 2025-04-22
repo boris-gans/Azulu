@@ -213,7 +213,7 @@ function Party() {
             width="1200"
             height="800"
             loading="eager" 
-            fetchpriority="high"
+            fetchPriority="high"
             decoding="async"
             style={{ 
               opacity: imageLoaded ? 1 : 0,
@@ -245,9 +245,9 @@ function Party() {
                 At Azulu music hits harder, the energy stays higher, and the party never stops. We bring the best artists, the wildest vibes, and a crowd that knows how to move.
               </p>
               <div className={styles.partyAction}>
-                <span className={styles.partyLink}>
-                  SEE WHERE WE'RE GOING NEXT
-                </span>
+                  <span className={styles.partyLink}>
+                    SEE WHERE WE'RE GOING NEXT
+                  </span>
                 <Link to="/events" className={styles.linkWrapper}>
                   <motion.div
                     className={styles.button}
