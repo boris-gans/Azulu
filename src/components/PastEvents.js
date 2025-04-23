@@ -11,9 +11,9 @@ function PastEvents() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // const response = await fetch('https://azulucms.onrender.com/events/?upcoming=false');
+        const response = await fetch('https://azulucms.onrender.com/events/?upcoming=false');
         // const response = await fetch('http://0.0.0.0:8000/events/?upcoming=false');
-        const response = await fetch('https://azulucms-pr-1.onrender.com/events/?upcoming=false');
+        // const response = await fetch('https://azulucms-pr-1.onrender.com/events/?upcoming=false');
         
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
