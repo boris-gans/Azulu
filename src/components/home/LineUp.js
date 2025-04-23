@@ -118,8 +118,8 @@ function LineUp() {
       image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/e9dayolv0ssd24f1dqlh_aljcmt",
       socials: {
         instagram: "https://www.instagram.com/benjamusic.dj/",
-        tiktok: "https://www.tiktok.com/@benjamusic.dj?lang=en",
-        spotify: "https://open.spotify.com/artist/0CX4q2v1TeyeskG7GgAy"
+        tiktok: "https://www.tiktok.com/@benjamusic.nl?is_from_webapp=1&sender_device=pc",
+        spotify: "https://open.spotify.com/artist/0CX4q2v1TeyeskG7GgAyxI?si=nZBs6YOgRxO1IqAKG7p0pg"
       }
     },
     {
@@ -357,6 +357,8 @@ function LineUp() {
                         className={styles.cardSocials}
                         variants={itemVariants}
                       >
+                        {console.log(event.socials)}
+
                         {event.socials && (
                           <div className={styles.socialLinks}>
                             {event.socials.instagram && (
