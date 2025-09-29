@@ -24,7 +24,7 @@ const fetchContent = async () => {
     }
     
     const contentData = await response.json();
-    console.log('Content loaded successfully: ', contentData);
+    //console.log('Content loaded successfully: ', contentData);
     
     // Parse and store content data
     contentData.forEach(item => {

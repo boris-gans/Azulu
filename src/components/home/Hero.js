@@ -143,7 +143,7 @@ export const preloadHeroVideo = () => {
     const source = document.createElement('source');
     source.src = HERO_VIDEO_URL;
     source.type = 'video/mp4';
-    console.log(source.src)
+    //console.log(source.src)
     
     video.appendChild(source);
     

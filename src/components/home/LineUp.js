@@ -360,7 +360,7 @@ function LineUp() {
                         className={styles.cardSocials}
                         variants={itemVariants}
                       >
-                        {console.log(event.socials)}
+                        {/* {console.log(event.socials)} */}
 
                         {event.socials && (
                           <div className={styles.socialLinks}>
