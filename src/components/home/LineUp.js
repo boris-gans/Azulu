@@ -138,7 +138,8 @@ function LineUp() {
       id: 3,
       artist: "FATA MORGANA",
       // image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/image_copy_3_ktk8k2",
-      image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/event_posters/Screenshot_2025-09-29_at_10.12.15_c6py8m",
+      // https://res.cloudinary.com/dg5vgikh5/image/upload/v1759133543/Screenshot_2025-09-29_at_10.12.15_c6py8m.png
+      image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/v1759133543/Screenshot_2025-09-29_at_10.12.15_c6py8m",
       socials: {
         instagram: "https://www.instagram.com/fatamorganagroup/",
         spotify: "https://open.spotify.com/artist/7JqRlV02zd5qwCwzn1aQhf?si=HmPXOpcFRjKtDroBHekblQ",
