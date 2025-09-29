@@ -115,10 +115,7 @@ function LineUp() {
     {
       id: 1,
       artist: "BENJA",
-      //image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/xd7isjyybtthqkll83tu",
       image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/event_posters/xd7isjyybtthqkll83tu",
-
-      //image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/e9dayolv0ssd24f1dqlh_aljcmt",
       socials: {
         instagram: "https://www.instagram.com/benjamusic.dj/",
         tiktok: "https://www.tiktok.com/@benjamusic.nl?is_from_webapp=1&sender_device=pc",
@@ -128,7 +125,8 @@ function LineUp() {
     {
       id: 2,
       artist: "ROMY JANSSEN",
-      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/image_copy_4_wyul9v",
+      // image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/image_copy_4_wyul9v",
+      image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/event_posters/uc05zgk8ydtajscn7qgf",
       socials: {
         instagram: "https://www.instagram.com/romyjanssendj/",
         tiktok: "https://www.tiktok.com/@romyjanssendj?lang=en",
@@ -139,7 +137,8 @@ function LineUp() {
     {
       id: 3,
       artist: "FATA MORGANA",
-      image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/image_copy_3_ktk8k2",
+      // image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/image_copy_3_ktk8k2",
+      image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/event_posters/Screenshot_2025-09-29_at_10.12.15_c6py8m",
       socials: {
         instagram: "https://www.instagram.com/fatamorganagroup/",
         spotify: "https://open.spotify.com/artist/7JqRlV02zd5qwCwzn1aQhf?si=HmPXOpcFRjKtDroBHekblQ",
