@@ -115,7 +115,9 @@ function LineUp() {
     {
       id: 1,
       artist: "BENJA",
-      image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/xd7isjyybtthqkll83tu",
+      //image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/xd7isjyybtthqkll83tu",
+      image: "https://res.cloudinary.com/dg5vgikh5/image/upload/q_auto,f_auto,w_1200/event_posters/xd7isjyybtthqkll83tu",
+
       //image: "https://res.cloudinary.com/dsjkhhpbl/image/upload/v1/e9dayolv0ssd24f1dqlh_aljcmt",
       socials: {
         instagram: "https://www.instagram.com/benjamusic.dj/",
